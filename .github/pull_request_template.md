@@ -1,3 +1,7 @@
+## Referencing Issue
+<!-- Reference issue if related -->
+Resolves Issue #
+
 ## Type of change
 
 <!-- Check all that apply. -->
