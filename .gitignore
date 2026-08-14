@@ -1,4 +1,27 @@
+# IDE
 .idea/
 .vscode/
 .DS_STORE/
+
+# Local secrets / config
 opencode.json
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+
+# Tooling
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Pre-commit
+.tox/

@@ -1,0 +1,137 @@
+{
+  "url": "https://api.github.com/repos/octocat/Hello-World/pulls/1347",
+  "id": 1,
+  "node_id": "MDExOlB1bGxSZXF1ZXN0MQ==",
+  "html_url": "https://github.com/octocat/Hello-World/pull/1347",
+  "diff_url": "https://github.com/octocat/Hello-World/pull/1347.diff",
+  "patch_url": "https://github.com/octocat/Hello-World/pull/1347.patch",
+  "issue_url": "https://api.github.com/repos/octocat/Hello-World/issues/1347",
+  "number": 1347,
+  "state": "open",
+  "locked": false,
+  "title": "new-feature",
+  "user": {
+    "login": "octocat",
+    "id": 1,
+    "node_id": "MDQ6VXNlcjE=",
+    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+    "html_url": "https://github.com/octocat",
+    "type": "User",
+    "site_admin": false
+  },
+  "body": "Please pull these awesome changes",
+  "created_at": "2011-01-26T19:01:12Z",
+  "updated_at": "2011-01-26T19:01:12Z",
+  "closed_at": null,
+  "merged_at": null,
+  "merge_commit_sha": "cd9af0783ad2d4fe2d1d8e9b2c4b3d2f1e5f6a7b",
+  "assignee": null,
+  "assignees": [],
+  "requested_reviewers": [],
+  "labels": [
+    {
+      "id": 208045946,
+      "node_id": "MDU6TGFiZWwyMDgwNDU5NDY=",
+      "url": "https://api.github.com/repos/octocat/Hello-World/labels/bug",
+      "name": "bug",
+      "color": "f29513",
+      "default": true,
+      "description": "Something isn't working"
+    }
+  ],
+  "draft": false,
+  "commits_url": "https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits",
+  "review_comments_url": "https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments",
+  "review_comment_url": "https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}",
+  "comments_url": "https://api.github.com/repos/octocat/Hello-World/issues/1347/comments",
+  "statuses_url": "https://api.github.com/repos/octocat/Hello-World/statuses/cd9af0783ad2d4fe2d1d8e9b2c4b3d2f1e5f6a7b",
+  "head": {
+    "label": "octocat:new-feature",
+    "ref": "new-feature",
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "user": {
+      "login": "octocat",
+      "id": 1,
+      "node_id": "MDQ6VXNlcjE=",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "html_url": "https://github.com/octocat",
+      "type": "User",
+      "site_admin": false
+    },
+    "repo": {
+      "id": 1296269,
+      "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
+      "name": "Hello-World",
+      "full_name": "octocat/Hello-World",
+      "private": false,
+      "html_url": "https://github.com/octocat/Hello-World",
+      "fork": false,
+      "default_branch": "main"
+    }
+  },
+  "base": {
+    "label": "octocat:main",
+    "ref": "main",
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "user": {
+      "login": "octocat",
+      "id": 1,
+      "node_id": "MDQ6VXNlcjE=",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "html_url": "https://github.com/octocat",
+      "type": "User",
+      "site_admin": false
+    },
+    "repo": {
+      "id": 1296269,
+      "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
+      "name": "Hello-World",
+      "full_name": "octocat/Hello-World",
+      "private": false,
+      "html_url": "https://github.com/octocat/Hello-World",
+      "fork": false,
+      "default_branch": "main"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/pulls/1347"
+    },
+    "html": {
+      "href": "https://github.com/octocat/Hello-World/pull/1347"
+    },
+    "issue": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/issues/1347"
+    },
+    "comments": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"
+    },
+    "review_comments": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"
+    },
+    "review_comment": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"
+    },
+    "commits": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"
+    },
+    "statuses": {
+      "href": "https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"
+    }
+  },
+  "author_association": "CONTRIBUTOR",
+  "auto_merge": null,
+  "active_lock_reason": null,
+  "merged": false,
+  "mergeable": true,
+  "rebaseable": true,
+  "mergeable_state": "clean",
+  "merged_by": null,
+  "comments": 10,
+  "review_comments": 0,
+  "maintainer_can_modify": true,
+  "commits": 3,
+  "additions": 100,
+  "deletions": 3,
+  "changed_files": 5
+}
