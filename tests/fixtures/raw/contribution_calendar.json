@@ -1,0 +1,33 @@
+{
+  "totalContributions": 100,
+  "weeks": [
+    {
+      "firstDay": "2024-01-01",
+      "contributionDays": [
+        {
+          "color": "#ebedf0",
+          "contributionCount": 0,
+          "date": "2024-01-01",
+          "weekday": 0
+        },
+        {
+          "color": "#9be9a8",
+          "contributionCount": 3,
+          "date": "2024-01-02",
+          "weekday": 1
+        }
+      ]
+    },
+    {
+      "firstDay": "2024-01-08",
+      "contributionDays": [
+        {
+          "color": "#40c463",
+          "contributionCount": 7,
+          "date": "2024-01-08",
+          "weekday": 0
+        }
+      ]
+    }
+  ]
+}
