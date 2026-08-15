@@ -1,0 +1,13 @@
+{
+  "login": "placeholderuser",
+  "id": 43,
+  "name": "Your Name",
+  "company": "your company",
+  "blog": "https://example.com",
+  "location": "San Francisco",
+  "email": null,
+  "hireable": false,
+  "bio": "your bio here - lorem ipsum",
+  "twitter_username": null,
+  "created_at": "2008-01-14T04:33:35Z"
+}
