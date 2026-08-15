@@ -21,12 +21,15 @@ from ghdtk.analyzers.presence import (
     ProfilePresence,
     assess_profile_presence,
 )
+from ghdtk.analyzers.readme import ReadmeAssessment, assess_readme_quality
 
 __all__ = [
     "FieldAssessment",
     "FieldStatus",
     "ProfilePresence",
+    "ReadmeAssessment",
     "assess_profile_presence",
+    "assess_readme_quality",
     "find_boilerplate",
     "find_placeholders",
 ]
