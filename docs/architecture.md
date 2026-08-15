@@ -171,9 +171,11 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   minimum repositories, README length, standout and concentration thresholds,
   growth windows, follower-network lopsidedness, commit/contribution gaps and
   streaks, external-engagement shares for PRs and issues, review/comment
-  participation shares, and the minimum months/issues before a trend is
-  reported). Defaults live in the model; tests override them directly so the
-  analyzers stay deterministic and config-driven.
+  participation shares, the minimum months/issues before a trend is reported,
+  language concentration and diversity thresholds, and the technology-domain
+  mapping coverage / specialization / diversity thresholds). Defaults live in
+  the model; tests override them directly so the analyzers stay deterministic
+  and config-driven.
 - `assess_repository_quality(snapshot, *, thresholds)` (issue #29) — per
   repository and portfolio quality signals: description presence (with
   placeholder detection via `heuristics`), README state (`present` /
@@ -277,6 +279,36 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   `trend_slowing_ratio`); otherwise the monthly breakdown is still reported and
   an informational finding explains why no trend is claimed. Output:
   `IssueParticipationAnalysis`.
+- `assess_language_distribution(snapshot, *, thresholds)` (issue #44) — the
+  portfolio's language distribution and primary languages, computed from the
+  per-repository language byte statistics collected under
+  `languages:<full_name>`. Weighting is byte-based: each language's share is
+  its bytes over the total bytes across every repository with byte statistics,
+  so larger repositories contribute proportionally more. Each repository's
+  primary language is the largest in its statistics; repositories without byte
+  statistics fall back to the declared `language` field (reported with
+  `has_byte_stats=False`), and repositories with neither are disclosed as
+  unknown, never guessed. Empty statistics mean no detectable code. A dominant
+  language at or above `language_concentration_threshold` fires a concentration
+  finding, and `language_distinct_threshold` or more distinct languages fire a
+  polyglot standout; missing data is surfaced in a coverage finding. Output:
+  `LanguageDistributionAnalysis`.
+- `assess_technology_diversity(snapshot, *, thresholds, domain_map)` (issue
+  #45) — technology diversity and dominant-area analysis from language and
+  topic evidence only. Technology names map to domains (web, data, mobile,
+  infrastructure, backend) through `DEFAULT_DOMAIN_MAP`, a documented and
+  configurable mapping (`domain_map` overrides it per call; lookups are
+  case-insensitive because topics are lowercase). Domain shares are
+  byte-weighted like the language distribution; a domain's share is its bytes
+  over the mapped bytes, and unmapped languages accumulate into
+  `unmapped_share` and are disclosed, never guessed. Diversity is the Simpson
+  index `1 - sum(p_i^2)` over the mapped domain shares. Repository topics that
+  match the mapping corroborate as per-domain presence counts but do not
+  re-weight the index. Specialization fires when the top domain's share reaches
+  `technology_specialization_threshold`, broad coverage when the index reaches
+  `technology_diversity_threshold`, and low mapping coverage below
+  `technology_mapping_coverage_threshold` is disclosed. Output:
+  `TechnologyDiversityAnalysis`.
 
 ## Derived data layer (`models/derived`)
 
