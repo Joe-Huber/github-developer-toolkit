@@ -54,6 +54,15 @@ class AnalysisThresholds(BaseModel):
     #: below which a coverage finding is raised.
     quality_coverage_threshold: float = Field(default=0.5, ge=0.0, le=1.0)
 
+    #: The recent growth window (days) used for star growth velocity.
+    growth_window_days: int = Field(default=90, ge=1)
+
+    #: recent/overall velocity at or above which star growth is "rising".
+    trend_rising_ratio: float = Field(default=1.5, ge=1.0)
+
+    #: recent/overall velocity at or below which star growth is "slowing".
+    trend_slowing_ratio: float = Field(default=0.5, ge=0.0, le=1.0)
+
     @classmethod
     def from_settings(cls, settings: object) -> AnalysisThresholds:
         """Build thresholds from a settings object's ``analysis_*`` fields.

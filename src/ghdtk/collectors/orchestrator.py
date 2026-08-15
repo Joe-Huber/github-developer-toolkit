@@ -68,7 +68,8 @@ def collect_profile(
     Runs the core profile collections first (user, repositories, contribution
     calendar, followers), then per-repository metadata (languages, readme,
     commits, pull requests, issues) for repositories sorted by stars, and
-    finally stargazers for the most-starred repository. When the budget can no
+    finally the stargazer timeline for the most-starred owned (non-fork)
+    repository, recorded under ``stargazers:<full_name>``. When the budget can no
     longer fit a collection it is skipped with ``reason="budget_exhausted"``;
     when a collection fails the error is recorded and collection continues, so
     the returned snapshot is always complete-but-possibly-partial.
@@ -181,13 +182,14 @@ def collect_profile(
             issues[full_name] = repo_issues
 
     stargazers: list[Stargazer] | None = None
-    top_repo = max(repo_list, key=lambda item: item.stargazers_count or 0, default=None)
+    owned_repo_list = [repo for repo in repo_list if not repo.fork]
+    top_repo = max(owned_repo_list, key=lambda item: item.stargazers_count or 0, default=None)
     if top_repo is None or top_repo.full_name is None or "/" not in top_repo.full_name:
         records.append(
             CollectionRecord(
                 name="stargazers",
                 status=CollectionStatus.SKIPPED,
-                reason="no_repositories",
+                reason="no_owned_repositories" if repo_list else "no_repositories",
             )
         )
     else:
@@ -197,7 +199,7 @@ def collect_profile(
             client,
             budget,
             records,
-            "stargazers",
+            f"stargazers:{top_repo.full_name}",
             page_cap,
             lambda: collect_stargazers(client, owner, repo_name, max_pages=page_cap),
         )

@@ -189,3 +189,33 @@ def test_stargazers_target_most_starred_repository(load_raw_fixture: FixtureLoad
     assert snapshot.languages["octocat/Hello-World"] is not None
     assert snapshot.stargazers is not None
     assert "/repos/octocat/Starred/stargazers" in log
+
+
+def test_stargazers_skip_forks_and_record_names_repository(
+    load_raw_fixture: FixtureLoader,
+) -> None:
+    routes = _routes(load_raw_fixture)
+    forked = {
+        **load_raw_fixture("repository"),
+        "full_name": "octocat/Forked",
+        "name": "Forked",
+        "stargazers_count": 500,
+        "fork": True,
+    }
+    routes["/users/octocat/repos"] = (200, [load_raw_fixture("repository"), forked])
+    routes["/repos/octocat/Forked/languages"] = (200, load_raw_fixture("language_stats"))
+    routes["/repos/octocat/Forked/readme"] = (200, load_raw_fixture("readme"))
+    routes["/repos/octocat/Forked/commits"] = (200, [load_raw_fixture("commit")])
+    routes["/repos/octocat/Forked/pulls"] = (200, [load_raw_fixture("pull_request")])
+    routes["/repos/octocat/Forked/issues"] = (200, [load_raw_fixture("issue")])
+
+    log: list[str] = []
+    with _client(_handler(routes, log=log)) as client:
+        snapshot = collect_profile(client, "octocat")
+
+    assert "/repos/octocat/Forked/stargazers" not in log
+    assert "/repos/octocat/Hello-World/stargazers" in log
+    record = next(r for r in snapshot.collections if r.name.startswith("stargazers:"))
+    assert record.name == "stargazers:octocat/Hello-World"
+    assert record.status == CollectionStatus.SUCCESS
+    assert snapshot.is_partial is False

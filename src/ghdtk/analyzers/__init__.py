@@ -12,6 +12,10 @@ Implemented analyzers:
   analysis (issue #30).
 - :func:`assess_portfolio_composition` — portfolio composition & standout
   identification analysis (issue #31).
+- :func:`assess_star_distribution` — stars aggregation & distribution analysis
+  (issue #33).
+- :func:`assess_star_growth` — star growth & trend analysis from the stargazer
+  timeline (issue #34).
 """
 
 from __future__ import annotations
@@ -40,6 +44,12 @@ from ghdtk.analyzers.repository_quality import (
     RepositoryQualitySignals,
     assess_repository_quality,
 )
+from ghdtk.analyzers.star_growth import (
+    StarGrowthAnalysis,
+    StarGrowthStatus,
+    assess_star_growth,
+)
+from ghdtk.analyzers.stars import StarsAnalysis, StarsRankingEntry, assess_star_distribution
 from ghdtk.analyzers.thresholds import AnalysisThresholds
 
 __all__ = [
@@ -55,11 +65,17 @@ __all__ = [
     "RepositoryCompositionSignals",
     "RepositoryQuality",
     "RepositoryQualitySignals",
+    "StarGrowthAnalysis",
+    "StarGrowthStatus",
+    "StarsAnalysis",
+    "StarsRankingEntry",
     "assess_portfolio_composition",
     "assess_profile_presence",
     "assess_readme_quality",
     "assess_repository_activity",
     "assess_repository_quality",
+    "assess_star_distribution",
+    "assess_star_growth",
     "find_boilerplate",
     "find_placeholders",
 ]
