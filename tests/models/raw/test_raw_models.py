@@ -186,3 +186,10 @@ def test_contribution_calendar_snake_case_accepted() -> None:
     calendar = ContributionCalendar.model_validate({"total_contributions": 5, "weeks": None})
     assert calendar.total_contributions == 5
     assert calendar.weeks is None
+
+
+def test_contribution_calendar_restricted_count() -> None:
+    calendar = ContributionCalendar.model_validate(
+        {"total_contributions": 5, "restricted_contributions_count": 3}
+    )
+    assert calendar.restricted_contributions_count == 3
