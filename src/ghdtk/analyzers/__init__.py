@@ -81,12 +81,20 @@ from ghdtk.analyzers.star_growth import (
     assess_star_growth,
 )
 from ghdtk.analyzers.stars import StarsAnalysis, StarsRankingEntry, assess_star_distribution
+from ghdtk.analyzers.technology import (
+    DEFAULT_DOMAIN_MAP,
+    DomainShare,
+    TechnologyDiversityAnalysis,
+    assess_technology_diversity,
+)
 from ghdtk.analyzers.thresholds import AnalysisThresholds
 
 __all__ = [
+    "DEFAULT_DOMAIN_MAP",
     "AnalysisThresholds",
     "CommitActivity",
     "ContributionCalendarAnalysis",
+    "DomainShare",
     "FieldAssessment",
     "FieldStatus",
     "FollowerNetwork",
@@ -108,6 +116,7 @@ __all__ = [
     "StarGrowthStatus",
     "StarsAnalysis",
     "StarsRankingEntry",
+    "TechnologyDiversityAnalysis",
     "assess_commit_activity",
     "assess_contribution_calendar",
     "assess_follower_network",
@@ -121,6 +130,7 @@ __all__ = [
     "assess_repository_quality",
     "assess_star_distribution",
     "assess_star_growth",
+    "assess_technology_diversity",
     "find_boilerplate",
     "find_placeholders",
 ]

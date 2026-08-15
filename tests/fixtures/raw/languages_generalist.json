@@ -1,0 +1,44 @@
+{
+  "username": "octocat",
+  "collected_at": "2026-01-01T00:00:00+00:00",
+  "repositories": [
+    {
+      "full_name": "octocat/web",
+      "language": "TypeScript",
+      "topics": ["react", "frontend"]
+    },
+    {
+      "full_name": "octocat/data",
+      "language": "Python",
+      "topics": ["pandas", "data"]
+    },
+    {
+      "full_name": "octocat/mobile",
+      "language": "Kotlin",
+      "topics": ["android"]
+    },
+    {
+      "full_name": "octocat/infra",
+      "language": "Go",
+      "topics": ["docker", "kubernetes"]
+    }
+  ],
+  "languages": {
+    "octocat/web": {
+      "TypeScript": 10000,
+      "CSS": 5000
+    },
+    "octocat/data": {
+      "Python": 12000,
+      "SQL": 3000
+    },
+    "octocat/mobile": {
+      "Kotlin": 9000,
+      "Swift": 6000
+    },
+    "octocat/infra": {
+      "Go": 15000,
+      "Shell": 5000
+    }
+  }
+}
