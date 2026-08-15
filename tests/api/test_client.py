@@ -351,6 +351,16 @@ def test_data_validation_error_carries_context() -> None:
     assert "login" in excinfo.value.errors[0]
 
 
+def test_negative_counts_rejected_by_sanity_validation() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"login": "octocat", "followers": -5})
+
+    with _client(handler) as client:
+        with pytest.raises(DataValidationError) as excinfo:
+            client.get_user("octocat")
+    assert any("non-negative" in error for error in excinfo.value.errors)
+
+
 def test_timeout_is_typed() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectTimeout("timed out", request=request)

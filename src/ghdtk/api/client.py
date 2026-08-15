@@ -35,9 +35,11 @@ from ghdtk.api.errors import (
     RateLimitError,
     UserNotFoundError,
 )
+from ghdtk.api.normalizers import validate_sanity
 from ghdtk.api.pagination import next_page_url
 from ghdtk.api.rate_limit import BackoffPolicy, RateLimitState, parse_retry_after
 from ghdtk.models.raw import (
+    BaseRawModel,
     Commit,
     ContributionCalendar,
     Follower,
@@ -277,7 +279,7 @@ class GitHubClient:
 
     def _validate_payload(self, model: type[T], payload: Any, *, endpoint: str) -> T:
         try:
-            return model.model_validate(payload)
+            value = model.model_validate(payload)
         except PydanticValidationError as exc:
             errors = [
                 f"{'.'.join(str(part) for part in item['loc'])}: {item['msg']}"
@@ -288,6 +290,9 @@ class GitHubClient:
                 endpoint=endpoint,
                 errors=errors,
             ) from exc
+        if isinstance(value, BaseRawModel):
+            validate_sanity(value, endpoint=endpoint)
+        return value
 
     def _deserialize(self, response: httpx.Response, model: type[T]) -> T:
         return self._validate_payload(model, self._json(response), endpoint=str(response.url))
