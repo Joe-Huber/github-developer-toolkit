@@ -34,6 +34,7 @@ from ghdtk.models.raw.profile import (
     CollectionStatus,
     ProfileSnapshot,
 )
+from ghdtk.models.raw.profile_readme import ProfileReadme, ProfileReadmeStatus
 from ghdtk.models.raw.pull_request import PullRequest, PullRequestRef
 from ghdtk.models.raw.readme import Readme
 from ghdtk.models.raw.repository import License, Repository
@@ -58,6 +59,8 @@ __all__ = [
     "LanguageStatsContainer",
     "License",
     "Milestone",
+    "ProfileReadme",
+    "ProfileReadmeStatus",
     "ProfileSnapshot",
     "PullRequest",
     "PullRequestRef",

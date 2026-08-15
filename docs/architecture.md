@@ -116,6 +116,37 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
   Runs never crash on partial failure: a failed collection is recorded and
   collection continues, so a snapshot is complete-but-possibly-partial
   (`snapshot.is_partial`).
+- `ghdtk.collectors.collectors.collect_profile_readme` (issue #25) — retrieves
+  the profile README from the `<username>/<username>` repository and returns a
+  typed `ProfileReadme` that distinguishes *no profile repository*, *no
+  README*, *empty README*, and *fetch failure* so analysis never has to guess
+  why the markdown is absent.
+
+## Analysis layer (`analyzers`)
+
+Analyzers consume raw snapshots (or collection artifacts like `ProfileReadme`)
+and produce derived `MetricRecord`s and `Finding`s (issue #23). They are pure:
+no network access, no mutation of raw data, deterministic for a fixed input.
+
+- `assess_profile_presence(user)` (issue #24) — per-field assessment of the
+  presentation fields (name, bio, website, company, location, email, Twitter,
+  hireable flag, account age). Each field is `present` / `missing` /
+  `placeholder`, and findings carry the raw field they reference as evidence.
+  Account age under 90 days and very short bios are flagged as quality
+  signals. Output: `ProfilePresence`.
+- `assess_readme_quality(profile_readme)` (issue #26) — structural signals of
+  the profile README: word count, headings, code blocks, links, images,
+  badges, structured sections (About / Skills / Contact), and personalization
+  (username mentions, generic template wording). Findings reference the README
+  and, where possible, the section or line (`content:section:about`,
+  `content:line:3`) that produced them. Output: `ReadmeAssessment`.
+- `ghdtk.analyzers.heuristics` — the shared placeholder/boilerplate matchers.
+  Detection is deliberately conservative (obvious scaffold text such as
+  `example.com`, `your company`, `lorem ipsum`, "welcome to my github
+  profile"). It is a **documented heuristic, not a claim about intent**;
+  matches are always attached to finding evidence so an analyst can judge
+  them, and messages note the false-positive caveat (e.g. a company genuinely
+  named "Example").
 
 ## Derived data layer (`models/derived`)
 

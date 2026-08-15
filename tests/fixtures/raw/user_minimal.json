@@ -1,0 +1,13 @@
+{
+  "login": "minimaldev",
+  "id": 42,
+  "name": null,
+  "company": null,
+  "blog": null,
+  "location": null,
+  "email": null,
+  "hireable": null,
+  "bio": null,
+  "twitter_username": null,
+  "created_at": "2025-01-01T00:00:00Z"
+}
