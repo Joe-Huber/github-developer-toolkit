@@ -17,6 +17,7 @@ Implemented layers:
 
 from __future__ import annotations
 
+from ghdtk.scoring.aggregate import aggregate_dimension_scores
 from ghdtk.scoring.framework import (
     DIMENSION_LABELS,
     AnalysisWithMetrics,
@@ -48,6 +49,7 @@ __all__ = [
     "Scorer",
     "ScoringConfig",
     "ScoringRegistry",
+    "aggregate_dimension_scores",
     "blend",
     "clamp",
     "dedupe_sources",

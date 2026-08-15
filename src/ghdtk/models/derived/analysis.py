@@ -15,7 +15,7 @@ from ghdtk import __version__
 from ghdtk.models.derived.finding import Finding
 from ghdtk.models.derived.metric import MetricRecord
 from ghdtk.models.derived.recommendation import Recommendation
-from ghdtk.models.derived.score import DimensionScore
+from ghdtk.models.derived.score import DimensionScore, OverallScore
 
 
 class ProfileAnalysis(BaseModel):
@@ -28,6 +28,7 @@ class ProfileAnalysis(BaseModel):
     schema_version: int = 1
     metrics: list[MetricRecord] = Field(default_factory=list)
     scores: list[DimensionScore] = Field(default_factory=list)
+    overall: OverallScore | None = None
     findings: list[Finding] = Field(default_factory=list)
     recommendations: list[Recommendation] = Field(default_factory=list)
 
