@@ -106,7 +106,9 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
 - `ghdtk.collectors.orchestrator.collect_profile` — schedules collectors by
   dependency and priority: core profile (user, repositories, contribution
   calendar, followers) → per-repository metadata for repos sorted by stars →
-  stargazers for the most-starred repository. Sequencing is sequential.
+  the stargazer timeline for the most-starred **owned** (non-fork)
+  repository, recorded under `stargazers:<full_name>`. Sequencing is
+  sequential.
 - `ghdtk.collectors.budget.CollectionBudget` — hard cap on requests per run
   (default 500, `collection_max_requests`). Paginated collections never exceed
   the remaining budget; collections that no longer fit are skipped with an
@@ -177,6 +179,22 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   above `fork_ratio_threshold`, and a too-small portfolio
   (`minimum_repositories`) are reported as findings. Output:
   `PortfolioComposition`.
+- `assess_star_distribution(snapshot, *, thresholds)` (issue #33) — star
+  aggregation and distribution: total and per-repository stars, percentile
+  distribution (p25/p50/p75/p90/p99), distribution buckets, and the
+  most-starred ranking. All aggregates and the ranking are computed over
+  **owned** repositories per the documented fork policy; fork stars are
+  reported separately and a fork-star-share finding fires above
+  `fork_ratio_threshold`. Output: `StarsAnalysis`.
+- `assess_star_growth(snapshot, *, now, thresholds)` (issue #34) — star growth
+  and trend from the stargazer timeline (with `starred_at`), which the
+  collector fetches for the most-starred owned repository under
+  `stargazers:<full_name>` with the shared page cap. The analyzer reports
+  observed counts (stars in the last 30/90/365 days) as facts, but growth
+  velocity and the rising/stable/slowing verdict are **only** drawn when the
+  timeline covers the reported stargazer count and spans at least 30 days;
+  otherwise the status is `insufficient` and a finding explains why. No
+  history is ever claimed that was not observed. Output: `StarGrowthAnalysis`.
 
 ## Derived data layer (`models/derived`)
 
