@@ -77,6 +77,7 @@ _GRAPHQL_QUERY = """\
 query($login: String!) {
   user(login: $login) {
     contributionsCollection {
+      restrictedContributionsCount
       contributionCalendar {
         totalContributions
         weeks {
@@ -621,6 +622,10 @@ class GitHubClient:
             calendar = user["contributionsCollection"]["contributionCalendar"]
         except (KeyError, TypeError) as exc:
             raise MalformedResponseError(f"Missing contribution calendar for {username}") from exc
+        if isinstance(calendar, dict):
+            restricted = user["contributionsCollection"].get("restrictedContributionsCount")
+            if restricted is not None:
+                calendar = {**calendar, "restrictedContributionsCount": restricted}
         return self._validate_payload(ContributionCalendar, calendar, endpoint="/graphql")
 
     # --- lifecycle ---------------------------------------------------------

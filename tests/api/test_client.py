@@ -246,6 +246,33 @@ def test_contribution_calendar(load_raw_fixture: FixtureLoader) -> None:
     assert calendar.total_contributions == 100
 
 
+def test_contribution_calendar_includes_restricted_count(
+    load_raw_fixture: FixtureLoader,
+) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        body = request.read().decode()
+        assert "restrictedContributionsCount" in body
+        calendar = load_raw_fixture("contribution_calendar")
+        return _json_response(
+            request,
+            {
+                "data": {
+                    "user": {
+                        "contributionsCollection": {
+                            "restrictedContributionsCount": 12,
+                            "contributionCalendar": calendar,
+                        }
+                    }
+                }
+            },
+        )
+
+    with _client(handler) as client:
+        calendar = client.get_contribution_calendar("octocat")
+    assert calendar.total_contributions == 100
+    assert calendar.restricted_contributions_count == 12
+
+
 def test_contribution_calendar_user_not_found() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return _json_response(request, {"data": {"user": None}})

@@ -68,6 +68,20 @@ class AnalysisThresholds(BaseModel):
     #: network-driven.
     network_lopsided_ratio: float = Field(default=3.0, ge=1.0)
 
+    #: A commit-history gap (in days) at or beyond which a long-gap finding
+    #: fires for the commit activity analysis.
+    commit_gap_days: int = Field(default=60, ge=1)
+
+    #: Commits per month at or above which commit cadence is "consistent".
+    commit_cadence_per_month: float = Field(default=4.0, ge=0.0)
+
+    #: A contribution-calendar gap (in days) at or beyond which a long-gap
+    #: finding fires.
+    contribution_gap_days: int = Field(default=60, ge=1)
+
+    #: A streak (in days) at or above which it is reported as notable.
+    streak_notable_days: int = Field(default=7, ge=1)
+
     @classmethod
     def from_settings(cls, settings: object) -> AnalysisThresholds:
         """Build thresholds from a settings object's ``analysis_*`` fields.

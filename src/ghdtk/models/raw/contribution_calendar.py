@@ -58,3 +58,7 @@ class ContributionCalendar(BaseRawModel):
 
     total_contributions: int | None = None
     weeks: list[ContributionWeek] | None = None
+    #: Contributions made but hidden from the calendar (private repositories
+    #: with private contributions disabled). Merged from
+    #: ``contributionsCollection.restrictedContributionsCount`` by the client.
+    restricted_contributions_count: int | None = None
