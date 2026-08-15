@@ -51,6 +51,7 @@ def test_defaults(project_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.github_per_page == 100
     assert settings.cache_enabled is True
     assert settings.cache_ttl_seconds == 86_400
+    assert settings.cache_dir is None
     assert settings.analysis_minimum_stars == 10
     assert settings.analysis_minimum_commits == 5
     assert settings.analysis_minimum_repositories == 3

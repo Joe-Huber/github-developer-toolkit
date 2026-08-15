@@ -24,6 +24,13 @@ import httpx
 from pydantic import BaseModel, SecretStr
 from pydantic import ValidationError as PydanticValidationError
 
+from ghdtk.api.cache import (
+    CachedResponse,
+    ResponseCache,
+    _entry_to_response,
+    cache_key,
+    default_cache_directory,
+)
 from ghdtk.api.errors import (
     APITimeoutError,
     AuthenticationError,
@@ -103,6 +110,7 @@ class GitHubClient:
         per_page: int = 100,
         max_retries: int = 3,
         backoff: BackoffPolicy | None = None,
+        cache: ResponseCache | None = None,
     ) -> None:
         secret = token.get_secret_value() if isinstance(token, SecretStr) else token
         headers = {**DEFAULT_HEADERS, "Authorization": f"Bearer {secret}"}
@@ -117,6 +125,7 @@ class GitHubClient:
         self._backoff = backoff if backoff is not None else BackoffPolicy()
         self._rate_limit = RateLimitState()
         self._requests_made = 0
+        self._cache = cache
 
     @classmethod
     def from_settings(cls, settings: Any) -> GitHubClient:
@@ -124,12 +133,22 @@ class GitHubClient:
         from ghdtk.config.settings import Settings
 
         assert isinstance(settings, Settings)
+        cache: ResponseCache | None = None
+        if settings.cache_enabled:
+            from ghdtk.api.cache import DiskCache
+
+            directory = settings.cache_dir or default_cache_directory()
+            cache = ResponseCache(
+                DiskCache(directory),
+                ttl_seconds=settings.cache_ttl_seconds,
+            )
         return cls(
             settings.github_token,
             base_url=settings.github_base_url,
             timeout=settings.github_timeout_seconds,
             per_page=settings.github_per_page,
             max_retries=settings.github_max_retries,
+            cache=cache,
         )
 
     # --- introspection -----------------------------------------------------
@@ -156,6 +175,22 @@ class GitHubClient:
         json_body: dict[str, Any] | None = None,
     ) -> httpx.Response:
         request_headers = {**DEFAULT_HEADERS, **(headers or {})}
+        cache = self._cache
+        key: str | None = None
+        entry: CachedResponse | None = None
+        url = path
+        if cache is not None and method == "GET":
+            url = str(
+                self._client.build_request("GET", path, params=params, headers=request_headers).url
+            )
+            key = cache_key(method, url)
+            entry = cache.get(key)
+            if entry is not None:
+                if cache.is_fresh(entry):
+                    return _entry_to_response(entry, url=url)
+                if entry.etag is not None:
+                    request_headers["If-None-Match"] = entry.etag
+
         self._wait_for_rate_limit()
         attempts = 0
         while True:
@@ -181,7 +216,17 @@ class GitHubClient:
                 continue
 
             self._rate_limit.update_from(response)
+            if (
+                response.status_code == 304
+                and cache is not None
+                and key is not None
+                and entry is not None
+            ):
+                refreshed = cache.revalidate(key, entry)
+                return _entry_to_response(refreshed, url=url)
             if response.is_success:
+                if key is not None and response.status_code == 200 and cache is not None:
+                    cache.set(key, response, url)
                 return response
 
             # Secondary rate limit (abuse): retry with Retry-After / backoff.
@@ -586,6 +631,7 @@ def create_client(
     per_page: int = 100,
     max_retries: int = 3,
     backoff: BackoffPolicy | None = None,
+    cache: ResponseCache | None = None,
 ) -> GitHubClient:
     """Create a :class:`GitHubClient` for the given token and base URL."""
     return GitHubClient(
@@ -596,6 +642,7 @@ def create_client(
         per_page=per_page,
         max_retries=max_retries,
         backoff=backoff,
+        cache=cache,
     )
 
 

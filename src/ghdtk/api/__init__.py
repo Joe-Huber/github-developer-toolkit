@@ -9,6 +9,13 @@ concrete failure modes — auth, user-not-found, rate limits, timeouts, network,
 malformed responses and partial data — and decide whether to abort or degrade.
 """
 
+from ghdtk.api.cache import (
+    DiskCache,
+    InMemoryCache,
+    ResponseCache,
+    cache_key,
+    default_cache_directory,
+)
 from ghdtk.api.errors import (
     APITimeoutError,
     AuthenticationError,
@@ -48,7 +55,9 @@ __all__ = [
     "BackoffPolicy",
     "CommitActivity",
     "DataValidationError",
+    "DiskCache",
     "GitHubAPIError",
+    "InMemoryCache",
     "IssueStats",
     "LanguageShare",
     "MalformedResponseError",
@@ -62,8 +71,11 @@ __all__ = [
     "RateLimitError",
     "RateLimitState",
     "RepositorySummary",
+    "ResponseCache",
     "UserNotFoundError",
+    "cache_key",
     "commit_activity",
+    "default_cache_directory",
     "has_next_page",
     "issue_stats",
     "language_breakdown",
