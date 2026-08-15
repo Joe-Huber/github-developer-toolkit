@@ -98,6 +98,25 @@ or the raw payloads' representation, and `models/raw` is never mutated.
 Deserialization of any fetchable payload (issue #16) must never raise on
 missing/extra fields; invalid *types* still raise, surfacing real problems.
 
+## Collection pipeline (`collectors`)
+
+- `ghdtk.collectors.collectors` — thin collectors, one per resource (user,
+  repositories, languages, readme, commits, pull requests, issues, followers,
+  stargazers, contribution calendar), returning raw typed payloads.
+- `ghdtk.collectors.orchestrator.collect_profile` — schedules collectors by
+  dependency and priority: core profile (user, repositories, contribution
+  calendar, followers) → per-repository metadata for repos sorted by stars →
+  stargazers for the most-starred repository. Sequencing is sequential.
+- `ghdtk.collectors.budget.CollectionBudget` — hard cap on requests per run
+  (default 500, `collection_max_requests`). Paginated collections never exceed
+  the remaining budget; collections that no longer fit are skipped with an
+  explicit `budget_exhausted` status.
+- `ProfileSnapshot` (`models/raw/profile.py`) — the run's container with a
+  per-collection `CollectionRecord` (status, reason, detail, requests used).
+  Runs never crash on partial failure: a failed collection is recorded and
+  collection continues, so a snapshot is complete-but-possibly-partial
+  (`snapshot.is_partial`).
+
 ## Derived data layer (`models/derived`)
 
 - `MetricRecord` — id, label, value, **sources** (provenance), timestamp,
