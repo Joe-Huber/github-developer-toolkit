@@ -16,11 +16,14 @@ Implemented analyzers:
   (issue #33).
 - :func:`assess_star_growth` — star growth & trend analysis from the stargazer
   timeline (issue #34).
+- :func:`assess_follower_network` — followers, ratio, reach & network analysis
+  (issue #36).
 """
 
 from __future__ import annotations
 
 from ghdtk.analyzers.heuristics import find_boilerplate, find_placeholders
+from ghdtk.analyzers.network import FollowerNetwork, assess_follower_network
 from ghdtk.analyzers.portfolio import (
     PortfolioComposition,
     RepositoryCompositionSignals,
@@ -56,6 +59,7 @@ __all__ = [
     "AnalysisThresholds",
     "FieldAssessment",
     "FieldStatus",
+    "FollowerNetwork",
     "PortfolioComposition",
     "ProfilePresence",
     "ReadmeAssessment",
@@ -69,6 +73,7 @@ __all__ = [
     "StarGrowthStatus",
     "StarsAnalysis",
     "StarsRankingEntry",
+    "assess_follower_network",
     "assess_portfolio_composition",
     "assess_profile_presence",
     "assess_readme_quality",

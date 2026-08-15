@@ -102,11 +102,11 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
 
 - `ghdtk.collectors.collectors` — thin collectors, one per resource (user,
   repositories, languages, readme, commits, pull requests, issues, followers,
-  stargazers, contribution calendar), returning raw typed payloads.
+  following, stargazers, contribution calendar), returning raw typed payloads.
 - `ghdtk.collectors.orchestrator.collect_profile` — schedules collectors by
   dependency and priority: core profile (user, repositories, contribution
-  calendar, followers) → per-repository metadata for repos sorted by stars →
-  the stargazer timeline for the most-starred **owned** (non-fork)
+  calendar, followers, following) → per-repository metadata for repos sorted by
+  stars → the stargazer timeline for the most-starred **owned** (non-fork)
   repository, recorded under `stargazers:<full_name>`. Sequencing is
   sequential.
 - `ghdtk.collectors.budget.CollectionBudget` — hard cap on requests per run
@@ -150,10 +150,11 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   them, and messages note the false-positive caveat (e.g. a company genuinely
   named "Example").
 - `ghdtk.analyzers.thresholds.AnalysisThresholds` — the shared, validated
-  configuration model for the repository analyzers (staleness window, minimum
-  stars, minimum repositories, README length, standout and concentration
-  thresholds). Defaults live in the model; tests override them directly so the
-  analyzers stay deterministic and config-driven.
+  configuration model for the analyzers (staleness window, minimum stars,
+  minimum repositories, README length, standout and concentration thresholds,
+  growth windows, follower-network lopsidedness). Defaults live in the model;
+  tests override them directly so the analyzers stay deterministic and
+  config-driven.
 - `assess_repository_quality(snapshot, *, thresholds)` (issue #29) — per
   repository and portfolio quality signals: description presence (with
   placeholder detection via `heuristics`), README state (`present` /
@@ -195,6 +196,20 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   timeline covers the reported stargazer count and spans at least 30 days;
   otherwise the status is `insufficient` and a finding explains why. No
   history is ever claimed that was not observed. Output: `StarGrowthAnalysis`.
+- `assess_follower_network(snapshot, *, thresholds)` (issue #36) — followers
+  and network analysis. Counts and the followers-to-following ratio come from
+  the raw user object (no extra API cost); a ratio at or above
+  `network_lopsided_ratio` is an audience-driven profile, the reciprocal or
+  below a network-driven one. When the follower list was collected (capped by
+  the shared page cap), reach is reported as an **estimate**: the reported
+  follower count carries a confidence equal to the observed coverage, and a
+  partial sample fires a `partial_sample` finding so reach is never presented
+  as the full audience. Mutual follows are computed from the collected
+  follower/following samples (an estimate unless both lists fully cover their
+  reported counts) and are `unavailable` when the following list was not
+  collected. Growth history and org memberships are not exposed by the
+  pipeline, so both report `unavailable` with a rationale — growth is never
+  inferred. Output: `FollowerNetwork`.
 
 ## Derived data layer (`models/derived`)
 

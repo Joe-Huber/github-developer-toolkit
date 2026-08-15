@@ -63,6 +63,11 @@ class AnalysisThresholds(BaseModel):
     #: recent/overall velocity at or below which star growth is "slowing".
     trend_slowing_ratio: float = Field(default=0.5, ge=0.0, le=1.0)
 
+    #: follower/following ratio at or above which a profile is
+    #: audience-driven, and the reciprocal at or below which it is
+    #: network-driven.
+    network_lopsided_ratio: float = Field(default=3.0, ge=1.0)
+
     @classmethod
     def from_settings(cls, settings: object) -> AnalysisThresholds:
         """Build thresholds from a settings object's ``analysis_*`` fields.

@@ -47,6 +47,7 @@ def _routes(load_raw_fixture: FixtureLoader) -> dict[str, tuple[int, Any]]:
         "/users/octocat/repos": (200, [load_raw_fixture("repository")]),
         "/graphql": (200, calendar),
         "/users/octocat/followers": (200, [load_raw_fixture("follower")]),
+        "/users/octocat/following": (200, [load_raw_fixture("follower")]),
         "/repos/octocat/Hello-World/languages": (200, load_raw_fixture("language_stats")),
         "/repos/octocat/Hello-World/readme": (200, load_raw_fixture("readme")),
         "/repos/octocat/Hello-World/commits": (200, [load_raw_fixture("commit")]),
@@ -81,11 +82,12 @@ def test_collect_profile_full_run(load_raw_fixture: FixtureLoader) -> None:
     assert snapshot.pull_requests["octocat/Hello-World"]
     assert snapshot.issues["octocat/Hello-World"]
     assert snapshot.followers is not None and len(snapshot.followers) == 1
+    assert snapshot.following is not None and len(snapshot.following) == 1
     assert snapshot.stargazers is not None and len(snapshot.stargazers) == 1
     assert snapshot.contribution_calendar is not None
     assert snapshot.budget_max == 500
-    assert snapshot.budget_used == 10
-    assert len(snapshot.collections) == 10
+    assert snapshot.budget_used == 11
+    assert len(snapshot.collections) == 11
     assert all(record.status == CollectionStatus.SUCCESS for record in snapshot.collections)
     assert snapshot.is_partial is False
 
@@ -95,7 +97,7 @@ def test_collect_profile_respects_max_requests(load_raw_fixture: FixtureLoader) 
     with _client(_handler(routes)) as client:
         snapshot = collect_profile(client, "octocat", max_requests=25)
     assert snapshot.budget_max == 25
-    assert snapshot.budget_used == 10
+    assert snapshot.budget_used == 11
 
 
 def test_collect_profile_stops_when_budget_exhausted(load_raw_fixture: FixtureLoader) -> None:
@@ -150,6 +152,7 @@ def test_collect_profile_user_not_found_is_partial(load_raw_fixture: FixtureLoad
     routes["/users/octocat"] = (404, {"message": "Not Found"})
     routes["/users/octocat/repos"] = (404, {"message": "Not Found"})
     routes["/users/octocat/followers"] = (404, {"message": "Not Found"})
+    routes["/users/octocat/following"] = (404, {"message": "Not Found"})
     routes["/graphql"] = (200, {"data": {"user": None}})
     with _client(_handler(routes)) as client:
         snapshot = collect_profile(client, "octocat")
@@ -162,6 +165,7 @@ def test_collect_profile_user_not_found_is_partial(load_raw_fixture: FixtureLoad
     assert failed["repositories"].reason == "UserNotFoundError"
     assert failed["contribution_calendar"].reason == "UserNotFoundError"
     assert failed["followers"].reason == "UserNotFoundError"
+    assert failed["following:octocat"].reason == "UserNotFoundError"
     assert snapshot.is_partial is True
 
 

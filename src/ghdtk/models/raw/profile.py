@@ -61,6 +61,7 @@ class ProfileSnapshot(BaseModel):
     pull_requests: dict[str, list[PullRequest]] = Field(default_factory=dict)
     issues: dict[str, list[Issue]] = Field(default_factory=dict)
     followers: list[Follower] | None = None
+    following: list[Follower] | None = None
     stargazers: list[Stargazer] | None = None
     contribution_calendar: ContributionCalendar | None = None
     collections: list[CollectionRecord] = Field(default_factory=list)
