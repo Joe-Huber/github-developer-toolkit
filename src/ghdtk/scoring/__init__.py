@@ -38,6 +38,7 @@ from ghdtk.scoring.normalize import (
     normalize_log,
     normalize_ratio,
 )
+from ghdtk.scoring.scorers import default_scorers
 
 __all__ = [
     "DIMENSION_LABELS",
@@ -50,6 +51,7 @@ __all__ = [
     "blend",
     "clamp",
     "dedupe_sources",
+    "default_scorers",
     "default_weights",
     "dimension_label",
     "metric_sources",
