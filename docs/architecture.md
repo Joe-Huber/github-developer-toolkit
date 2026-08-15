@@ -123,6 +123,13 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
   typed `ProfileReadme` that distinguishes *no profile repository*, *no
   README*, *empty README*, and *fetch failure* so analysis never has to guess
   why the markdown is absent.
+- Contribution calendar retrieval (issue #39) — `collect_contribution_calendar`
+  fetches the calendar via GraphQL
+  (`user.contributionsCollection.contributionCalendar`), including
+  `restrictedContributionsCount` so hidden/private contributions can be
+  disclosed. The documented fallback is honest: when the GraphQL collection
+  fails or is skipped, the calendar analysis reports `unavailable` rather than
+  guessing.
 
 ## Analysis layer (`analyzers`)
 
@@ -152,9 +159,9 @@ no network access, no mutation of raw data, deterministic for a fixed input.
 - `ghdtk.analyzers.thresholds.AnalysisThresholds` — the shared, validated
   configuration model for the analyzers (staleness window, minimum stars,
   minimum repositories, README length, standout and concentration thresholds,
-  growth windows, follower-network lopsidedness). Defaults live in the model;
-  tests override them directly so the analyzers stay deterministic and
-  config-driven.
+  growth windows, follower-network lopsidedness, commit/contribution gaps and
+  streaks). Defaults live in the model; tests override them directly so the
+  analyzers stay deterministic and config-driven.
 - `assess_repository_quality(snapshot, *, thresholds)` (issue #29) — per
   repository and portfolio quality signals: description presence (with
   placeholder detection via `heuristics`), README state (`present` /
@@ -210,6 +217,28 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   collected. Growth history and org memberships are not exposed by the
   pipeline, so both report `unavailable` with a rationale — growth is never
   inferred. Output: `FollowerNetwork`.
+- `assess_commit_activity(snapshot, *, thresholds)` (issue #38) — commit
+  history & activity. Coverage is explicit: GitHub's commit *search* API caps
+  results around 1000 and is not used; commits are collected per repository
+  (author-filtered listing) within the shared page cap and request budget, so
+  the results are a window, never a complete lifetime history. Metrics cover
+  frequency (commits per month), consistency (active days, median and longest
+  gaps), per-repository breakdown, and timing patterns (weekday / hour of day
+  from the author date). The coverage window finding states the observed
+  date span, long gaps fire above `commit_gap_days`, and a cadence at or
+  above `commit_cadence_per_month` is reported as consistent. Commits without
+  an author date are counted but disclosed, and time-based metrics report
+  `unavailable` rather than inventing a window. Output: `CommitActivity`.
+- `assess_contribution_calendar(snapshot, *, thresholds)` (issue #39) — the
+  GraphQL contribution calendar quantified: totals, active days, activity
+  density, current/longest streaks, longest inactive run, and yearly/monthly
+  patterns. Streaks are run-lengths over the returned calendar window.
+  Private/hidden contributions are disclosed via
+  `restrictedContributionsCount` (fetched alongside the calendar), never
+  assumed; notable streaks fire at or above `streak_notable_days` and long
+  inactive runs at or above `contribution_gap_days`. When the calendar was
+  not collected the analysis reports `unavailable` with a rationale.
+  Output: `ContributionCalendarAnalysis`.
 
 ## Derived data layer (`models/derived`)
 
