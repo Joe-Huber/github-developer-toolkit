@@ -48,8 +48,11 @@ def test_defaults(project_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.github_base_url == "https://api.github.com"
     assert settings.github_timeout_seconds == 30.0
     assert settings.github_max_retries == 3
+    assert settings.github_per_page == 100
     assert settings.cache_enabled is True
     assert settings.cache_ttl_seconds == 86_400
+    assert settings.cache_dir is None
+    assert settings.collection_max_requests == 500
     assert settings.analysis_minimum_stars == 10
     assert settings.analysis_minimum_commits == 5
     assert settings.analysis_minimum_repositories == 3
@@ -90,6 +93,14 @@ def test_malformed_toml_raises(project_dir: Path) -> None:
 def test_invalid_value_raises(project_dir: Path) -> None:
     (project_dir / "ghdtk.toml").write_text(
         'github_token = "token"\ngithub_max_retries = -1\n', encoding="utf-8"
+    )
+    with pytest.raises(ValidationError):
+        load_settings()
+
+
+def test_invalid_collection_budget_raises(project_dir: Path) -> None:
+    (project_dir / "ghdtk.toml").write_text(
+        'github_token = "token"\ncollection_max_requests = 0\n', encoding="utf-8"
     )
     with pytest.raises(ValidationError):
         load_settings()

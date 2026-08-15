@@ -29,6 +29,11 @@ from ghdtk.models.raw.follower import Follower
 from ghdtk.models.raw.issue import Issue
 from ghdtk.models.raw.issue_shared import Label, Milestone
 from ghdtk.models.raw.language_stats import LanguageStats, LanguageStatsContainer
+from ghdtk.models.raw.profile import (
+    CollectionRecord,
+    CollectionStatus,
+    ProfileSnapshot,
+)
 from ghdtk.models.raw.pull_request import PullRequest, PullRequestRef
 from ghdtk.models.raw.readme import Readme
 from ghdtk.models.raw.repository import License, Repository
@@ -37,6 +42,8 @@ from ghdtk.models.raw.user import User
 
 __all__ = [
     "BaseRawModel",
+    "CollectionRecord",
+    "CollectionStatus",
     "Commit",
     "CommitDetail",
     "CommitParent",
@@ -51,6 +58,7 @@ __all__ = [
     "LanguageStatsContainer",
     "License",
     "Milestone",
+    "ProfileSnapshot",
     "PullRequest",
     "PullRequestRef",
     "Readme",

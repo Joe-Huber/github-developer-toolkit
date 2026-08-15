@@ -70,10 +70,15 @@ class Settings(BaseSettings):
     github_base_url: str = "https://api.github.com"
     github_timeout_seconds: float = Field(default=30.0, gt=0)
     github_max_retries: int = Field(default=3, ge=0)
+    github_per_page: int = Field(default=100, ge=1, le=100)
 
     # --- Caching --------------------------------------------------------
     cache_enabled: bool = True
     cache_ttl_seconds: int = Field(default=86_400, ge=0)
+    cache_dir: Path | None = None
+
+    # --- Collection pipeline --------------------------------------------
+    collection_max_requests: int = Field(default=500, ge=1)
 
     # --- Analysis thresholds --------------------------------------------
     analysis_minimum_stars: int = Field(default=10, ge=0)
