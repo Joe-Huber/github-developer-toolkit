@@ -105,6 +105,26 @@ class AnalysisThresholds(BaseModel):
     #: Minimum number of issues required before a trend finding is reported.
     issue_trend_min_issues: int = Field(default=4, ge=2)
 
+    #: Share of portfolio language bytes held by the dominant language, at or
+    #: above which the portfolio is considered concentrated on one language.
+    language_concentration_threshold: float = Field(default=0.6, ge=0.0, le=1.0)
+
+    #: Number of distinct languages at or above which a portfolio is reported
+    #: as spanning a diverse language mix.
+    language_distinct_threshold: int = Field(default=5, ge=1)
+
+    #: Share of language bytes mapped to a known technology domain, below
+    #: which a mapping-coverage finding discloses the unmapped remainder.
+    technology_mapping_coverage_threshold: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    #: Share of mapped bytes held by the top technology domain, at or above
+    #: which a profile is reported as specialized.
+    technology_specialization_threshold: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    #: Simpson diversity index at or above which a profile is reported as
+    #: spanning diverse technology domains.
+    technology_diversity_threshold: float = Field(default=0.5, ge=0.0, le=1.0)
+
     @classmethod
     def from_settings(cls, settings: object) -> AnalysisThresholds:
         """Build thresholds from a settings object's ``analysis_*`` fields.

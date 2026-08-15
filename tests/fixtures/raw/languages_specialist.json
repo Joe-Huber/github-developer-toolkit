@@ -1,0 +1,24 @@
+{
+  "username": "octocat",
+  "collected_at": "2026-01-01T00:00:00+00:00",
+  "repositories": [
+    {
+      "full_name": "octocat/ml",
+      "language": "Python",
+      "topics": ["pandas", "machine-learning"]
+    },
+    {
+      "full_name": "octocat/etl",
+      "language": "Python",
+      "topics": ["airflow"]
+    }
+  ],
+  "languages": {
+    "octocat/ml": {
+      "Python": 50000
+    },
+    "octocat/etl": {
+      "Python": 30000
+    }
+  }
+}
