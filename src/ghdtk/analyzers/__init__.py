@@ -24,6 +24,8 @@ Implemented analyzers:
   streaks analysis (issue #39).
 - :func:`assess_pull_request_collaboration` — pull request health & collaboration
   analysis (issue #41).
+- :func:`assess_issue_participation` — issue participation & activity trends
+  analysis (issue #42).
 """
 
 from __future__ import annotations
@@ -34,6 +36,7 @@ from ghdtk.analyzers.contribution_calendar import (
     assess_contribution_calendar,
 )
 from ghdtk.analyzers.heuristics import find_boilerplate, find_placeholders
+from ghdtk.analyzers.issues import IssueParticipationAnalysis, assess_issue_participation
 from ghdtk.analyzers.network import FollowerNetwork, assess_follower_network
 from ghdtk.analyzers.portfolio import (
     PortfolioComposition,
@@ -77,6 +80,7 @@ __all__ = [
     "FieldAssessment",
     "FieldStatus",
     "FollowerNetwork",
+    "IssueParticipationAnalysis",
     "PortfolioComposition",
     "ProfilePresence",
     "PullRequestAnalysis",
@@ -94,6 +98,7 @@ __all__ = [
     "assess_commit_activity",
     "assess_contribution_calendar",
     "assess_follower_network",
+    "assess_issue_participation",
     "assess_portfolio_composition",
     "assess_profile_presence",
     "assess_pull_request_collaboration",
