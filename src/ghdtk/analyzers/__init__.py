@@ -18,10 +18,19 @@ Implemented analyzers:
   timeline (issue #34).
 - :func:`assess_follower_network` — followers, ratio, reach & network analysis
   (issue #36).
+- :func:`assess_commit_activity` — commit history & activity analysis
+  (issue #38).
+- :func:`assess_contribution_calendar` — contribution calendar consistency &
+  streaks analysis (issue #39).
 """
 
 from __future__ import annotations
 
+from ghdtk.analyzers.commits import CommitActivity, assess_commit_activity
+from ghdtk.analyzers.contribution_calendar import (
+    ContributionCalendarAnalysis,
+    assess_contribution_calendar,
+)
 from ghdtk.analyzers.heuristics import find_boilerplate, find_placeholders
 from ghdtk.analyzers.network import FollowerNetwork, assess_follower_network
 from ghdtk.analyzers.portfolio import (
@@ -57,6 +66,8 @@ from ghdtk.analyzers.thresholds import AnalysisThresholds
 
 __all__ = [
     "AnalysisThresholds",
+    "CommitActivity",
+    "ContributionCalendarAnalysis",
     "FieldAssessment",
     "FieldStatus",
     "FollowerNetwork",
@@ -73,6 +84,8 @@ __all__ = [
     "StarGrowthStatus",
     "StarsAnalysis",
     "StarsRankingEntry",
+    "assess_commit_activity",
+    "assess_contribution_calendar",
     "assess_follower_network",
     "assess_portfolio_composition",
     "assess_profile_presence",
