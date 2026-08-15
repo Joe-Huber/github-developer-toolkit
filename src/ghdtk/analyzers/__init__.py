@@ -22,14 +22,26 @@ from ghdtk.analyzers.presence import (
     assess_profile_presence,
 )
 from ghdtk.analyzers.readme import ReadmeAssessment, assess_readme_quality
+from ghdtk.analyzers.repository_quality import (
+    ReadmeState,
+    RepositoryQuality,
+    RepositoryQualitySignals,
+    assess_repository_quality,
+)
+from ghdtk.analyzers.thresholds import AnalysisThresholds
 
 __all__ = [
+    "AnalysisThresholds",
     "FieldAssessment",
     "FieldStatus",
     "ProfilePresence",
     "ReadmeAssessment",
+    "ReadmeState",
+    "RepositoryQuality",
+    "RepositoryQualitySignals",
     "assess_profile_presence",
     "assess_readme_quality",
+    "assess_repository_quality",
     "find_boilerplate",
     "find_placeholders",
 ]
