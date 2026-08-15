@@ -10,6 +10,10 @@ Implemented analyzers:
   (issue #24).
 - :func:`assess_readme_quality` — README quality & structure analysis
   (issue #26).
+- :func:`assess_repository_quality` — repository quality signals analysis
+  (issue #29).
+- :func:`assess_repository_activity` — repository activity, age & consistency
+  analysis (issue #30).
 """
 
 from __future__ import annotations
@@ -22,6 +26,11 @@ from ghdtk.analyzers.presence import (
     assess_profile_presence,
 )
 from ghdtk.analyzers.readme import ReadmeAssessment, assess_readme_quality
+from ghdtk.analyzers.repository_activity import (
+    RepositoryActivity,
+    RepositoryActivitySignals,
+    assess_repository_activity,
+)
 from ghdtk.analyzers.repository_quality import (
     ReadmeState,
     RepositoryQuality,
@@ -37,10 +46,13 @@ __all__ = [
     "ProfilePresence",
     "ReadmeAssessment",
     "ReadmeState",
+    "RepositoryActivity",
+    "RepositoryActivitySignals",
     "RepositoryQuality",
     "RepositoryQualitySignals",
     "assess_profile_presence",
     "assess_readme_quality",
+    "assess_repository_activity",
     "assess_repository_quality",
     "find_boilerplate",
     "find_placeholders",
