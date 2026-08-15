@@ -77,6 +77,9 @@ class Settings(BaseSettings):
     cache_ttl_seconds: int = Field(default=86_400, ge=0)
     cache_dir: Path | None = None
 
+    # --- Collection pipeline --------------------------------------------
+    collection_max_requests: int = Field(default=500, ge=1)
+
     # --- Analysis thresholds --------------------------------------------
     analysis_minimum_stars: int = Field(default=10, ge=0)
     analysis_minimum_commits: int = Field(default=5, ge=0)
