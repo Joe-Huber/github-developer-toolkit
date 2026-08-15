@@ -170,6 +170,16 @@ def collect_followers(
     return client.list_followers(username, max_pages=max_pages)
 
 
+def collect_following(
+    client: GitHubClient,
+    username: str,
+    *,
+    max_pages: int = 10,
+) -> list[Follower]:
+    """Collect the profile's following list (paginated)."""
+    return client.list_following(username, max_pages=max_pages)
+
+
 def collect_stargazers(
     client: GitHubClient,
     owner: str,

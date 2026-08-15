@@ -24,6 +24,7 @@ from ghdtk.collectors.collectors import (
     collect_commits,
     collect_contribution_calendar,
     collect_followers,
+    collect_following,
     collect_issues,
     collect_pull_requests,
     collect_repo_languages,
@@ -66,9 +67,9 @@ def collect_profile(
     """Collect one profile within a request budget.
 
     Runs the core profile collections first (user, repositories, contribution
-    calendar, followers), then per-repository metadata (languages, readme,
-    commits, pull requests, issues) for repositories sorted by stars, and
-    finally the stargazer timeline for the most-starred owned (non-fork)
+    calendar, followers, following), then per-repository metadata (languages,
+    readme, commits, pull requests, issues) for repositories sorted by stars,
+    and finally the stargazer timeline for the most-starred owned (non-fork)
     repository, recorded under ``stargazers:<full_name>``. When the budget can no
     longer fit a collection it is skipped with ``reason="budget_exhausted"``;
     when a collection fails the error is recorded and collection continues, so
@@ -109,6 +110,16 @@ def collect_profile(
         "followers",
         page_cap,
         lambda: collect_followers(client, username, max_pages=page_cap),
+    )
+
+    page_cap = _page_cap(budget)
+    following: list[Follower] | None = _run(
+        client,
+        budget,
+        records,
+        f"following:{username}",
+        page_cap,
+        lambda: collect_following(client, username, max_pages=page_cap),
     )
 
     language_stats: dict[str, LanguageStats] = {}
@@ -215,6 +226,7 @@ def collect_profile(
         pull_requests=pull_requests,
         issues=issues,
         followers=followers,
+        following=following,
         stargazers=stargazers,
         contribution_calendar=calendar,
         collections=records,

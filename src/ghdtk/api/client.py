@@ -511,6 +511,25 @@ class GitHubClient:
             max_pages=max_pages,
         )
 
+    def list_following(
+        self,
+        username: str,
+        *,
+        per_page: int | None = None,
+        max_pages: int | None = None,
+    ) -> list[Follower]:
+        """Fetch every page of ``GET /users/{username}/following``.
+
+        The payload shape is identical to the followers endpoint, so the
+        :class:`~ghdtk.models.raw.Follower` model is reused.
+        """
+        return self._paginate_all(
+            f"/users/{username}/following",
+            Follower,
+            params={"per_page": self._default_per_page(per_page)},
+            max_pages=max_pages,
+        )
+
     def list_stargazers(
         self,
         owner: str,
