@@ -16,6 +16,7 @@ typed :class:`~ghdtk.api.errors.RateLimitError`.
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import UTC, datetime
 from types import TracebackType
 from typing import Any, TypeVar
@@ -361,6 +362,31 @@ class GitHubClient:
         endpoint = str(response.url)
         return [self._validate_payload(model, item, endpoint=endpoint) for item in payload["items"]]
 
+    def _search_pr_items(self, response: httpx.Response) -> list[PullRequest]:
+        """Parse a PR search payload, lifting nested ``pull_request`` fields.
+
+        ``GET /search/issues`` returns pull requests as issue-shaped items with
+        the PR-only fields (``merged``, ``merged_at``, ``review_comments``)
+        nested under a ``pull_request`` object. The nested values are lifted
+        onto the top level so they parse into :class:`PullRequest`.
+        """
+        payload = self._json(response)
+        if not isinstance(payload, dict) or not isinstance(payload.get("items"), list):
+            raise MalformedResponseError(
+                f"Expected a search payload with an items list from {response.request.url}"
+            )
+        endpoint = str(response.url)
+        items: list[PullRequest] = []
+        for item in payload["items"]:
+            lifted = dict(item)
+            nested = item.get("pull_request") if isinstance(item, dict) else None
+            if isinstance(nested, dict):
+                for field in ("merged", "merged_at", "review_comments", "comments"):
+                    if lifted.get(field) is None and nested.get(field) is not None:
+                        lifted[field] = nested[field]
+            items.append(self._validate_payload(PullRequest, lifted, endpoint=endpoint))
+        return items
+
     def _paginate_all(
         self,
         path: str,
@@ -369,6 +395,7 @@ class GitHubClient:
         params: dict[str, Any],
         headers: dict[str, str] | None = None,
         search: bool = False,
+        search_parser: Callable[[httpx.Response], list[T]] | None = None,
         max_pages: int | None = None,
     ) -> list[T]:
         """Collect every page of a list/search endpoint into one typed list."""
@@ -381,11 +408,14 @@ class GitHubClient:
                 break
             response = self._request("GET", current_path, params=current_params, headers=headers)
             pages += 1
-            page_items = (
-                self._search_items(response, model)
-                if search
-                else self._deserialize_list(response, model)
-            )
+            if search_parser is not None:
+                page_items = search_parser(response)
+            else:
+                page_items = (
+                    self._search_items(response, model)
+                    if search
+                    else self._deserialize_list(response, model)
+                )
             items.extend(page_items)
             next_url = next_page_url(response)
             if next_url is None:
@@ -582,7 +612,7 @@ class GitHubClient:
             "/search/issues",
             PullRequest,
             params={"q": query, "per_page": self._default_per_page(per_page)},
-            search=True,
+            search_parser=self._search_pr_items,
             max_pages=max_pages,
         )
 

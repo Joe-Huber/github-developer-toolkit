@@ -25,7 +25,9 @@ from ghdtk.collectors.collectors import (
     collect_contribution_calendar,
     collect_followers,
     collect_following,
+    collect_issue_search,
     collect_issues,
+    collect_pull_request_search,
     collect_pull_requests,
     collect_repo_languages,
     collect_repo_readme,
@@ -67,9 +69,11 @@ def collect_profile(
     """Collect one profile within a request budget.
 
     Runs the core profile collections first (user, repositories, contribution
-    calendar, followers, following), then per-repository metadata (languages,
-    readme, commits, pull requests, issues) for repositories sorted by stars,
-    and finally the stargazer timeline for the most-starred owned (non-fork)
+    calendar, followers, following), then cross-repository PR and issue
+    collections via the search API (``pull_requests:search``,
+    ``issues:search``), then per-repository metadata (languages, readme,
+    commits, pull requests, issues) for repositories sorted by stars, and
+    finally the stargazer timeline for the most-starred owned (non-fork)
     repository, recorded under ``stargazers:<full_name>``. When the budget can no
     longer fit a collection it is skipped with ``reason="budget_exhausted"``;
     when a collection fails the error is recorded and collection continues, so
@@ -120,6 +124,26 @@ def collect_profile(
         f"following:{username}",
         page_cap,
         lambda: collect_following(client, username, max_pages=page_cap),
+    )
+
+    page_cap = _page_cap(budget)
+    search_pull_requests: list[PullRequest] | None = _run(
+        client,
+        budget,
+        records,
+        "pull_requests:search",
+        page_cap,
+        lambda: collect_pull_request_search(client, username, max_pages=page_cap),
+    )
+
+    page_cap = _page_cap(budget)
+    search_issues: list[Issue] | None = _run(
+        client,
+        budget,
+        records,
+        "issues:search",
+        page_cap,
+        lambda: collect_issue_search(client, username, max_pages=page_cap),
     )
 
     language_stats: dict[str, LanguageStats] = {}
@@ -225,6 +249,8 @@ def collect_profile(
         commits=commits,
         pull_requests=pull_requests,
         issues=issues,
+        search_pull_requests=search_pull_requests if search_pull_requests is not None else [],
+        search_issues=search_issues if search_issues is not None else [],
         followers=followers,
         following=following,
         stargazers=stargazers,

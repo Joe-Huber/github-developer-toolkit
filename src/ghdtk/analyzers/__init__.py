@@ -22,6 +22,8 @@ Implemented analyzers:
   (issue #38).
 - :func:`assess_contribution_calendar` — contribution calendar consistency &
   streaks analysis (issue #39).
+- :func:`assess_pull_request_collaboration` — pull request health & collaboration
+  analysis (issue #41).
 """
 
 from __future__ import annotations
@@ -43,6 +45,10 @@ from ghdtk.analyzers.presence import (
     FieldStatus,
     ProfilePresence,
     assess_profile_presence,
+)
+from ghdtk.analyzers.pull_requests import (
+    PullRequestAnalysis,
+    assess_pull_request_collaboration,
 )
 from ghdtk.analyzers.readme import ReadmeAssessment, assess_readme_quality
 from ghdtk.analyzers.repository_activity import (
@@ -73,6 +79,7 @@ __all__ = [
     "FollowerNetwork",
     "PortfolioComposition",
     "ProfilePresence",
+    "PullRequestAnalysis",
     "ReadmeAssessment",
     "ReadmeState",
     "RepositoryActivity",
@@ -89,6 +96,7 @@ __all__ = [
     "assess_follower_network",
     "assess_portfolio_composition",
     "assess_profile_presence",
+    "assess_pull_request_collaboration",
     "assess_readme_quality",
     "assess_repository_activity",
     "assess_repository_quality",

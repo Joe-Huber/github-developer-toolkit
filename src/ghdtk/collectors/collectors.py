@@ -31,8 +31,10 @@ __all__ = [
     "collect_commits",
     "collect_contribution_calendar",
     "collect_followers",
+    "collect_issue_search",
     "collect_issues",
     "collect_profile_readme",
+    "collect_pull_request_search",
     "collect_pull_requests",
     "collect_repo_languages",
     "collect_repo_readme",
@@ -158,6 +160,34 @@ def collect_issues(
 ) -> list[Issue]:
     """Collect the author's issues in one repository (paginated)."""
     return client.list_issues(owner, repo, max_pages=max_pages)
+
+
+def collect_pull_request_search(
+    client: GitHubClient,
+    username: str,
+    *,
+    max_pages: int = 10,
+) -> list[PullRequest]:
+    """Collect pull requests authored by ``username`` across all repositories.
+
+    Uses ``GET /search/issues`` with ``author:<username> type:pr``. GitHub caps
+    search results (1000 per query), so the page cap bounds the collection.
+    """
+    return client.search_pull_requests(f"author:{username} type:pr", max_pages=max_pages)
+
+
+def collect_issue_search(
+    client: GitHubClient,
+    username: str,
+    *,
+    max_pages: int = 10,
+) -> list[Issue]:
+    """Collect issues authored by ``username`` across all repositories.
+
+    Uses ``GET /search/issues`` with ``author:<username> type:issue``. GitHub
+    caps search results (1000 per query), so the page cap bounds the collection.
+    """
+    return client.search_issues(f"author:{username} type:issue", max_pages=max_pages)
 
 
 def collect_followers(

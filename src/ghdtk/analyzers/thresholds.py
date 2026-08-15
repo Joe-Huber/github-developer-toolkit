@@ -82,6 +82,29 @@ class AnalysisThresholds(BaseModel):
     #: A streak (in days) at or above which it is reported as notable.
     streak_notable_days: int = Field(default=7, ge=1)
 
+    #: Share of pull requests targeting repositories the profile does not own,
+    #: at or above which external-engagement is reported as a standout.
+    pr_external_share: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    #: Share of pull requests carrying review comments, at or above which
+    #: collaboration signals are reported as a standout.
+    pr_reviewed_share: float = Field(default=0.3, ge=0.0, le=1.0)
+
+    #: Share of issues opened in repositories the profile does not own, at or
+    #: above which external-engagement is reported as a standout.
+    issue_external_share: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    #: Share of issues that received comments, at or above which community
+    #: participation is reported as a standout.
+    issue_commented_share: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    #: Distinct months of issue activity required before a trend finding is
+    #: reported.
+    issue_trend_min_months: int = Field(default=2, ge=2)
+
+    #: Minimum number of issues required before a trend finding is reported.
+    issue_trend_min_issues: int = Field(default=4, ge=2)
+
     @classmethod
     def from_settings(cls, settings: object) -> AnalysisThresholds:
         """Build thresholds from a settings object's ``analysis_*`` fields.

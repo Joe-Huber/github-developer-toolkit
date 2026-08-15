@@ -60,6 +60,8 @@ class ProfileSnapshot(BaseModel):
     commits: dict[str, list[Commit]] = Field(default_factory=dict)
     pull_requests: dict[str, list[PullRequest]] = Field(default_factory=dict)
     issues: dict[str, list[Issue]] = Field(default_factory=dict)
+    search_pull_requests: list[PullRequest] = Field(default_factory=list)
+    search_issues: list[Issue] = Field(default_factory=list)
     followers: list[Follower] | None = None
     following: list[Follower] | None = None
     stargazers: list[Stargazer] | None = None
