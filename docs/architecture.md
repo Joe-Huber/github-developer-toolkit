@@ -147,6 +147,36 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   matches are always attached to finding evidence so an analyst can judge
   them, and messages note the false-positive caveat (e.g. a company genuinely
   named "Example").
+- `ghdtk.analyzers.thresholds.AnalysisThresholds` — the shared, validated
+  configuration model for the repository analyzers (staleness window, minimum
+  stars, minimum repositories, README length, standout and concentration
+  thresholds). Defaults live in the model; tests override them directly so the
+  analyzers stay deterministic and config-driven.
+- `assess_repository_quality(snapshot, *, thresholds)` (issue #29) — per
+  repository and portfolio quality signals: description presence (with
+  placeholder detection via `heuristics`), README state (`present` /
+  `absent` / `unknown`, where *absent* is only claimed when the `readme:<owner>/<repo>`
+  collection record succeeded and *unknown* otherwise, so an unfetched README
+  is never falsely reported missing), README length, topics, license and
+  homepage. Portfolio coverage metrics (description/README/license/homepage)
+  and low-coverage findings below `quality_coverage_threshold`. Output:
+  `RepositoryQuality`.
+- `assess_repository_activity(snapshot, *, now, thresholds)` (issue #30) —
+  age, activity and consistency across the portfolio. Forks are counted but
+  excluded from recency signals; archived repositories get an informational
+  finding and are excluded from staleness; repositories without a push date
+  are flagged `unknown`. Metrics cover active/dormant counts, median age and
+  staleness, and 30/90/365-day recency buckets. Findings flag stale
+  repositories, a portfolio with no recent activity, and multi-month
+  inactivity. Output: `RepositoryActivity`.
+- `assess_portfolio_composition(snapshot, *, now, thresholds)` (issue #31) —
+  portfolio composition and standout identification. A standout is an owned,
+  non-archived repository with at least `standout_star_threshold` stars pushed
+  within `standout_active_days`. Star concentration (a single repository
+  holding more than `concentration_top_share` of portfolio stars), fork ratio
+  above `fork_ratio_threshold`, and a too-small portfolio
+  (`minimum_repositories`) are reported as findings. Output:
+  `PortfolioComposition`.
 
 ## Derived data layer (`models/derived`)
 
