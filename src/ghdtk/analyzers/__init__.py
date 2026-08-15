@@ -26,6 +26,10 @@ Implemented analyzers:
   analysis (issue #41).
 - :func:`assess_issue_participation` — issue participation & activity trends
   analysis (issue #42).
+- :func:`assess_language_distribution` — language distribution & primary
+  languages analysis (issue #44).
+- :func:`assess_technology_diversity` — technology diversity & dominant-area
+  analysis (issue #45).
 """
 
 from __future__ import annotations
@@ -37,6 +41,12 @@ from ghdtk.analyzers.contribution_calendar import (
 )
 from ghdtk.analyzers.heuristics import find_boilerplate, find_placeholders
 from ghdtk.analyzers.issues import IssueParticipationAnalysis, assess_issue_participation
+from ghdtk.analyzers.languages import (
+    LanguageDistributionAnalysis,
+    LanguageShare,
+    RepositoryLanguages,
+    assess_language_distribution,
+)
 from ghdtk.analyzers.network import FollowerNetwork, assess_follower_network
 from ghdtk.analyzers.portfolio import (
     PortfolioComposition,
@@ -81,6 +91,8 @@ __all__ = [
     "FieldStatus",
     "FollowerNetwork",
     "IssueParticipationAnalysis",
+    "LanguageDistributionAnalysis",
+    "LanguageShare",
     "PortfolioComposition",
     "ProfilePresence",
     "PullRequestAnalysis",
@@ -89,6 +101,7 @@ __all__ = [
     "RepositoryActivity",
     "RepositoryActivitySignals",
     "RepositoryCompositionSignals",
+    "RepositoryLanguages",
     "RepositoryQuality",
     "RepositoryQualitySignals",
     "StarGrowthAnalysis",
@@ -99,6 +112,7 @@ __all__ = [
     "assess_contribution_calendar",
     "assess_follower_network",
     "assess_issue_participation",
+    "assess_language_distribution",
     "assess_portfolio_composition",
     "assess_profile_presence",
     "assess_pull_request_collaboration",

@@ -1,0 +1,53 @@
+{
+  "username": "octocat",
+  "collected_at": "2026-01-01T00:00:00+00:00",
+  "repositories": [
+    {
+      "full_name": "octocat/Hello-World",
+      "language": "Python",
+      "topics": ["octocat", "api"]
+    },
+    {
+      "full_name": "octocat/web-front",
+      "language": "JavaScript",
+      "topics": ["react", "web"]
+    },
+    {
+      "full_name": "octocat/data-tools",
+      "language": "Python",
+      "topics": ["pandas", "data"]
+    },
+    {
+      "full_name": "octocat/empty-repo",
+      "language": null,
+      "topics": []
+    },
+    {
+      "full_name": "octocat/declared-only",
+      "language": "Go",
+      "topics": ["docker"]
+    },
+    {
+      "full_name": "octocat/no-data",
+      "language": null,
+      "topics": []
+    }
+  ],
+  "languages": {
+    "octocat/Hello-World": {
+      "Python": 38739,
+      "HTML": 41126,
+      "Shell": 1207
+    },
+    "octocat/web-front": {
+      "JavaScript": 20000,
+      "TypeScript": 10000,
+      "CSS": 5000
+    },
+    "octocat/data-tools": {
+      "Python": 50000,
+      "SQL": 10000
+    },
+    "octocat/empty-repo": {}
+  }
+}
