@@ -14,7 +14,12 @@ from ghdtk.models.derived.provenance import SourceReference
 
 
 class DimensionId(StrEnum):
-    """The profile dimensions a developer is scored on."""
+    """The profile dimensions a developer is scored on.
+
+    ``DOCUMENTATION`` is retained so profile-README findings can reference a
+    dimension; it is covered by the ``presence`` score rather than scored on
+    its own.
+    """
 
     PRESENCE = "presence"
     CODE_QUALITY = "code_quality"
@@ -22,6 +27,9 @@ class DimensionId(StrEnum):
     ENGAGEMENT = "engagement"
     DOCUMENTATION = "documentation"
     OPEN_SOURCE = "open_source"
+    CONSISTENCY = "consistency"
+    CONTRIBUTION = "contribution"
+    VISIBILITY = "visibility"
 
 
 class ScoreBreakdown(BaseModel):
@@ -47,3 +55,25 @@ class DimensionScore(BaseModel):
     weight: float = Field(ge=0.0)
     rationale: str | None = None
     breakdown: list[ScoreBreakdown] = Field(default_factory=list)
+
+
+class DimensionContribution(BaseModel):
+    """One dimension's contribution to the overall profile score."""
+
+    model_config = ConfigDict(frozen=True)
+
+    dimension: DimensionId
+    score: float = Field(ge=0.0, le=100.0)
+    weight: float = Field(ge=0.0)
+    contribution: float = Field(ge=0.0, le=100.0)
+
+
+class OverallScore(BaseModel):
+    """The weighted overall profile score and its explainability output."""
+
+    model_config = ConfigDict(frozen=True)
+
+    overall: float = Field(ge=0.0, le=100.0)
+    contributions: list[DimensionContribution] = Field(default_factory=list)
+    strengths: list[str] = Field(default_factory=list)
+    weaknesses: list[str] = Field(default_factory=list)

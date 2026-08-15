@@ -13,15 +13,23 @@ from ghdtk.models.derived.finding import Finding, FindingSeverity
 from ghdtk.models.derived.metric import MetricRecord, MetricValue
 from ghdtk.models.derived.provenance import SourceEntityKind, SourceReference
 from ghdtk.models.derived.recommendation import Recommendation, RecommendationPriority
-from ghdtk.models.derived.score import DimensionId, DimensionScore, ScoreBreakdown
+from ghdtk.models.derived.score import (
+    DimensionContribution,
+    DimensionId,
+    DimensionScore,
+    OverallScore,
+    ScoreBreakdown,
+)
 
 __all__ = [
+    "DimensionContribution",
     "DimensionId",
     "DimensionScore",
     "Finding",
     "FindingSeverity",
     "MetricRecord",
     "MetricValue",
+    "OverallScore",
     "ProfileAnalysis",
     "Recommendation",
     "RecommendationPriority",
