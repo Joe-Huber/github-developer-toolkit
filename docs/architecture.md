@@ -103,11 +103,18 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
 - `ghdtk.collectors.collectors` — thin collectors, one per resource (user,
   repositories, languages, readme, commits, pull requests, issues, followers,
   following, stargazers, contribution calendar), returning raw typed payloads.
+  The cross-repository PR/issue collectors (`collect_pull_request_search`,
+  `collect_issue_search`, issue #40) use the search API with
+  `author:<username> type:pr` / `author:<username> type:issue` queries and
+  return issue-shaped search items; PR items have their nested `pull_request`
+  fields (`merged`, `merged_at`, `review_comments`) lifted by the client before
+  they parse into `PullRequest`.
 - `ghdtk.collectors.orchestrator.collect_profile` — schedules collectors by
   dependency and priority: core profile (user, repositories, contribution
-  calendar, followers, following) → per-repository metadata for repos sorted by
-  stars → the stargazer timeline for the most-starred **owned** (non-fork)
-  repository, recorded under `stargazers:<full_name>`. Sequencing is
+  calendar, followers, following) → cross-repository PR and issue collections
+  (`pull_requests:search`, `issues:search`) → per-repository metadata for repos
+  sorted by stars → the stargazer timeline for the most-starred **owned**
+  (non-fork) repository, recorded under `stargazers:<full_name>`. Sequencing is
   sequential.
 - `ghdtk.collectors.budget.CollectionBudget` — hard cap on requests per run
   (default 500, `collection_max_requests`). Paginated collections never exceed
@@ -117,7 +124,10 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
   per-collection `CollectionRecord` (status, reason, detail, requests used).
   Runs never crash on partial failure: a failed collection is recorded and
   collection continues, so a snapshot is complete-but-possibly-partial
-  (`snapshot.is_partial`).
+  (`snapshot.is_partial`). Cross-repository search collections are stored on
+  the snapshot as `search_pull_requests` and `search_issues` flat lists
+  (issue #40); per-repository lists remain under `pull_requests` / `issues`
+  keyed by repository.
 - `ghdtk.collectors.collectors.collect_profile_readme` (issue #25) — retrieves
   the profile README from the `<username>/<username>` repository and returns a
   typed `ProfileReadme` that distinguishes *no profile repository*, *no
@@ -160,7 +170,9 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   configuration model for the analyzers (staleness window, minimum stars,
   minimum repositories, README length, standout and concentration thresholds,
   growth windows, follower-network lopsidedness, commit/contribution gaps and
-  streaks). Defaults live in the model; tests override them directly so the
+  streaks, external-engagement shares for PRs and issues, review/comment
+  participation shares, and the minimum months/issues before a trend is
+  reported). Defaults live in the model; tests override them directly so the
   analyzers stay deterministic and config-driven.
 - `assess_repository_quality(snapshot, *, thresholds)` (issue #29) — per
   repository and portfolio quality signals: description presence (with
@@ -239,6 +251,32 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   inactive runs at or above `contribution_gap_days`. When the calendar was
   not collected the analysis reports `unavailable` with a rationale.
   Output: `ContributionCalendarAnalysis`.
+- `assess_pull_request_collaboration(snapshot, *, thresholds)` (issue #41) —
+  pull request health & collaboration from the cross-repository search
+  collection (`search_pull_requests`, query `author:<username> type:pr`).
+  Metrics cover total / merged / open / closed / closed-unmerged counts, merge
+  rate (share of resolved PRs merged), median time to merge (only where
+  `merged_at` is derivable), external-repository share, repository diversity,
+  and review participation measured through review-comment counts (search
+  results expose counts, not reviewer identities). A repository is "external"
+  when it is not one of the profile's own repositories in the snapshot; items
+  that name no repository are disclosed, never guessed. External engagement
+  fires at or above `pr_external_share` and review collaboration at or above
+  `pr_reviewed_share`. The coverage-window finding states the observed date
+  span and the search-API/request-budget cap. Output: `PullRequestAnalysis`.
+- `assess_issue_participation(snapshot, *, thresholds)` (issue #42) — issue
+  participation from the cross-repository search collection (`search_issues`,
+  query `author:<username> type:issue`). Metrics cover open/closed counts and
+  close rate, median time to close and oldest open age, comment participation
+  (via the issue `comments` count), external-repository share and repository
+  diversity, and a monthly opened/closed breakdown. Activity trends are
+  reported **only where the data supports them**: a rising/slowing direction
+  is drawn only when the issues span at least `issue_trend_min_months` distinct
+  months and at least `issue_trend_min_issues` total issues (recent activity
+  months vs earlier ones against `trend_rising_ratio` /
+  `trend_slowing_ratio`); otherwise the monthly breakdown is still reported and
+  an informational finding explains why no trend is claimed. Output:
+  `IssueParticipationAnalysis`.
 
 ## Derived data layer (`models/derived`)
 
