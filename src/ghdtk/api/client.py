@@ -5,10 +5,12 @@ The client wraps :mod:`httpx` with token authentication, default headers,
 timeouts and an injectable transport so it is fully testable without any
 global state.
 
-Every endpoint the product uses has a typed method that returns raw models
-(:mod:`ghdtk.models.raw`) — never raw dicts — or raises a typed error from
-:mod:`ghdtk.api.errors`. Pagination, rate-limit handling, retries and caching
-build on this client in later sub-issues of #16.
+On top of the typed endpoint methods, the client provides automatic
+pagination (issue #18): list and search methods walk every page of a dataset
+via ``Link`` headers, with a ``max_pages`` guard. Primary rate-limit tracking
+pauses before a request when the budget is exhausted, and secondary 403/429
+responses are retried with exponential backoff + jitter before surfacing a
+typed :class:`~ghdtk.api.errors.RateLimitError`.
 """
 
 from __future__ import annotations
@@ -16,7 +18,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from types import TracebackType
-from typing import Any, NoReturn, TypeVar
+from typing import Any, TypeVar
 
 import httpx
 from pydantic import BaseModel, SecretStr
@@ -33,6 +35,8 @@ from ghdtk.api.errors import (
     RateLimitError,
     UserNotFoundError,
 )
+from ghdtk.api.pagination import next_page_url
+from ghdtk.api.rate_limit import BackoffPolicy, RateLimitState, parse_retry_after
 from ghdtk.models.raw import (
     Commit,
     ContributionCalendar,
@@ -81,15 +85,7 @@ query($login: String!) {
 }
 """
 
-
-def _parse_retry_after(value: str | None) -> float | None:
-    """Parse a ``Retry-After`` header (delay seconds or HTTP date)."""
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except ValueError:
-        return None
+_RETRYABLE_STATUS = frozenset({403, 429})
 
 
 class GitHubClient:
@@ -102,6 +98,9 @@ class GitHubClient:
         base_url: str = GITHUB_API_URL,
         timeout: float = 30.0,
         transport: httpx.BaseTransport | None = None,
+        per_page: int = 100,
+        max_retries: int = 3,
+        backoff: BackoffPolicy | None = None,
     ) -> None:
         secret = token.get_secret_value() if isinstance(token, SecretStr) else token
         headers = {**DEFAULT_HEADERS, "Authorization": f"Bearer {secret}"}
@@ -111,6 +110,37 @@ class GitHubClient:
             timeout=timeout,
             transport=transport,
         )
+        self._per_page = per_page
+        self._max_retries = max_retries
+        self._backoff = backoff if backoff is not None else BackoffPolicy()
+        self._rate_limit = RateLimitState()
+        self._requests_made = 0
+
+    @classmethod
+    def from_settings(cls, settings: Any) -> GitHubClient:
+        """Build a client from a :class:`ghdtk.config.Settings` instance."""
+        from ghdtk.config.settings import Settings
+
+        assert isinstance(settings, Settings)
+        return cls(
+            settings.github_token,
+            base_url=settings.github_base_url,
+            timeout=settings.github_timeout_seconds,
+            per_page=settings.github_per_page,
+            max_retries=settings.github_max_retries,
+        )
+
+    # --- introspection -----------------------------------------------------
+
+    @property
+    def requests_made(self) -> int:
+        """Number of HTTP requests sent (retries count)."""
+        return self._requests_made
+
+    @property
+    def rate_limit(self) -> RateLimitState:
+        """The primary rate-limit budget observed so far."""
+        return self._rate_limit
 
     # --- low-level plumbing ------------------------------------------------
 
@@ -124,23 +154,51 @@ class GitHubClient:
         json_body: dict[str, Any] | None = None,
     ) -> httpx.Response:
         request_headers = {**DEFAULT_HEADERS, **(headers or {})}
-        try:
-            response = self._client.request(
-                method,
-                path,
-                params=params,
-                headers=request_headers,
-                json=json_body,
-            )
-        except httpx.TimeoutException as exc:
-            raise APITimeoutError(f"Request timed out: {method} {path}") from exc
-        except httpx.TransportError as exc:
-            raise NetworkError(f"Network error for {method} {path}: {exc}") from exc
-        if response.is_success:
-            return response
-        self._raise_for_status(response)
+        self._wait_for_rate_limit()
+        attempts = 0
+        while True:
+            attempts += 1
+            self._requests_made += 1
+            try:
+                response = self._client.request(
+                    method,
+                    path,
+                    params=params,
+                    headers=request_headers,
+                    json=json_body,
+                )
+            except httpx.TimeoutException as exc:
+                if attempts >= self._max_retries:
+                    raise APITimeoutError(f"Request timed out: {method} {path}") from exc
+                self._backoff.sleep(self._backoff.delay(attempts))
+                continue
+            except httpx.TransportError as exc:
+                if attempts >= self._max_retries:
+                    raise NetworkError(f"Network error for {method} {path}: {exc}") from exc
+                self._backoff.sleep(self._backoff.delay(attempts))
+                continue
 
-    def _raise_for_status(self, response: httpx.Response) -> NoReturn:
+            self._rate_limit.update_from(response)
+            if response.is_success:
+                return response
+
+            # Secondary rate limit (abuse): retry with Retry-After / backoff.
+            if response.status_code in _RETRYABLE_STATUS and not self._primary_limit_exhausted(
+                response
+            ):
+                if attempts >= self._max_retries:
+                    self._raise_for_status(response)
+                retry_after = parse_retry_after(response.headers.get("Retry-After"))
+                if retry_after is None:
+                    delay = self._backoff.delay(attempts)
+                else:
+                    delay = min(retry_after, self._backoff.max_delay)
+                self._backoff.sleep(delay)
+                continue
+
+            self._raise_for_status(response)
+
+    def _raise_for_status(self, response: httpx.Response) -> Any:
         """Raise the typed error matching an unsuccessful response."""
         status = response.status_code
         path = response.request.url.path
@@ -153,13 +211,20 @@ class GitHubClient:
                 raise UserNotFoundError(f"GitHub user not found: {path}")
             raise NotFoundError(f"GitHub resource not found: {path}")
         if status == 429 or self._primary_limit_exhausted(response):
-            retry_after = _parse_retry_after(response.headers.get("Retry-After"))
+            retry_after = parse_retry_after(response.headers.get("Retry-After"))
             reset_at = self._rate_limit_reset(response)
             raise RateLimitError(
                 "GitHub rate limit reached; retry after the limit resets.",
                 status_code=status,
                 retry_after=retry_after,
                 reset_at=reset_at,
+            )
+        if status == 403 and response.headers.get("Retry-After") is not None:
+            retry_after = parse_retry_after(response.headers.get("Retry-After"))
+            raise RateLimitError(
+                "GitHub secondary rate limit reached; retry after the backoff.",
+                status_code=403,
+                retry_after=retry_after,
             )
         if status == 403:
             raise AuthenticationError(
@@ -185,6 +250,21 @@ class GitHubClient:
             return datetime.fromtimestamp(int(value), tz=UTC)
         except (ValueError, OSError):
             return None
+
+    def _wait_for_rate_limit(self) -> None:
+        """Pause when the primary budget is exhausted, or fail predictably."""
+        wait = self._rate_limit.wait_seconds()
+        if wait <= 0:
+            return
+        if wait <= self._backoff.max_delay:
+            self._backoff.sleep(wait)
+            return
+        raise RateLimitError(
+            "GitHub primary rate limit exhausted; "
+            f"resets in {int(wait)}s. Retry later or use a higher-limit token.",
+            status_code=403,
+            reset_at=self._rate_limit.reset_at,
+        )
 
     @staticmethod
     def _json(response: httpx.Response) -> Any:
@@ -230,16 +310,41 @@ class GitHubClient:
         endpoint = str(response.url)
         return [self._validate_payload(model, item, endpoint=endpoint) for item in payload["items"]]
 
-    def _paginated_get(
+    def _paginate_all(
         self,
         path: str,
         model: type[T],
         *,
         params: dict[str, Any],
         headers: dict[str, str] | None = None,
+        search: bool = False,
+        max_pages: int | None = None,
     ) -> list[T]:
-        response = self._request("GET", path, params=params, headers=headers)
-        return self._deserialize_list(response, model)
+        """Collect every page of a list/search endpoint into one typed list."""
+        items: list[T] = []
+        current_path = path
+        current_params: dict[str, Any] | None = {"page": 1, **params}
+        pages = 0
+        while True:
+            if max_pages is not None and pages >= max_pages:
+                break
+            response = self._request("GET", current_path, params=current_params, headers=headers)
+            pages += 1
+            page_items = (
+                self._search_items(response, model)
+                if search
+                else self._deserialize_list(response, model)
+            )
+            items.extend(page_items)
+            next_url = next_page_url(response)
+            if next_url is None:
+                break
+            current_path = next_url
+            current_params = None
+        return items
+
+    def _default_per_page(self, per_page: int | None) -> int:
+        return self._per_page if per_page is None else per_page
 
     # --- user endpoints ----------------------------------------------------
 
@@ -255,14 +360,15 @@ class GitHubClient:
         self,
         username: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Repository]:
-        """Fetch one page of ``GET /users/{username}/repos``."""
-        return self._paginated_get(
+        """Fetch every page of ``GET /users/{username}/repos``."""
+        return self._paginate_all(
             f"/users/{username}/repos",
             Repository,
-            params={"per_page": per_page, "page": page},
+            params={"per_page": self._default_per_page(per_page)},
+            max_pages=max_pages,
         )
 
     # --- repository endpoints ----------------------------------------------
@@ -292,14 +398,19 @@ class GitHubClient:
         repo: str,
         *,
         author: str | None = None,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Commit]:
-        """Fetch one page of ``GET /repos/{owner}/{repo}/commits``."""
-        params: dict[str, Any] = {"per_page": per_page, "page": page}
+        """Fetch every page of ``GET /repos/{owner}/{repo}/commits``."""
+        params: dict[str, Any] = {"per_page": self._default_per_page(per_page)}
         if author is not None:
             params["author"] = author
-        return self._paginated_get(f"/repos/{owner}/{repo}/commits", Commit, params=params)
+        return self._paginate_all(
+            f"/repos/{owner}/{repo}/commits",
+            Commit,
+            params=params,
+            max_pages=max_pages,
+        )
 
     def list_pull_requests(
         self,
@@ -307,14 +418,15 @@ class GitHubClient:
         repo: str,
         *,
         state: str = "all",
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[PullRequest]:
-        """Fetch one page of ``GET /repos/{owner}/{repo}/pulls``."""
-        return self._paginated_get(
+        """Fetch every page of ``GET /repos/{owner}/{repo}/pulls``."""
+        return self._paginate_all(
             f"/repos/{owner}/{repo}/pulls",
             PullRequest,
-            params={"state": state, "per_page": per_page, "page": page},
+            params={"state": state, "per_page": self._default_per_page(per_page)},
+            max_pages=max_pages,
         )
 
     def list_issues(
@@ -323,28 +435,30 @@ class GitHubClient:
         repo: str,
         *,
         state: str = "all",
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Issue]:
-        """Fetch one page of ``GET /repos/{owner}/{repo}/issues``."""
-        return self._paginated_get(
+        """Fetch every page of ``GET /repos/{owner}/{repo}/issues``."""
+        return self._paginate_all(
             f"/repos/{owner}/{repo}/issues",
             Issue,
-            params={"state": state, "per_page": per_page, "page": page},
+            params={"state": state, "per_page": self._default_per_page(per_page)},
+            max_pages=max_pages,
         )
 
     def list_followers(
         self,
         username: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Follower]:
-        """Fetch one page of ``GET /users/{username}/followers``."""
-        return self._paginated_get(
+        """Fetch every page of ``GET /users/{username}/followers``."""
+        return self._paginate_all(
             f"/users/{username}/followers",
             Follower,
-            params={"per_page": per_page, "page": page},
+            params={"per_page": self._default_per_page(per_page)},
+            max_pages=max_pages,
         )
 
     def list_stargazers(
@@ -352,18 +466,19 @@ class GitHubClient:
         owner: str,
         repo: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Stargazer]:
-        """Fetch one page of ``GET /repos/{owner}/{repo}/stargazers``.
+        """Fetch every page of ``GET /repos/{owner}/{repo}/stargazers``.
 
         Uses the timeline preview header so ``starred_at`` is populated.
         """
-        return self._paginated_get(
+        return self._paginate_all(
             f"/repos/{owner}/{repo}/stargazers",
             Stargazer,
-            params={"per_page": per_page, "page": page},
+            params={"per_page": self._default_per_page(per_page)},
             headers={"Accept": STARGAZER_TIMELINE_ACCEPT},
+            max_pages=max_pages,
         )
 
     # --- search endpoints --------------------------------------------------
@@ -372,47 +487,50 @@ class GitHubClient:
         self,
         query: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Commit]:
         """Search commits via ``GET /search/commits``."""
-        response = self._request(
-            "GET",
+        return self._paginate_all(
             "/search/commits",
-            params={"q": query, "per_page": per_page, "page": page},
+            Commit,
+            params={"q": query, "per_page": self._default_per_page(per_page)},
             headers={"Accept": COMMIT_SEARCH_ACCEPT},
+            search=True,
+            max_pages=max_pages,
         )
-        return self._search_items(response, Commit)
 
     def search_pull_requests(
         self,
         query: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[PullRequest]:
         """Search pull requests via ``GET /search/issues`` (PR items)."""
-        response = self._request(
-            "GET",
+        return self._paginate_all(
             "/search/issues",
-            params={"q": query, "per_page": per_page, "page": page},
+            PullRequest,
+            params={"q": query, "per_page": self._default_per_page(per_page)},
+            search=True,
+            max_pages=max_pages,
         )
-        return self._search_items(response, PullRequest)
 
     def search_issues(
         self,
         query: str,
         *,
-        per_page: int = 100,
-        page: int = 1,
+        per_page: int | None = None,
+        max_pages: int | None = None,
     ) -> list[Issue]:
         """Search issues via ``GET /search/issues``."""
-        response = self._request(
-            "GET",
+        return self._paginate_all(
             "/search/issues",
-            params={"q": query, "per_page": per_page, "page": page},
+            Issue,
+            params={"q": query, "per_page": self._default_per_page(per_page)},
+            search=True,
+            max_pages=max_pages,
         )
-        return self._search_items(response, Issue)
 
     # --- GraphQL -----------------------------------------------------------
 
@@ -460,6 +578,9 @@ def create_client(
     base_url: str = GITHUB_API_URL,
     timeout: float = 30.0,
     transport: httpx.BaseTransport | None = None,
+    per_page: int = 100,
+    max_retries: int = 3,
+    backoff: BackoffPolicy | None = None,
 ) -> GitHubClient:
     """Create a :class:`GitHubClient` for the given token and base URL."""
     return GitHubClient(
@@ -467,6 +588,9 @@ def create_client(
         base_url=base_url,
         timeout=timeout,
         transport=transport,
+        per_page=per_page,
+        max_retries=max_retries,
+        backoff=backoff,
     )
 
 

@@ -70,6 +70,7 @@ class Settings(BaseSettings):
     github_base_url: str = "https://api.github.com"
     github_timeout_seconds: float = Field(default=30.0, gt=0)
     github_max_retries: int = Field(default=3, ge=0)
+    github_per_page: int = Field(default=100, ge=1, le=100)
 
     # --- Caching --------------------------------------------------------
     cache_enabled: bool = True

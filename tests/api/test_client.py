@@ -7,6 +7,7 @@ malformed/validation failures surface as typed errors.
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 import httpx
@@ -27,12 +28,30 @@ from ghdtk.api.errors import (
     RateLimitError,
     UserNotFoundError,
 )
+from ghdtk.api.rate_limit import BackoffPolicy
 
 FixtureLoader = Any
 
 
-def _client(handler: Any) -> GitHubClient:
-    return create_client("test-token", transport=httpx.MockTransport(handler))
+def _client(
+    handler: Any,
+    *,
+    max_retries: int = 3,
+    backoff: BackoffPolicy | None = None,
+) -> GitHubClient:
+    if backoff is None:
+        backoff = BackoffPolicy(
+            base_delay=0.0,
+            max_delay=0.0,
+            sleep_fn=lambda seconds: None,
+            random_fn=lambda low, high: 0.0,
+        )
+    return create_client(
+        "test-token",
+        transport=httpx.MockTransport(handler),
+        max_retries=max_retries,
+        backoff=backoff,
+    )
 
 
 def _json_response(request: httpx.Request, payload: Any, *, status: int = 200) -> httpx.Response:
@@ -357,3 +376,115 @@ def test_client_is_injectable_and_context_managed(load_raw_fixture: FixtureLoade
     client = GitHubClient("token", transport=transport)
     assert client.get_user("octocat").login == "octocat"
     client.close()
+
+
+# --- pagination (issue #18) ------------------------------------------------
+
+
+def test_pagination_walks_next_pages(load_raw_fixture: FixtureLoader) -> None:
+    repo = load_raw_fixture("repository")
+    calls: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(str(request.url))
+        if "page=2" in str(request.url):
+            return _json_response(request, [repo])
+        headers = {
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"'
+        }
+        return httpx.Response(200, json=[repo, repo], headers=headers, request=request)
+
+    with _client(handler) as client:
+        repos = client.list_user_repositories("octocat")
+    assert len(repos) == 3
+    assert len(calls) == 2
+    assert client.requests_made == 2
+
+
+def test_pagination_max_pages_guard(load_raw_fixture: FixtureLoader) -> None:
+    repo = load_raw_fixture("repository")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        headers = {
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"'
+        }
+        return httpx.Response(200, json=[repo], headers=headers, request=request)
+
+    with _client(handler) as client:
+        repos = client.list_user_repositories("octocat", max_pages=1)
+    assert len(repos) == 1
+    assert client.requests_made == 1
+
+
+# --- rate limiting and retry/backoff (issue #18) ----------------------------
+
+
+def test_secondary_rate_limit_retries_then_succeeds(load_raw_fixture: FixtureLoader) -> None:
+    calls: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(str(request.url))
+        if len(calls) <= 2:
+            return httpx.Response(
+                429,
+                json={"message": "Too Many Requests"},
+                headers={"Retry-After": "1"},
+                request=request,
+            )
+        return _json_response(request, [load_raw_fixture("repository")])
+
+    with _client(handler) as client:
+        repos = client.list_user_repositories("octocat")
+    assert len(repos) == 1
+    assert client.requests_made == 3
+
+
+def test_primary_rate_limit_exhaustion_raises_before_next_page(
+    load_raw_fixture: FixtureLoader,
+) -> None:
+    reset = int(time.time()) + 3600
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        headers = {
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": str(reset),
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"',
+        }
+        return httpx.Response(
+            200, json=[load_raw_fixture("repository")], headers=headers, request=request
+        )
+
+    with _client(handler) as client:
+        with pytest.raises(RateLimitError) as excinfo:
+            client.list_user_repositories("octocat")
+    assert excinfo.value.status_code == 403
+
+
+def test_rate_limit_wait_pauses_before_next_page(load_raw_fixture: FixtureLoader) -> None:
+    slept: list[float] = []
+    backoff = BackoffPolicy(
+        base_delay=0.0,
+        max_delay=60.0,
+        sleep_fn=slept.append,
+        random_fn=lambda low, high: 0.0,
+    )
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if "page=2" in str(request.url):
+            return _json_response(request, [load_raw_fixture("repository")])
+        reset = int(time.time()) + 2
+        headers = {
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": str(reset),
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"',
+        }
+        return httpx.Response(
+            200, json=[load_raw_fixture("repository")], headers=headers, request=request
+        )
+
+    with _client(handler, backoff=backoff) as client:
+        repos = client.list_user_repositories("octocat")
+    assert len(repos) == 2
+    assert client.requests_made == 2
+    assert len(slept) == 1
+    assert 1.0 <= slept[0] <= 3.0

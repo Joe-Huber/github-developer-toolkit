@@ -48,6 +48,7 @@ def test_defaults(project_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.github_base_url == "https://api.github.com"
     assert settings.github_timeout_seconds == 30.0
     assert settings.github_max_retries == 3
+    assert settings.github_per_page == 100
     assert settings.cache_enabled is True
     assert settings.cache_ttl_seconds == 86_400
     assert settings.analysis_minimum_stars == 10

@@ -22,10 +22,13 @@ from ghdtk.api.errors import (
     RateLimitError,
     UserNotFoundError,
 )
+from ghdtk.api.pagination import has_next_page, next_page_url, parse_link_header
+from ghdtk.api.rate_limit import BackoffPolicy, RateLimitState, parse_retry_after
 
 __all__ = [
     "APITimeoutError",
     "AuthenticationError",
+    "BackoffPolicy",
     "DataValidationError",
     "GitHubAPIError",
     "MalformedResponseError",
@@ -34,5 +37,10 @@ __all__ = [
     "PartialDataError",
     "PartialDataSummary",
     "RateLimitError",
+    "RateLimitState",
     "UserNotFoundError",
+    "has_next_page",
+    "next_page_url",
+    "parse_link_header",
+    "parse_retry_after",
 ]
