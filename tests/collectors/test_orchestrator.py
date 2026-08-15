@@ -32,7 +32,7 @@ def _client(handler: Any) -> Any:
     )
 
 
-def _routes(load_raw_fixture: FixtureLoader) -> dict[str, tuple[int, Any]]:
+def _routes(load_raw_fixture: FixtureLoader) -> dict[str, Any]:
     calendar = {
         "data": {
             "user": {
@@ -42,12 +42,22 @@ def _routes(load_raw_fixture: FixtureLoader) -> dict[str, tuple[int, Any]]:
             }
         }
     }
+
+    def search_route(request: httpx.Request) -> tuple[int, Any]:
+        query = request.url.params["q"]
+        if "type:pr" in query:
+            payload = {"total_count": 1, "items": [load_raw_fixture("pull_request_search")]}
+        else:
+            payload = {"total_count": 1, "items": [load_raw_fixture("issue")]}
+        return 200, payload
+
     return {
         "/users/octocat": (200, load_raw_fixture("user")),
         "/users/octocat/repos": (200, [load_raw_fixture("repository")]),
         "/graphql": (200, calendar),
         "/users/octocat/followers": (200, [load_raw_fixture("follower")]),
         "/users/octocat/following": (200, [load_raw_fixture("follower")]),
+        "/search/issues": search_route,
         "/repos/octocat/Hello-World/languages": (200, load_raw_fixture("language_stats")),
         "/repos/octocat/Hello-World/readme": (200, load_raw_fixture("readme")),
         "/repos/octocat/Hello-World/commits": (200, [load_raw_fixture("commit")]),
@@ -57,11 +67,17 @@ def _routes(load_raw_fixture: FixtureLoader) -> dict[str, tuple[int, Any]]:
     }
 
 
-def _handler(routes: dict[str, tuple[int, Any]], log: list[str] | None = None) -> Any:
+def _handler(routes: dict[str, Any], log: list[str] | None = None) -> Any:
     def handler(request: httpx.Request) -> httpx.Response:
         if log is not None:
             log.append(request.url.path)
-        status, payload = routes.get(request.url.path, (404, {"message": "Not Found"}))
+        route = routes.get(request.url.path)
+        if route is None:
+            status, payload = 404, {"message": "Not Found"}
+        elif callable(route):
+            status, payload = route(request)
+        else:
+            status, payload = route
         return httpx.Response(status, json=payload, request=request)
 
     return handler
@@ -81,13 +97,15 @@ def test_collect_profile_full_run(load_raw_fixture: FixtureLoader) -> None:
     assert snapshot.commits["octocat/Hello-World"]
     assert snapshot.pull_requests["octocat/Hello-World"]
     assert snapshot.issues["octocat/Hello-World"]
+    assert snapshot.search_pull_requests
+    assert snapshot.search_issues
     assert snapshot.followers is not None and len(snapshot.followers) == 1
     assert snapshot.following is not None and len(snapshot.following) == 1
     assert snapshot.stargazers is not None and len(snapshot.stargazers) == 1
     assert snapshot.contribution_calendar is not None
     assert snapshot.budget_max == 500
-    assert snapshot.budget_used == 11
-    assert len(snapshot.collections) == 11
+    assert snapshot.budget_used == 13
+    assert len(snapshot.collections) == 13
     assert all(record.status == CollectionStatus.SUCCESS for record in snapshot.collections)
     assert snapshot.is_partial is False
 
@@ -97,7 +115,7 @@ def test_collect_profile_respects_max_requests(load_raw_fixture: FixtureLoader) 
     with _client(_handler(routes)) as client:
         snapshot = collect_profile(client, "octocat", max_requests=25)
     assert snapshot.budget_max == 25
-    assert snapshot.budget_used == 11
+    assert snapshot.budget_used == 13
 
 
 def test_collect_profile_stops_when_budget_exhausted(load_raw_fixture: FixtureLoader) -> None:

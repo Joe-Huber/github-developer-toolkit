@@ -30,6 +30,7 @@ class PullRequest(BaseRawModel):
     id: int | None = None
     node_id: str | None = None
     html_url: str | None = None
+    repository_url: str | None = None
     diff_url: str | None = None
     patch_url: str | None = None
     issue_url: str | None = None

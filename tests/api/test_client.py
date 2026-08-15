@@ -229,6 +229,27 @@ def test_search_issues(load_raw_fixture: FixtureLoader) -> None:
     assert len(issues) == 1
 
 
+def test_search_pull_requests_lifts_nested_fields(load_raw_fixture: FixtureLoader) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/search/issues"
+        return _json_response(
+            request,
+            {"total_count": 1, "items": [load_raw_fixture("pull_request_search")]},
+        )
+
+    with _client(handler) as client:
+        pulls = client.search_pull_requests("author:octocat type:pr")
+    assert len(pulls) == 1
+    pull = pulls[0]
+    assert pull.number == 1347
+    assert pull.repository_url == "https://api.github.com/repos/octocat/Hello-World"
+    assert pull.state == "closed"
+    assert pull.merged is True
+    assert pull.merged_at is not None
+    assert pull.review_comments == 4
+    assert pull.comments == 3
+
+
 def test_contribution_calendar(load_raw_fixture: FixtureLoader) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path == "/graphql"
