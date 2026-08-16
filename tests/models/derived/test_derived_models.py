@@ -18,6 +18,7 @@ from ghdtk.models.derived import (
     Finding,
     FindingSeverity,
     MetricRecord,
+    ProfileAnalyses,
     ProfileAnalysis,
     Recommendation,
     RecommendationEffort,
@@ -223,6 +224,21 @@ def test_profile_analysis_synthesis_roundtrip() -> None:
     assert loaded == analysis
     assert loaded.synthesis is not None
     assert loaded.synthesis.strengths == ["Activity"]
+
+
+def test_profile_analysis_analyses_roundtrip() -> None:
+    from ghdtk.analyzers.presence import assess_profile_presence
+    from ghdtk.models.raw import User
+
+    user = User(login="octocat", name="Mona")
+    presence = assess_profile_presence(user, now=datetime(2026, 1, 1, tzinfo=UTC))
+    analyses = ProfileAnalyses(presence=presence)
+    analysis = _report().profile.model_copy(update={"analyses": analyses})
+    loaded = ProfileAnalysis.model_validate_json(analysis.model_dump_json())
+    assert loaded == analysis
+    assert loaded.analyses is not None
+    assert loaded.analyses.presence is not None
+    assert loaded.analyses.presence.username == "octocat"
 
 
 def test_report_matches_analysis_content() -> None:

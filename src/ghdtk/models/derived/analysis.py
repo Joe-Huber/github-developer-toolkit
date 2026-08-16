@@ -12,6 +12,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from ghdtk import __version__
+from ghdtk.models.derived.analyses import ProfileAnalyses
 from ghdtk.models.derived.finding import Finding
 from ghdtk.models.derived.metric import MetricRecord
 from ghdtk.models.derived.recommendation import Recommendation
@@ -27,6 +28,7 @@ class ProfileAnalysis(BaseModel):
     username: str
     analyzed_at: datetime
     schema_version: int = 1
+    analyses: ProfileAnalyses | None = None
     metrics: list[MetricRecord] = Field(default_factory=list)
     scores: list[DimensionScore] = Field(default_factory=list)
     overall: OverallScore | None = None
