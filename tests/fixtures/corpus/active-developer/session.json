@@ -1,0 +1,1153 @@
+{
+  "profile": {
+    "description": "A healthy, active developer profile.",
+    "id": "active-developer",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "jane-doe"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/jane-doe",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1002?v=4",
+          "bio": "Building developer tools in the open.",
+          "blog": "https://jane.dev",
+          "company": "Acme",
+          "created_at": "2015-03-10T00:00:00Z",
+          "email": "jane@example.org",
+          "followers": 320,
+          "followers_url": "https://api.github.com/users/jane-doe/followers",
+          "following": 48,
+          "following_url": "https://api.github.com/users/jane-doe/following",
+          "hireable": true,
+          "html_url": "https://github.com/jane-doe",
+          "id": 1001,
+          "location": "Berlin",
+          "login": "jane-doe",
+          "name": "Jane Doe",
+          "node_id": "MDQ6VXNlcijane-doe",
+          "public_gists": 0,
+          "public_repos": 3,
+          "repos_url": "https://api.github.com/users/jane-doe/repos",
+          "site_admin": false,
+          "twitter_username": "jane",
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/jane-doe"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/jane-doe/repos",
+      "response": {
+        "body": [
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2016-05-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "A CLI toolkit for developers",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "jane-doe/toolkit",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": "https://jane.dev/toolkit",
+            "html_url": "https://github.com/jane-doe/toolkit",
+            "id": 1003,
+            "is_template": false,
+            "language": "Python",
+            "license": {
+              "key": "MIT",
+              "name": "MIT",
+              "spdx_id": "MIT"
+            },
+            "name": "toolkit",
+            "node_id": "MDEwOlJlcG9zaXRvcnktoolkit",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1005?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1004,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-10T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 150,
+            "topics": [
+              "python",
+              "cli",
+              "developer-tools"
+            ],
+            "updated_at": "2025-12-10T00:00:00Z",
+            "url": "https://api.github.com/repos/jane-doe/toolkit",
+            "visibility": "public",
+            "watchers_count": 150,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2020-01-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "My GitHub profile",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "jane-doe/jane-doe",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/jane-doe/jane-doe",
+            "id": 1006,
+            "is_template": false,
+            "language": "Markdown",
+            "license": null,
+            "name": "jane-doe",
+            "node_id": "MDEwOlJlcG9zaXRvcnkjane-doe",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1008?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1007,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 5,
+            "topics": [
+              "profile"
+            ],
+            "updated_at": "2025-12-01T00:00:00Z",
+            "url": "https://api.github.com/repos/jane-doe/jane-doe",
+            "visibility": "public",
+            "watchers_count": 5,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2017-08-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "",
+            "disabled": false,
+            "fork": true,
+            "forks_count": 3,
+            "full_name": "jane-doe/old-experiments",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/jane-doe/old-experiments",
+            "id": 1009,
+            "is_template": false,
+            "language": "JavaScript",
+            "license": null,
+            "name": "old-experiments",
+            "node_id": "MDEwOlJlcG9zaXRvcnkold-experiments",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1011?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1010,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2019-06-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 1,
+            "topics": [],
+            "updated_at": "2019-06-01T00:00:00Z",
+            "url": "https://api.github.com/repos/jane-doe/old-experiments",
+            "visibility": "public",
+            "watchers_count": 1,
+            "web_commit_signoff_required": false
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 34,
+                  "weeks": [
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-09-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-09-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 4,
+                          "date": "2025-09-03",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-09-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 3,
+                          "date": "2025-10-06",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-10-06"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 5,
+                          "date": "2025-10-08",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-10-08"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 4,
+                          "date": "2025-11-03",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-11-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-11-05",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-11-05"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 6,
+                          "date": "2025-12-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 3,
+                          "date": "2025-12-03",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-12-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-12-29",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-29"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 3,
+                          "date": "2025-12-30",
+                          "weekday": 1
+                        }
+                      ],
+                      "firstDay": "2025-12-30"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/jane-doe/followers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1013?v=4",
+            "html_url": "https://github.com/follower-a",
+            "id": 1012,
+            "login": "follower-a",
+            "node_id": "MDQ6VXNlcjEwfollower-a",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1015?v=4",
+            "html_url": "https://github.com/follower-b",
+            "id": 1014,
+            "login": "follower-b",
+            "node_id": "MDQ6VXNlcjEwfollower-b",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1017?v=4",
+            "html_url": "https://github.com/follower-c",
+            "id": 1016,
+            "login": "follower-c",
+            "node_id": "MDQ6VXNlcjEwfollower-c",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/jane-doe/following",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1019?v=4",
+            "html_url": "https://github.com/mentor",
+            "id": 1018,
+            "login": "mentor",
+            "node_id": "MDQ6VXNlcjEwmentor",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1021?v=4",
+            "html_url": "https://github.com/hero",
+            "id": 1020,
+            "login": "hero",
+            "node_id": "MDQ6VXNlcjEwhero",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:jane-doe type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": "2025-11-10T09:00:00Z",
+              "comments": 3,
+              "comments_url": "https://api.github.com/repos/jane-doe/toolkit/issues/12/comments",
+              "created_at": "2025-11-05T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/jane-doe/toolkit/issues/12/events",
+              "html_url": "https://github.com/jane-doe/toolkit/pull/12",
+              "id": 1022,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/jane-doe/toolkit/issues/12/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 12,
+              "pull_request": {
+                "comments": 3,
+                "diff_url": "https://github.com/jane-doe/toolkit/pull/12.diff",
+                "html_url": "https://github.com/jane-doe/toolkit/pull/12",
+                "merged": true,
+                "merged_at": "2025-11-10T09:00:00Z",
+                "patch_url": "https://github.com/jane-doe/toolkit/pull/12.patch",
+                "review_comments": 2,
+                "url": "https://api.github.com/repos/jane-doe/toolkit/pulls/12"
+              },
+              "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+              "state": "closed",
+              "title": "Add CLI options",
+              "updated_at": "2025-11-10T09:00:00Z",
+              "url": "https://api.github.com/repos/jane-doe/toolkit/issues/12",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1024?v=4",
+                "html_url": "https://github.com/jane-doe",
+                "id": 1023,
+                "login": "jane-doe",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": null,
+              "comments": 0,
+              "comments_url": "https://api.github.com/repos/jane-doe/toolkit/issues/14/comments",
+              "created_at": "2025-12-20T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/jane-doe/toolkit/issues/14/events",
+              "html_url": "https://github.com/jane-doe/toolkit/pull/14",
+              "id": 1025,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/jane-doe/toolkit/issues/14/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 14,
+              "pull_request": {
+                "comments": 0,
+                "diff_url": "https://github.com/jane-doe/toolkit/pull/14.diff",
+                "html_url": "https://github.com/jane-doe/toolkit/pull/14",
+                "merged": false,
+                "merged_at": null,
+                "patch_url": "https://github.com/jane-doe/toolkit/pull/14.patch",
+                "review_comments": 0,
+                "url": "https://api.github.com/repos/jane-doe/toolkit/pulls/14"
+              },
+              "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+              "state": "open",
+              "title": "Fix parser crash",
+              "updated_at": "2025-12-20T09:00:00Z",
+              "url": "https://api.github.com/repos/jane-doe/toolkit/issues/14",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1027?v=4",
+                "html_url": "https://github.com/jane-doe",
+                "id": 1026,
+                "login": "jane-doe",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 2
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:jane-doe type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": "2025-09-01T09:00:00Z",
+              "comments": 2,
+              "comments_url": "https://api.github.com/repos/jane-doe/toolkit/issues/11/comments",
+              "created_at": "2025-08-20T09:00:00Z",
+              "events_url": "https://api.github.com/repos/jane-doe/toolkit/issues/11/events",
+              "html_url": "https://github.com/jane-doe/toolkit/issues/11",
+              "id": 1028,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/jane-doe/toolkit/issues/11/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU11",
+              "number": 11,
+              "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+              "state": "closed",
+              "title": "Bug in parser",
+              "updated_at": "2025-09-01T09:00:00Z",
+              "url": "https://api.github.com/repos/jane-doe/toolkit/issues/11",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1030?v=4",
+                "html_url": "https://github.com/jane-doe",
+                "id": 1029,
+                "login": "jane-doe",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": null,
+              "comments": 1,
+              "comments_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/comments",
+              "created_at": "2025-12-01T09:00:00Z",
+              "events_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/events",
+              "html_url": "https://github.com/jane-doe/toolkit/issues/13",
+              "id": 1031,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU13",
+              "number": 13,
+              "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+              "state": "open",
+              "title": "Feature request",
+              "updated_at": "2025-12-01T09:00:00Z",
+              "url": "https://api.github.com/repos/jane-doe/toolkit/issues/13",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1033?v=4",
+                "html_url": "https://github.com/jane-doe",
+                "id": 1032,
+                "login": "jane-doe",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 2
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/toolkit/languages",
+      "response": {
+        "body": {
+          "JavaScript": 3000,
+          "Python": 5000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/toolkit/readme",
+      "response": {
+        "body": {
+          "content": "IyBUb29sa2l0CgpBIENMSSB0b29sa2l0IGZvciBkZXZlbG9wZXJzLgoKIyMgSW5zdGFsbAoKYGBgCnBpcCBpbnN0YWxsIHRvb2xraXQKYGBgCg==",
+          "download_url": "https://raw.githubusercontent.com/jane-doe/toolkit/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/jane-doe/toolkit/git/blobs/3d21ec53",
+          "html_url": "https://github.com/jane-doe/toolkit/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 112,
+          "type": "file",
+          "url": "https://api.github.com/repos/jane-doe/toolkit/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "jane-doe",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/jane-doe/toolkit/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1035?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1034,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/comments",
+            "commit": {
+              "author": {
+                "date": "2025-10-01T10:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-10-01T10:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "message": "feat: add CLI options",
+              "url": "https://api.github.com/repos/jane-doe/Jane Doe/git/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1037?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1036,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/jane-doe/Jane Doe/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "parents": [],
+            "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1039?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1038,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/comments",
+            "commit": {
+              "author": {
+                "date": "2025-11-01T11:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-11-01T11:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "message": "fix: improve docs",
+              "url": "https://api.github.com/repos/jane-doe/Jane Doe/git/commits/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1041?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1040,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/jane-doe/Jane Doe/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "parents": [],
+            "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1043?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1042,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/cccccccccccccccccccccccccccccccccccccccc/comments",
+            "commit": {
+              "author": {
+                "date": "2025-12-10T09:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-12-10T09:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "message": "fix: parser crash",
+              "url": "https://api.github.com/repos/jane-doe/Jane Doe/git/commits/cccccccccccccccccccccccccccccccccccccccc"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1045?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1044,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/jane-doe/Jane Doe/commit/cccccccccccccccccccccccccccccccccccccccc",
+            "parents": [],
+            "sha": "cccccccccccccccccccccccccccccccccccccccc",
+            "url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/cccccccccccccccccccccccccccccccccccccccc"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/toolkit/pulls",
+      "response": {
+        "body": [
+          {
+            "additions": 10,
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "base": {
+              "label": "jane-doe:main",
+              "ref": "main",
+              "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "body": "A contribution.",
+            "changed_files": 3,
+            "closed_at": "2025-11-10T09:00:00Z",
+            "comments": 3,
+            "commits": 1,
+            "created_at": "2025-11-05T09:00:00Z",
+            "deletions": 2,
+            "diff_url": "https://github.com/jane-doe/toolkit/pull/12.diff",
+            "draft": false,
+            "head": {
+              "label": "jane-doe:feat/12",
+              "ref": "feat/12",
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "html_url": "https://github.com/jane-doe/toolkit/pull/12",
+            "id": 1046,
+            "issue_url": "https://api.github.com/repos/jane-doe/toolkit/issues/12",
+            "labels": [],
+            "locked": false,
+            "maintainer_can_modify": false,
+            "merge_commit_sha": "cd9af0783ad2d4fe2d1d8e9b2c4b3d2f1e5f6a7b",
+            "mergeable": true,
+            "mergeable_state": "clean",
+            "merged": true,
+            "merged_at": "2025-11-10T09:00:00Z",
+            "merged_by": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1050?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1049,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "number": 12,
+            "patch_url": "https://github.com/jane-doe/toolkit/pull/12.patch",
+            "rebaseable": true,
+            "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+            "requested_reviewers": [],
+            "review_comments": 2,
+            "state": "closed",
+            "title": "Add CLI options",
+            "updated_at": "2025-11-10T09:00:00Z",
+            "url": "https://api.github.com/repos/jane-doe/toolkit/pulls/12",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1048?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1047,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/toolkit/issues",
+      "response": {
+        "body": [
+          {
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "body": "An issue body.",
+            "closed_at": null,
+            "comments": 1,
+            "comments_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/comments",
+            "created_at": "2025-12-01T09:00:00Z",
+            "events_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/events",
+            "html_url": "https://github.com/jane-doe/toolkit/issues/13",
+            "id": 1051,
+            "labels": [],
+            "labels_url": "https://api.github.com/repos/jane-doe/toolkit/issues/13/labels{/name}",
+            "locked": false,
+            "milestone": null,
+            "node_id": "MDU6SXNzdWU13",
+            "number": 13,
+            "repository_url": "https://api.github.com/repos/jane-doe/toolkit",
+            "state": "open",
+            "title": "Feature request",
+            "updated_at": "2025-12-01T09:00:00Z",
+            "url": "https://api.github.com/repos/jane-doe/toolkit/issues/13",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1053?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1052,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/jane-doe/languages",
+      "response": {
+        "body": {
+          "Markdown": 500
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/jane-doe/readme",
+      "response": {
+        "body": {
+          "content": "IyBIaSwgSSdtIEphbmUgRG9lCgpJIGJ1aWxkIGRldmVsb3BlciB0b29scyBpbiB0aGUgb3Blbi4gQ29udGFjdCBtZSBhdCBqYW5lQGV4YW1wbGUub3JnLgoKamFuZS1kb2UK",
+          "download_url": "https://raw.githubusercontent.com/jane-doe/jane-doe/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/jane-doe/jane-doe/git/blobs/3d21ec53",
+          "html_url": "https://github.com/jane-doe/jane-doe/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 132,
+          "type": "file",
+          "url": "https://api.github.com/repos/jane-doe/jane-doe/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "jane-doe",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/jane-doe/jane-doe/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1055?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1054,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/dddddddddddddddddddddddddddddddddddddddd/comments",
+            "commit": {
+              "author": {
+                "date": "2025-12-01T09:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-12-01T09:00:00Z",
+                "email": "jane@example.org",
+                "name": "Jane Doe"
+              },
+              "message": "chore: refresh profile",
+              "url": "https://api.github.com/repos/jane-doe/Jane Doe/git/commits/dddddddddddddddddddddddddddddddddddddddd"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1057?v=4",
+              "html_url": "https://github.com/jane-doe",
+              "id": 1056,
+              "login": "jane-doe",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_jane-doe",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/jane-doe/Jane Doe/commit/dddddddddddddddddddddddddddddddddddddddd",
+            "parents": [],
+            "sha": "dddddddddddddddddddddddddddddddddddddddd",
+            "url": "https://api.github.com/repos/jane-doe/Jane Doe/commits/dddddddddddddddddddddddddddddddddddddddd"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/jane-doe/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/jane-doe/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/old-experiments/languages",
+      "response": {
+        "body": {
+          "JavaScript": 1000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/jane-doe/old-experiments/readme",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "jane-doe",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/jane-doe/old-experiments/commits",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/old-experiments/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/jane-doe/old-experiments/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/jane-doe/toolkit/stargazers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1059?v=4",
+            "html_url": "https://github.com/follower-a",
+            "id": 1058,
+            "login": "follower-a",
+            "node_id": "MDQ6VXNlcjEwfollower-a",
+            "site_admin": false,
+            "starred_at": "2025-10-01T00:00:00Z",
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1061?v=4",
+            "html_url": "https://github.com/follower-b",
+            "id": 1060,
+            "login": "follower-b",
+            "node_id": "MDQ6VXNlcjEwfollower-b",
+            "site_admin": false,
+            "starred_at": "2025-11-01T00:00:00Z",
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}

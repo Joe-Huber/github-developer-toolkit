@@ -1,0 +1,27 @@
+{
+  "profile": {
+    "description": "A primary rate-limit (403) response.",
+    "id": "rate-limit",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "ghost"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/ghost",
+      "response": {
+        "body": {
+          "message": "API rate limit exceeded"
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "X-RateLimit-Limit": "5000",
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": "1780000000"
+        },
+        "status": 403
+      }
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,155 @@
+{
+  "profile": {
+    "description": "A profile with no public activity.",
+    "id": "minimal-profile",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "ghost-user"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/ghost-user",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1063?v=4",
+          "bio": null,
+          "blog": null,
+          "company": null,
+          "created_at": "2024-01-01T00:00:00Z",
+          "email": null,
+          "followers": 0,
+          "followers_url": "https://api.github.com/users/ghost-user/followers",
+          "following": 0,
+          "following_url": "https://api.github.com/users/ghost-user/following",
+          "hireable": null,
+          "html_url": "https://github.com/ghost-user",
+          "id": 1062,
+          "location": null,
+          "login": "ghost-user",
+          "name": null,
+          "node_id": "MDQ6VXNlcighost-user",
+          "public_gists": 0,
+          "public_repos": 0,
+          "repos_url": "https://api.github.com/users/ghost-user/repos",
+          "site_admin": false,
+          "twitter_username": null,
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/ghost-user"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ghost-user/repos",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 0,
+                  "weeks": []
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ghost-user/followers",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ghost-user/following",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:ghost-user type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:ghost-user type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}

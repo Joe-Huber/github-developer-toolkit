@@ -1,0 +1,864 @@
+{
+  "profile": {
+    "description": "A portfolio dominated by archived repositories.",
+    "id": "archived-heavy",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "historian"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/historian",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1175?v=4",
+          "bio": "Preserving old code.",
+          "blog": null,
+          "company": null,
+          "created_at": "2012-06-01T00:00:00Z",
+          "email": null,
+          "followers": 3,
+          "followers_url": "https://api.github.com/users/historian/followers",
+          "following": 20,
+          "following_url": "https://api.github.com/users/historian/following",
+          "hireable": null,
+          "html_url": "https://github.com/historian",
+          "id": 1174,
+          "location": null,
+          "login": "historian",
+          "name": "Historian",
+          "node_id": "MDQ6VXNlcihistorian",
+          "public_gists": 0,
+          "public_repos": 3,
+          "repos_url": "https://api.github.com/users/historian/repos",
+          "site_admin": false,
+          "twitter_username": null,
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/historian"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/historian/repos",
+      "response": {
+        "body": [
+          {
+            "allow_forking": true,
+            "archived": true,
+            "created_at": "2013-02-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "A legacy monolith",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "historian/legacy-app",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/historian/legacy-app",
+            "id": 1176,
+            "is_template": false,
+            "language": "Java",
+            "license": null,
+            "name": "legacy-app",
+            "node_id": "MDEwOlJlcG9zaXRvcnklegacy-app",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1178?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1177,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2019-06-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 40,
+            "topics": [],
+            "updated_at": "2019-06-01T00:00:00Z",
+            "url": "https://api.github.com/repos/historian/legacy-app",
+            "visibility": "public",
+            "watchers_count": 40,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": true,
+            "created_at": "2014-09-01T00:00:00Z",
+            "default_branch": "main",
+            "description": null,
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "historian/deprecated-lib",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/historian/deprecated-lib",
+            "id": 1179,
+            "is_template": false,
+            "language": "C++",
+            "license": null,
+            "name": "deprecated-lib",
+            "node_id": "MDEwOlJlcG9zaXRvcnkdeprecated-lib",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1181?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1180,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2018-03-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 15,
+            "topics": [],
+            "updated_at": "2018-03-01T00:00:00Z",
+            "url": "https://api.github.com/repos/historian/deprecated-lib",
+            "visibility": "public",
+            "watchers_count": 15,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2020-01-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "A small maintenance tool",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "historian/active-tool",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/historian/active-tool",
+            "id": 1182,
+            "is_template": false,
+            "language": "Python",
+            "license": null,
+            "name": "active-tool",
+            "node_id": "MDEwOlJlcG9zaXRvcnkactive-tool",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1184?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1183,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-06-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 3,
+            "topics": [],
+            "updated_at": "2025-06-01T00:00:00Z",
+            "url": "https://api.github.com/repos/historian/active-tool",
+            "visibility": "public",
+            "watchers_count": 3,
+            "web_commit_signoff_required": false
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 4,
+                  "weeks": [
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 1,
+                          "date": "2025-03-03",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-03-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-06-02",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-06-02"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 1,
+                          "date": "2025-11-03",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-11-03"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/historian/followers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1186?v=4",
+            "html_url": "https://github.com/friend-a",
+            "id": 1185,
+            "login": "friend-a",
+            "node_id": "MDQ6VXNlcjEwfriend-a",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1188?v=4",
+            "html_url": "https://github.com/friend-b",
+            "id": 1187,
+            "login": "friend-b",
+            "node_id": "MDQ6VXNlcjEwfriend-b",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1190?v=4",
+            "html_url": "https://github.com/friend-c",
+            "id": 1189,
+            "login": "friend-c",
+            "node_id": "MDQ6VXNlcjEwfriend-c",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/historian/following",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1192?v=4",
+            "html_url": "https://github.com/colleague-a",
+            "id": 1191,
+            "login": "colleague-a",
+            "node_id": "MDQ6VXNlcjEwcolleague-a",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1194?v=4",
+            "html_url": "https://github.com/colleague-b",
+            "id": 1193,
+            "login": "colleague-b",
+            "node_id": "MDQ6VXNlcjEwcolleague-b",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1196?v=4",
+            "html_url": "https://github.com/colleague-c",
+            "id": 1195,
+            "login": "colleague-c",
+            "node_id": "MDQ6VXNlcjEwcolleague-c",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:historian type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": "2019-04-10T09:00:00Z",
+              "comments": 2,
+              "comments_url": "https://api.github.com/repos/historian/legacy-app/issues/42/comments",
+              "created_at": "2019-04-01T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/historian/legacy-app/issues/42/events",
+              "html_url": "https://github.com/historian/legacy-app/pull/42",
+              "id": 1197,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/historian/legacy-app/issues/42/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 42,
+              "pull_request": {
+                "comments": 2,
+                "diff_url": "https://github.com/historian/legacy-app/pull/42.diff",
+                "html_url": "https://github.com/historian/legacy-app/pull/42",
+                "merged": true,
+                "merged_at": "2019-04-10T09:00:00Z",
+                "patch_url": "https://github.com/historian/legacy-app/pull/42.patch",
+                "review_comments": 1,
+                "url": "https://api.github.com/repos/historian/legacy-app/pulls/42"
+              },
+              "repository_url": "https://api.github.com/repos/historian/legacy-app",
+              "state": "closed",
+              "title": "Fix login flow",
+              "updated_at": "2019-04-10T09:00:00Z",
+              "url": "https://api.github.com/repos/historian/legacy-app/issues/42",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1199?v=4",
+                "html_url": "https://github.com/historian",
+                "id": 1198,
+                "login": "historian",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 1
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:historian type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": "2018-11-20T09:00:00Z",
+              "comments": 3,
+              "comments_url": "https://api.github.com/repos/historian/legacy-app/issues/41/comments",
+              "created_at": "2018-11-01T09:00:00Z",
+              "events_url": "https://api.github.com/repos/historian/legacy-app/issues/41/events",
+              "html_url": "https://github.com/historian/legacy-app/issues/41",
+              "id": 1200,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/historian/legacy-app/issues/41/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU41",
+              "number": 41,
+              "repository_url": "https://api.github.com/repos/historian/legacy-app",
+              "state": "closed",
+              "title": "Login is broken",
+              "updated_at": "2018-11-20T09:00:00Z",
+              "url": "https://api.github.com/repos/historian/legacy-app/issues/41",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1202?v=4",
+                "html_url": "https://github.com/historian",
+                "id": 1201,
+                "login": "historian",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 1
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/legacy-app/languages",
+      "response": {
+        "body": {
+          "Java": 40000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/legacy-app/readme",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "historian",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/historian/legacy-app/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1204?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1203,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/historian/Historian/commits/llllllllllllllllllllllllllllllllllllllll/comments",
+            "commit": {
+              "author": {
+                "date": "2019-06-01T09:00:00Z",
+                "email": "historian@example.org",
+                "name": "Historian"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2019-06-01T09:00:00Z",
+                "email": "historian@example.org",
+                "name": "Historian"
+              },
+              "message": "chore: archive repository",
+              "url": "https://api.github.com/repos/historian/Historian/git/commits/llllllllllllllllllllllllllllllllllllllll"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1206?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1205,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/historian/Historian/commit/llllllllllllllllllllllllllllllllllllllll",
+            "parents": [],
+            "sha": "llllllllllllllllllllllllllllllllllllllll",
+            "url": "https://api.github.com/repos/historian/Historian/commits/llllllllllllllllllllllllllllllllllllllll"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/legacy-app/pulls",
+      "response": {
+        "body": [
+          {
+            "additions": 10,
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "base": {
+              "label": "historian:main",
+              "ref": "main",
+              "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "body": "A contribution.",
+            "changed_files": 3,
+            "closed_at": "2019-04-10T09:00:00Z",
+            "comments": 2,
+            "commits": 1,
+            "created_at": "2019-04-01T09:00:00Z",
+            "deletions": 2,
+            "diff_url": "https://github.com/historian/legacy-app/pull/42.diff",
+            "draft": false,
+            "head": {
+              "label": "historian:feat/42",
+              "ref": "feat/42",
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "html_url": "https://github.com/historian/legacy-app/pull/42",
+            "id": 1207,
+            "issue_url": "https://api.github.com/repos/historian/legacy-app/issues/42",
+            "labels": [],
+            "locked": false,
+            "maintainer_can_modify": false,
+            "merge_commit_sha": "cd9af0783ad2d4fe2d1d8e9b2c4b3d2f1e5f6a7b",
+            "mergeable": true,
+            "mergeable_state": "clean",
+            "merged": true,
+            "merged_at": "2019-04-10T09:00:00Z",
+            "merged_by": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1211?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1210,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "number": 42,
+            "patch_url": "https://github.com/historian/legacy-app/pull/42.patch",
+            "rebaseable": true,
+            "repository_url": "https://api.github.com/repos/historian/legacy-app",
+            "requested_reviewers": [],
+            "review_comments": 1,
+            "state": "closed",
+            "title": "Fix login flow",
+            "updated_at": "2019-04-10T09:00:00Z",
+            "url": "https://api.github.com/repos/historian/legacy-app/pulls/42",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1209?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1208,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/legacy-app/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/deprecated-lib/languages",
+      "response": {
+        "body": {
+          "C++": 20000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/deprecated-lib/readme",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "historian",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/historian/deprecated-lib/commits",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/deprecated-lib/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/deprecated-lib/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/active-tool/languages",
+      "response": {
+        "body": {
+          "Python": 3000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/historian/active-tool/readme",
+      "response": {
+        "body": {
+          "content": "IyBBY3RpdmUgVG9vbAoKQSBzbWFsbCBtYWludGVuYW5jZSB0b29sLgo=",
+          "download_url": "https://raw.githubusercontent.com/historian/active-tool/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/historian/active-tool/git/blobs/3d21ec53",
+          "html_url": "https://github.com/historian/active-tool/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 56,
+          "type": "file",
+          "url": "https://api.github.com/repos/historian/active-tool/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "historian",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/historian/active-tool/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1213?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1212,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/historian/Historian/commits/mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm/comments",
+            "commit": {
+              "author": {
+                "date": "2025-06-01T09:00:00Z",
+                "email": "historian@example.org",
+                "name": "Historian"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-06-01T09:00:00Z",
+                "email": "historian@example.org",
+                "name": "Historian"
+              },
+              "message": "fix: handle edge case",
+              "url": "https://api.github.com/repos/historian/Historian/git/commits/mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1215?v=4",
+              "html_url": "https://github.com/historian",
+              "id": 1214,
+              "login": "historian",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_historian",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/historian/Historian/commit/mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+            "parents": [],
+            "sha": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+            "url": "https://api.github.com/repos/historian/Historian/commits/mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/active-tool/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/historian/active-tool/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/historian/legacy-app/stargazers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1217?v=4",
+            "html_url": "https://github.com/friend-a",
+            "id": 1216,
+            "login": "friend-a",
+            "node_id": "MDQ6VXNlcjEwfriend-a",
+            "site_admin": false,
+            "starred_at": "2019-01-01T00:00:00Z",
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}

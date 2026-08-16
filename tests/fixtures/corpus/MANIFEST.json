@@ -1,0 +1,59 @@
+{
+  "profiles": [
+    {
+      "description": "A healthy, active developer profile.",
+      "id": "active-developer",
+      "requests": 23,
+      "username": "jane-doe"
+    },
+    {
+      "description": "A profile with no public activity.",
+      "id": "minimal-profile",
+      "requests": 7,
+      "username": "ghost-user"
+    },
+    {
+      "description": "A brand-new account just getting started.",
+      "id": "newcomer",
+      "requests": 13,
+      "username": "new-dev"
+    },
+    {
+      "description": "A widely-followed maintainer of a big project.",
+      "id": "popular-maintainer",
+      "requests": 28,
+      "username": "ada-dev"
+    },
+    {
+      "description": "A portfolio dominated by archived repositories.",
+      "id": "archived-heavy",
+      "requests": 23,
+      "username": "historian"
+    },
+    {
+      "description": "A profile with private activity and placeholder content.",
+      "id": "hidden-activity",
+      "requests": 18,
+      "username": "private-dev"
+    },
+    {
+      "description": "A profile that does not exist on GitHub.",
+      "id": "errors/user-not-found",
+      "requests": 1,
+      "username": "ghost"
+    },
+    {
+      "description": "A primary rate-limit (403) response.",
+      "id": "errors/rate-limit",
+      "requests": 1,
+      "username": "ghost"
+    },
+    {
+      "description": "A response with invalid JSON.",
+      "id": "errors/malformed",
+      "requests": 1,
+      "username": "ghost"
+    }
+  ],
+  "version": 1
+}

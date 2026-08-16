@@ -1,0 +1,22 @@
+{
+  "profile": {
+    "description": "A response with invalid JSON.",
+    "id": "malformed",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "ghost"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/ghost",
+      "response": {
+        "content": "<html>this is not json</html>",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}
