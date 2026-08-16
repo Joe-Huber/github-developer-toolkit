@@ -87,6 +87,13 @@ class Settings(BaseSettings):
     analysis_readme_min_chars: int = Field(default=100, ge=0)
     analysis_staleness_days: int = Field(default=90, ge=0)
 
+    # --- Scoring --------------------------------------------------------
+    scoring_cadence_target: float = Field(default=4.0, ge=0.0)
+    scoring_gap_good_days: int = Field(default=14, ge=1)
+    scoring_gap_bad_days: int = Field(default=60, ge=1)
+    scoring_strength_threshold: float = Field(default=70.0, ge=0.0, le=100.0)
+    scoring_weakness_threshold: float = Field(default=40.0, ge=0.0, le=100.0)
+
     @classmethod
     def settings_customise_sources(
         cls,
