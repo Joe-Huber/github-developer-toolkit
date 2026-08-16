@@ -310,12 +310,50 @@ no network access, no mutation of raw data, deterministic for a fixed input.
   `technology_mapping_coverage_threshold` is disclosed. Output:
   `TechnologyDiversityAnalysis`.
 
+## Scoring layer (`scoring/`)
+
+Combines the derived analyses into explainable 0–100 dimension scores and an
+overall profile score (issues #46–#50). Every score is built from the raw or
+derived values that produced it and exposes them as evidence, so nothing is
+scored from data that was not collected.
+
+- **Framework & normalization** (issue #47) — the `Scorer` protocol,
+  `ScoreInputs` (one container of analyzer outputs), the `ScoringRegistry`
+  (runs a collection of scorers, skipping any that report no evidence) and the
+  configurable `ScoringConfig` (per-dimension weights, normalization targets,
+  strength/weakness thresholds, loaded via `ScoringConfig.from_settings` from
+  the `scoring_*` settings). Normalization helpers are `clamp`,
+  `normalize_ratio`, `normalize_linear` (invertible), `normalize_log` and
+  `blend`; `blend` returns each component's normalized weight and contribution
+  so the contributions sum exactly to the dimension score. Edge cases are
+  explicit: out-of-range values clamp, degenerate ranges are defined, and no
+  zero-division or `NaN` can leak into output.
+- **Dimension scorers** (issues #48/#49) — eight registered scorers with
+  documented, fixture-tested formulas. Scorers take only the analyzer outputs
+  they need and return `None` (dimension unscorable) when required data is
+  absent, so missing analyses never fabricate a score. Profile (from the
+  profile presence/readme analyses), repository/code quality (repository
+  quality + activity + portfolio composition), consistency (commit cadence,
+  active days and calendar density/streaks), activity (commit volume, cadence,
+  breadth), contribution (volume, density, streaks), community (followers,
+  balance, reach), open-source (pull-request volume, merge rate, external and
+  review engagement) and visibility (stars, followers, languages).
+- **Overall aggregation** (issue #50) — `aggregate_dimension_scores` blends the
+  scored dimensions by their configured weights into `OverallScore`; each
+  `DimensionContribution` shows its score, weight and weighted contribution
+  (which sum to the overall). Strengths and weaknesses are derived
+  deterministically from the scores against the configured thresholds and
+  capped lists, breaking ties on dimension id. `ProfileAnalysis` carries the
+  result in its `overall` field.
+
 ## Derived data layer (`models/derived`)
 
 - `MetricRecord` — id, label, value, **sources** (provenance), timestamp,
   confidence.
 - `DimensionScore` + `ScoreBreakdown` — 0–100 score with weighted components,
   each component referencing the metric and raw inputs behind it.
+- `OverallScore` + `DimensionContribution` — weighted overall score with
+  per-dimension contributions and deterministic strengths/weaknesses.
 - `Finding` — type, severity, evidence, recommendation references.
 - `Recommendation` — priority, action, rationale, linked findings/metrics.
 - `ProfileAnalysis` — snapshot container for one profile's analysis.
