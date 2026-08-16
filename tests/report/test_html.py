@@ -10,9 +10,37 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from _report_fixtures import _minimal_report, _profile_readme, _repo, _rich_report, _rich_snapshot
+from _report_fixtures import (
+    NOW,
+    _minimal_report,
+    _profile_readme,
+    _repo,
+    _rich_report,
+    _rich_snapshot,
+)
 
+from ghdtk.analyzers.repository_quality import (
+    ReadmeState,
+    RepositoryQuality,
+    RepositoryQualitySignals,
+)
+from ghdtk.models.derived import (
+    DimensionId,
+    DimensionScore,
+    ProfileAnalyses,
+    ProfileAnalysis,
+    Report,
+)
 from ghdtk.report import ReportAssembler, render_html, write_html
+from ghdtk.report.html import (
+    _bar_chart,
+    _commits_section,
+    _f,
+    _network_section,
+    _pct,
+    _presence_section,
+    _repo_quality_table,
+)
 
 
 def test_renders_self_contained_html_document() -> None:
@@ -104,3 +132,66 @@ def test_write_html_writes_utf8_file(tmp_path: Path) -> None:
     target = write_html(_rich_report(), tmp_path / "report.html")
     assert target.exists()
     assert target.read_text(encoding="utf-8") == render_html(_rich_report())
+
+
+def _sparse_report() -> Report:
+    """A report with no analyses, score, findings, recommendations or metrics."""
+    profile = ProfileAnalysis(
+        username="octocat",
+        analyzed_at=NOW,
+        analyses=None,
+        scores=[DimensionScore(dimension=DimensionId.PRESENCE, score=42.0, weight=0.5)],
+    )
+    return Report(generated_at=NOW, profile=profile)
+
+
+def _repo_quality_report() -> Report:
+    profile = ProfileAnalysis(
+        username="octocat",
+        analyzed_at=NOW,
+        analyses=ProfileAnalyses(
+            repository_quality=RepositoryQuality(
+                username="octocat",
+                signals=[
+                    RepositoryQualitySignals(
+                        full_name="octocat/placeholder",
+                        has_description=True,
+                        description_placeholder=True,
+                        readme=ReadmeState.PRESENT,
+                        topics_count=0,
+                        has_license=False,
+                        has_homepage=False,
+                    )
+                ],
+                metrics=[],
+                findings=[],
+            )
+        ),
+    )
+    return Report(generated_at=NOW, profile=profile)
+
+
+def test_sparse_report_renders_empty_states_and_dimension_scores() -> None:
+    rendered = render_html(_sparse_report())
+    assert "No overall score is available for this profile." in rendered
+    assert "No findings." in rendered
+    assert "No recommendations." in rendered
+    assert "No metrics." in rendered
+    assert "Dimension scores" in rendered
+    assert "Monthly contributions" not in rendered
+
+
+def test_placeholder_description_renders_in_repo_quality_table() -> None:
+    rendered = render_html(_repo_quality_report())
+    assert "placeholder" in rendered
+    assert "octocat/placeholder" in rendered
+
+
+def test_defensive_formatting_and_section_helpers() -> None:
+    assert _f(None) == "—"
+    assert _pct(None) == "—"
+    assert _bar_chart([]) == '<p class="empty">No data to chart.</p>'
+    assert _presence_section(None) == ""
+    assert _repo_quality_table(None) == ""
+    assert _network_section(None) == ""
+    assert _commits_section(None) == ""

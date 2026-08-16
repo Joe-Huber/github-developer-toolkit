@@ -27,6 +27,6 @@ typecheck:
 test:
 	uv run pytest
 
-## coverage       run tests with a coverage report
+## coverage       run tests with a coverage report (threshold from pyproject)
 coverage:
 	uv run pytest --cov=ghdtk --cov-report=term-missing
