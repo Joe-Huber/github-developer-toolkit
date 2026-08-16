@@ -1,0 +1,24 @@
+{
+  "profile": {
+    "description": "A profile that does not exist on GitHub.",
+    "id": "user-not-found",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "ghost"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/ghost",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    }
+  ],
+  "version": 1
+}

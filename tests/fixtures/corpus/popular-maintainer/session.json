@@ -1,0 +1,1667 @@
+{
+  "profile": {
+    "description": "A widely-followed maintainer of a big project.",
+    "id": "popular-maintainer",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "ada-dev"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/ada-dev",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1086?v=4",
+          "bio": "Maintainer of forge.",
+          "blog": "https://ada.dev",
+          "company": "Forgeworks",
+          "created_at": "2010-01-01T00:00:00Z",
+          "email": "ada@example.org",
+          "followers": 890,
+          "followers_url": "https://api.github.com/users/ada-dev/followers",
+          "following": 12,
+          "following_url": "https://api.github.com/users/ada-dev/following",
+          "hireable": false,
+          "html_url": "https://github.com/ada-dev",
+          "id": 1085,
+          "location": "London",
+          "login": "ada-dev",
+          "name": "Ada Dev",
+          "node_id": "MDQ6VXNlciada-dev",
+          "public_gists": 0,
+          "public_repos": 4,
+          "repos_url": "https://api.github.com/users/ada-dev/repos",
+          "site_admin": false,
+          "twitter_username": "ada",
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/ada-dev"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ada-dev/repos",
+      "response": {
+        "body": [
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2012-03-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "A build toolchain",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "ada-dev/forge",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": "https://forge.example",
+            "html_url": "https://github.com/ada-dev/forge",
+            "id": 1087,
+            "is_template": false,
+            "language": "Rust",
+            "license": {
+              "key": "Apache-2.0",
+              "name": "Apache-2.0",
+              "spdx_id": "Apache-2.0"
+            },
+            "name": "forge",
+            "node_id": "MDEwOlJlcG9zaXRvcnkforge",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1089?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1088,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-15T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 1240,
+            "topics": [
+              "build",
+              "toolchain"
+            ],
+            "updated_at": "2025-12-15T00:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge",
+            "visibility": "public",
+            "watchers_count": 1240,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2016-07-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "Documentation for forge",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "ada-dev/forge-docs",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/ada-dev/forge-docs",
+            "id": 1090,
+            "is_template": false,
+            "language": "Markdown",
+            "license": {
+              "key": "Apache-2.0",
+              "name": "Apache-2.0",
+              "spdx_id": "Apache-2.0"
+            },
+            "name": "forge-docs",
+            "node_id": "MDEwOlJlcG9zaXRvcnkforge-docs",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1092?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1091,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-10T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 310,
+            "topics": [
+              "docs"
+            ],
+            "updated_at": "2025-12-10T00:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge-docs",
+            "visibility": "public",
+            "watchers_count": 310,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2019-01-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "My profile",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "ada-dev/ada-dev",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/ada-dev/ada-dev",
+            "id": 1093,
+            "is_template": false,
+            "language": "Markdown",
+            "license": null,
+            "name": "ada-dev",
+            "node_id": "MDEwOlJlcG9zaXRvcnkada-dev",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1095?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1094,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-05T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 12,
+            "topics": [],
+            "updated_at": "2025-12-05T00:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/ada-dev",
+            "visibility": "public",
+            "watchers_count": 12,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2020-06-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "",
+            "disabled": false,
+            "fork": true,
+            "forks_count": 3,
+            "full_name": "ada-dev/sidecar",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/ada-dev/sidecar",
+            "id": 1096,
+            "is_template": false,
+            "language": "Go",
+            "license": null,
+            "name": "sidecar",
+            "node_id": "MDEwOlJlcG9zaXRvcnksidecar",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1098?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1097,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2023-01-01T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 5,
+            "topics": [],
+            "updated_at": "2023-01-01T00:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/sidecar",
+            "visibility": "public",
+            "watchers_count": 5,
+            "web_commit_signoff_required": false
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 129,
+                  "weeks": [
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 8,
+                          "date": "2025-09-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-09-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 12,
+                          "date": "2025-09-02",
+                          "weekday": 1
+                        }
+                      ],
+                      "firstDay": "2025-09-02"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 7,
+                          "date": "2025-09-03",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-09-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 10,
+                          "date": "2025-10-01",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-10-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 9,
+                          "date": "2025-10-02",
+                          "weekday": 3
+                        }
+                      ],
+                      "firstDay": "2025-10-02"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 11,
+                          "date": "2025-10-03",
+                          "weekday": 4
+                        }
+                      ],
+                      "firstDay": "2025-10-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 14,
+                          "date": "2025-11-03",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-11-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 6,
+                          "date": "2025-11-04",
+                          "weekday": 1
+                        }
+                      ],
+                      "firstDay": "2025-11-04"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 13,
+                          "date": "2025-11-05",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-11-05"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 9,
+                          "date": "2025-12-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 10,
+                          "date": "2025-12-02",
+                          "weekday": 1
+                        }
+                      ],
+                      "firstDay": "2025-12-02"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 8,
+                          "date": "2025-12-03",
+                          "weekday": 2
+                        }
+                      ],
+                      "firstDay": "2025-12-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 5,
+                          "date": "2025-12-29",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-29"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 7,
+                          "date": "2025-12-30",
+                          "weekday": 1
+                        }
+                      ],
+                      "firstDay": "2025-12-30"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ada-dev/followers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1100?v=4",
+            "html_url": "https://github.com/fan-0",
+            "id": 1099,
+            "login": "fan-0",
+            "node_id": "MDQ6VXNlcjEwfan-0",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1102?v=4",
+            "html_url": "https://github.com/fan-1",
+            "id": 1101,
+            "login": "fan-1",
+            "node_id": "MDQ6VXNlcjEwfan-1",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1104?v=4",
+            "html_url": "https://github.com/fan-2",
+            "id": 1103,
+            "login": "fan-2",
+            "node_id": "MDQ6VXNlcjEwfan-2",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/ada-dev/following",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1106?v=4",
+            "html_url": "https://github.com/colleague-a",
+            "id": 1105,
+            "login": "colleague-a",
+            "node_id": "MDQ6VXNlcjEwcolleague-a",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1108?v=4",
+            "html_url": "https://github.com/colleague-b",
+            "id": 1107,
+            "login": "colleague-b",
+            "node_id": "MDQ6VXNlcjEwcolleague-b",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:ada-dev type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": "2025-09-08T09:00:00Z",
+              "comments": 5,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/201/comments",
+              "created_at": "2025-09-02T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/201/events",
+              "html_url": "https://github.com/ada-dev/forge/pull/201",
+              "id": 1109,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/201/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 201,
+              "pull_request": {
+                "comments": 5,
+                "diff_url": "https://github.com/ada-dev/forge/pull/201.diff",
+                "html_url": "https://github.com/ada-dev/forge/pull/201",
+                "merged": true,
+                "merged_at": "2025-09-08T09:00:00Z",
+                "patch_url": "https://github.com/ada-dev/forge/pull/201.patch",
+                "review_comments": 3,
+                "url": "https://api.github.com/repos/ada-dev/forge/pulls/201"
+              },
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "closed",
+              "title": "Add incremental builds",
+              "updated_at": "2025-09-08T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/201",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1111?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1110,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": "2025-10-12T09:00:00Z",
+              "comments": 2,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/205/comments",
+              "created_at": "2025-10-05T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/205/events",
+              "html_url": "https://github.com/ada-dev/forge/pull/205",
+              "id": 1112,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/205/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 205,
+              "pull_request": {
+                "comments": 2,
+                "diff_url": "https://github.com/ada-dev/forge/pull/205.diff",
+                "html_url": "https://github.com/ada-dev/forge/pull/205",
+                "merged": true,
+                "merged_at": "2025-10-12T09:00:00Z",
+                "patch_url": "https://github.com/ada-dev/forge/pull/205.patch",
+                "review_comments": 4,
+                "url": "https://api.github.com/repos/ada-dev/forge/pulls/205"
+              },
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "closed",
+              "title": "Improve caching",
+              "updated_at": "2025-10-12T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/205",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1114?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1113,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": "2025-11-15T09:00:00Z",
+              "comments": 0,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/210/comments",
+              "created_at": "2025-11-01T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/210/events",
+              "html_url": "https://github.com/ada-dev/forge/pull/210",
+              "id": 1115,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/210/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 210,
+              "pull_request": {
+                "comments": 0,
+                "diff_url": "https://github.com/ada-dev/forge/pull/210.diff",
+                "html_url": "https://github.com/ada-dev/forge/pull/210",
+                "merged": false,
+                "merged_at": null,
+                "patch_url": "https://github.com/ada-dev/forge/pull/210.patch",
+                "review_comments": 0,
+                "url": "https://api.github.com/repos/ada-dev/forge/pulls/210"
+              },
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "closed",
+              "title": "Refactor scheduler",
+              "updated_at": "2025-11-15T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/210",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1117?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1116,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "active_lock_reason": null,
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "closed_at": null,
+              "comments": 1,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/214/comments",
+              "created_at": "2025-12-20T09:00:00Z",
+              "draft": false,
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/214/events",
+              "html_url": "https://github.com/ada-dev/forge/pull/214",
+              "id": 1118,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/214/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "number": 214,
+              "pull_request": {
+                "comments": 1,
+                "diff_url": "https://github.com/ada-dev/forge/pull/214.diff",
+                "html_url": "https://github.com/ada-dev/forge/pull/214",
+                "merged": false,
+                "merged_at": null,
+                "patch_url": "https://github.com/ada-dev/forge/pull/214.patch",
+                "review_comments": 0,
+                "url": "https://api.github.com/repos/ada-dev/forge/pulls/214"
+              },
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "open",
+              "title": "Add plugin API",
+              "updated_at": "2025-12-20T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/214",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1120?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1119,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 4
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:ada-dev type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": "2025-09-20T09:00:00Z",
+              "comments": 4,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/202/comments",
+              "created_at": "2025-09-10T09:00:00Z",
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/202/events",
+              "html_url": "https://github.com/ada-dev/forge/issues/202",
+              "id": 1121,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/202/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU202",
+              "number": 202,
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "closed",
+              "title": "Build cache is stale",
+              "updated_at": "2025-09-20T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/202",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1123?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1122,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": "2025-10-25T09:00:00Z",
+              "comments": 2,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/206/comments",
+              "created_at": "2025-10-15T09:00:00Z",
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/206/events",
+              "html_url": "https://github.com/ada-dev/forge/issues/206",
+              "id": 1124,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/206/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU206",
+              "number": 206,
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "closed",
+              "title": "Docs are out of date",
+              "updated_at": "2025-10-25T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/206",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1126?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1125,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            },
+            {
+              "assignee": null,
+              "assignees": [],
+              "author_association": "OWNER",
+              "body": "An issue body.",
+              "closed_at": null,
+              "comments": 3,
+              "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/213/comments",
+              "created_at": "2025-12-10T09:00:00Z",
+              "events_url": "https://api.github.com/repos/ada-dev/forge/issues/213/events",
+              "html_url": "https://github.com/ada-dev/forge/issues/213",
+              "id": 1127,
+              "labels": [],
+              "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/213/labels{/name}",
+              "locked": false,
+              "milestone": null,
+              "node_id": "MDU6SXNzdWU213",
+              "number": 213,
+              "repository_url": "https://api.github.com/repos/ada-dev/forge",
+              "state": "open",
+              "title": "Plugin loading is slow",
+              "updated_at": "2025-12-10T09:00:00Z",
+              "url": "https://api.github.com/repos/ada-dev/forge/issues/213",
+              "user": {
+                "avatar_url": "https://avatars.githubusercontent.com/u/1129?v=4",
+                "html_url": "https://github.com/ada-dev",
+                "id": 1128,
+                "login": "ada-dev",
+                "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+                "site_admin": false,
+                "type": "User"
+              }
+            }
+          ],
+          "total_count": 3
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/forge/languages",
+      "response": {
+        "body": {
+          "Rust": 120000,
+          "Shell": 8000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/forge/readme",
+      "response": {
+        "body": {
+          "content": "IyBGb3JnZQoKQSBidWlsZCB0b29sY2hhaW4uCgojIyBVc2FnZQoKYGBgCmZvcmdlIGJ1aWxkCmBgYAo=",
+          "download_url": "https://raw.githubusercontent.com/ada-dev/forge/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/ada-dev/forge/git/blobs/3d21ec53",
+          "html_url": "https://github.com/ada-dev/forge/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 80,
+          "type": "file",
+          "url": "https://api.github.com/repos/ada-dev/forge/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "ada-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/ada-dev/forge/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1131?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1130,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/gggggggggggggggggggggggggggggggggggggggg/comments",
+            "commit": {
+              "author": {
+                "date": "2025-10-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-10-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "message": "feat: incremental builds",
+              "url": "https://api.github.com/repos/ada-dev/Ada Dev/git/commits/gggggggggggggggggggggggggggggggggggggggg"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1133?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1132,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/ada-dev/Ada Dev/commit/gggggggggggggggggggggggggggggggggggggggg",
+            "parents": [],
+            "sha": "gggggggggggggggggggggggggggggggggggggggg",
+            "url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/gggggggggggggggggggggggggggggggggggggggg"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1135?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1134,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh/comments",
+            "commit": {
+              "author": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "message": "fix: cache invalidation",
+              "url": "https://api.github.com/repos/ada-dev/Ada Dev/git/commits/hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1137?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1136,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/ada-dev/Ada Dev/commit/hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+            "parents": [],
+            "sha": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+            "url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1139?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1138,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii/comments",
+            "commit": {
+              "author": {
+                "date": "2025-12-15T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-12-15T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "message": "feat: plugin API",
+              "url": "https://api.github.com/repos/ada-dev/Ada Dev/git/commits/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1141?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1140,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/ada-dev/Ada Dev/commit/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",
+            "parents": [],
+            "sha": "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",
+            "url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/forge/pulls",
+      "response": {
+        "body": [
+          {
+            "additions": 10,
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "base": {
+              "label": "ada-dev:main",
+              "ref": "main",
+              "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "body": "A contribution.",
+            "changed_files": 3,
+            "closed_at": "2025-10-12T09:00:00Z",
+            "comments": 2,
+            "commits": 1,
+            "created_at": "2025-10-05T09:00:00Z",
+            "deletions": 2,
+            "diff_url": "https://github.com/ada-dev/forge/pull/205.diff",
+            "draft": false,
+            "head": {
+              "label": "ada-dev:feat/205",
+              "ref": "feat/205",
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "html_url": "https://github.com/ada-dev/forge/pull/205",
+            "id": 1142,
+            "issue_url": "https://api.github.com/repos/ada-dev/forge/issues/205",
+            "labels": [],
+            "locked": false,
+            "maintainer_can_modify": false,
+            "merge_commit_sha": "cd9af0783ad2d4fe2d1d8e9b2c4b3d2f1e5f6a7b",
+            "mergeable": true,
+            "mergeable_state": "clean",
+            "merged": true,
+            "merged_at": "2025-10-12T09:00:00Z",
+            "merged_by": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1146?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1145,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "number": 205,
+            "patch_url": "https://github.com/ada-dev/forge/pull/205.patch",
+            "rebaseable": true,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge",
+            "requested_reviewers": [],
+            "review_comments": 4,
+            "state": "closed",
+            "title": "Improve caching",
+            "updated_at": "2025-10-12T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge/pulls/205",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1144?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1143,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          },
+          {
+            "additions": 10,
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "base": {
+              "label": "ada-dev:main",
+              "ref": "main",
+              "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "body": "A contribution.",
+            "changed_files": 3,
+            "closed_at": "2025-11-15T09:00:00Z",
+            "comments": 0,
+            "commits": 1,
+            "created_at": "2025-11-01T09:00:00Z",
+            "deletions": 2,
+            "diff_url": "https://github.com/ada-dev/forge/pull/210.diff",
+            "draft": false,
+            "head": {
+              "label": "ada-dev:feat/210",
+              "ref": "feat/210",
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "html_url": "https://github.com/ada-dev/forge/pull/210",
+            "id": 1147,
+            "issue_url": "https://api.github.com/repos/ada-dev/forge/issues/210",
+            "labels": [],
+            "locked": false,
+            "maintainer_can_modify": false,
+            "merge_commit_sha": null,
+            "mergeable": true,
+            "mergeable_state": "draft",
+            "merged": false,
+            "merged_at": null,
+            "merged_by": null,
+            "number": 210,
+            "patch_url": "https://github.com/ada-dev/forge/pull/210.patch",
+            "rebaseable": true,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge",
+            "requested_reviewers": [],
+            "review_comments": 0,
+            "state": "closed",
+            "title": "Refactor scheduler",
+            "updated_at": "2025-11-15T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge/pulls/210",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1149?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1148,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          },
+          {
+            "additions": 10,
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "base": {
+              "label": "ada-dev:main",
+              "ref": "main",
+              "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "body": "A contribution.",
+            "changed_files": 3,
+            "closed_at": null,
+            "comments": 1,
+            "commits": 1,
+            "created_at": "2025-12-20T09:00:00Z",
+            "deletions": 2,
+            "diff_url": "https://github.com/ada-dev/forge/pull/214.diff",
+            "draft": false,
+            "head": {
+              "label": "ada-dev:feat/214",
+              "ref": "feat/214",
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "html_url": "https://github.com/ada-dev/forge/pull/214",
+            "id": 1150,
+            "issue_url": "https://api.github.com/repos/ada-dev/forge/issues/214",
+            "labels": [],
+            "locked": false,
+            "maintainer_can_modify": false,
+            "merge_commit_sha": null,
+            "mergeable": true,
+            "mergeable_state": "draft",
+            "merged": false,
+            "merged_at": null,
+            "merged_by": null,
+            "number": 214,
+            "patch_url": "https://github.com/ada-dev/forge/pull/214.patch",
+            "rebaseable": true,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge",
+            "requested_reviewers": [],
+            "review_comments": 0,
+            "state": "open",
+            "title": "Add plugin API",
+            "updated_at": "2025-12-20T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge/pulls/214",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1152?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1151,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/forge/issues",
+      "response": {
+        "body": [
+          {
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "body": "An issue body.",
+            "closed_at": "2025-09-20T09:00:00Z",
+            "comments": 4,
+            "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/202/comments",
+            "created_at": "2025-09-10T09:00:00Z",
+            "events_url": "https://api.github.com/repos/ada-dev/forge/issues/202/events",
+            "html_url": "https://github.com/ada-dev/forge/issues/202",
+            "id": 1153,
+            "labels": [],
+            "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/202/labels{/name}",
+            "locked": false,
+            "milestone": null,
+            "node_id": "MDU6SXNzdWU202",
+            "number": 202,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge",
+            "state": "closed",
+            "title": "Build cache is stale",
+            "updated_at": "2025-09-20T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge/issues/202",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1155?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1154,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          },
+          {
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "body": "An issue body.",
+            "closed_at": null,
+            "comments": 3,
+            "comments_url": "https://api.github.com/repos/ada-dev/forge/issues/213/comments",
+            "created_at": "2025-12-10T09:00:00Z",
+            "events_url": "https://api.github.com/repos/ada-dev/forge/issues/213/events",
+            "html_url": "https://github.com/ada-dev/forge/issues/213",
+            "id": 1156,
+            "labels": [],
+            "labels_url": "https://api.github.com/repos/ada-dev/forge/issues/213/labels{/name}",
+            "locked": false,
+            "milestone": null,
+            "node_id": "MDU6SXNzdWU213",
+            "number": 213,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge",
+            "state": "open",
+            "title": "Plugin loading is slow",
+            "updated_at": "2025-12-10T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge/issues/213",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1158?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1157,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/forge-docs/languages",
+      "response": {
+        "body": {
+          "Markdown": 40000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/forge-docs/readme",
+      "response": {
+        "body": {
+          "content": "IyBGb3JnZSBEb2NzCgpUaGUgZG9jdW1lbnRhdGlvbiBmb3IgZm9yZ2UuCg==",
+          "download_url": "https://raw.githubusercontent.com/ada-dev/forge-docs/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/ada-dev/forge-docs/git/blobs/3d21ec53",
+          "html_url": "https://github.com/ada-dev/forge-docs/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 60,
+          "type": "file",
+          "url": "https://api.github.com/repos/ada-dev/forge-docs/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "ada-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/ada-dev/forge-docs/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1160?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1159,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj/comments",
+            "commit": {
+              "author": {
+                "date": "2025-12-10T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-12-10T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "message": "docs: update quickstart",
+              "url": "https://api.github.com/repos/ada-dev/Ada Dev/git/commits/jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1162?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1161,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/ada-dev/Ada Dev/commit/jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+            "parents": [],
+            "sha": "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+            "url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1164?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1163,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/comments",
+            "commit": {
+              "author": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "ada@example.org",
+                "name": "Ada Dev"
+              },
+              "message": "docs: add examples",
+              "url": "https://api.github.com/repos/ada-dev/Ada Dev/git/commits/kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1166?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1165,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/ada-dev/Ada Dev/commit/kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+            "parents": [],
+            "sha": "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+            "url": "https://api.github.com/repos/ada-dev/Ada Dev/commits/kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/forge-docs/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/forge-docs/issues",
+      "response": {
+        "body": [
+          {
+            "assignee": null,
+            "assignees": [],
+            "author_association": "OWNER",
+            "body": "An issue body.",
+            "closed_at": "2025-10-05T09:00:00Z",
+            "comments": 0,
+            "comments_url": "https://api.github.com/repos/ada-dev/forge-docs/issues/55/comments",
+            "created_at": "2025-10-01T09:00:00Z",
+            "events_url": "https://api.github.com/repos/ada-dev/forge-docs/issues/55/events",
+            "html_url": "https://github.com/ada-dev/forge-docs/issues/55",
+            "id": 1167,
+            "labels": [],
+            "labels_url": "https://api.github.com/repos/ada-dev/forge-docs/issues/55/labels{/name}",
+            "locked": false,
+            "milestone": null,
+            "node_id": "MDU6SXNzdWU55",
+            "number": 55,
+            "repository_url": "https://api.github.com/repos/ada-dev/forge-docs",
+            "state": "closed",
+            "title": "Typo in quickstart",
+            "updated_at": "2025-10-05T09:00:00Z",
+            "url": "https://api.github.com/repos/ada-dev/forge-docs/issues/55",
+            "user": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1169?v=4",
+              "html_url": "https://github.com/ada-dev",
+              "id": 1168,
+              "login": "ada-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_ada-dev",
+              "site_admin": false,
+              "type": "User"
+            }
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/ada-dev/languages",
+      "response": {
+        "body": {
+          "Markdown": 900
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/ada-dev/readme",
+      "response": {
+        "body": {
+          "content": "IyBBZGEgRGV2CgpNYWludGFpbmVyIG9mIGZvcmdlLiBGaW5kIG1lIGF0IGFkYS5kZXYuCgphZGEtZGV2Cg==",
+          "download_url": "https://raw.githubusercontent.com/ada-dev/ada-dev/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/ada-dev/ada-dev/git/blobs/3d21ec53",
+          "html_url": "https://github.com/ada-dev/ada-dev/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 84,
+          "type": "file",
+          "url": "https://api.github.com/repos/ada-dev/ada-dev/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "ada-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/ada-dev/ada-dev/commits",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/ada-dev/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/ada-dev/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/sidecar/languages",
+      "response": {
+        "body": {
+          "Go": 2000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/ada-dev/sidecar/readme",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "ada-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/ada-dev/sidecar/commits",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/sidecar/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/ada-dev/sidecar/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/ada-dev/forge/stargazers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1171?v=4",
+            "html_url": "https://github.com/fan-1",
+            "id": 1170,
+            "login": "fan-1",
+            "node_id": "MDQ6VXNlcjEwfan-1",
+            "site_admin": false,
+            "starred_at": "2025-12-01T00:00:00Z",
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1173?v=4",
+            "html_url": "https://github.com/fan-2",
+            "id": 1172,
+            "login": "fan-2",
+            "node_id": "MDQ6VXNlcjEwfan-2",
+            "site_admin": false,
+            "starred_at": "2025-12-20T00:00:00Z",
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,544 @@
+{
+  "profile": {
+    "description": "A profile with private activity and placeholder content.",
+    "id": "hidden-activity",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "private-dev"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/private-dev",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1219?v=4",
+          "bio": null,
+          "blog": null,
+          "company": null,
+          "created_at": "2016-05-20T00:00:00Z",
+          "email": null,
+          "followers": 1,
+          "followers_url": "https://api.github.com/users/private-dev/followers",
+          "following": 3,
+          "following_url": "https://api.github.com/users/private-dev/following",
+          "hireable": null,
+          "html_url": "https://github.com/private-dev",
+          "id": 1218,
+          "location": null,
+          "login": "private-dev",
+          "name": "Private Dev",
+          "node_id": "MDQ6VXNlciprivate-dev",
+          "public_gists": 0,
+          "public_repos": 2,
+          "repos_url": "https://api.github.com/users/private-dev/repos",
+          "site_admin": false,
+          "twitter_username": null,
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/private-dev"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/private-dev/repos",
+      "response": {
+        "body": [
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2020-03-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "Private development",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "private-dev/private-dev",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/private-dev/private-dev",
+            "id": 1220,
+            "is_template": false,
+            "language": "Markdown",
+            "license": null,
+            "name": "private-dev",
+            "node_id": "MDEwOlJlcG9zaXRvcnkprivate-dev",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1222?v=4",
+              "html_url": "https://github.com/private-dev",
+              "id": 1221,
+              "login": "private-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_private-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-05T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 0,
+            "topics": [],
+            "updated_at": "2025-12-05T00:00:00Z",
+            "url": "https://api.github.com/repos/private-dev/private-dev",
+            "visibility": "public",
+            "watchers_count": 0,
+            "web_commit_signoff_required": false
+          },
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2025-11-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "Coming soon",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "private-dev/work-in-progress",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/private-dev/work-in-progress",
+            "id": 1223,
+            "is_template": false,
+            "language": "Python",
+            "license": null,
+            "name": "work-in-progress",
+            "node_id": "MDEwOlJlcG9zaXRvcnkwork-in-progress",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1225?v=4",
+              "html_url": "https://github.com/private-dev",
+              "id": 1224,
+              "login": "private-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_private-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-11-20T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 2,
+            "topics": [],
+            "updated_at": "2025-11-20T00:00:00Z",
+            "url": "https://api.github.com/repos/private-dev/work-in-progress",
+            "visibility": "public",
+            "watchers_count": 2,
+            "web_commit_signoff_required": false
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 5,
+                  "weeks": [
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 1,
+                          "date": "2025-10-06",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-10-06"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-12-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-01"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-12-29",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-29"
+                    }
+                  ]
+                },
+                "restrictedContributionsCount": 120
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/private-dev/followers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1227?v=4",
+            "html_url": "https://github.com/silent-observer",
+            "id": 1226,
+            "login": "silent-observer",
+            "node_id": "MDQ6VXNlcjEwsilent-observer",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/private-dev/following",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1229?v=4",
+            "html_url": "https://github.com/colleague-a",
+            "id": 1228,
+            "login": "colleague-a",
+            "node_id": "MDQ6VXNlcjEwcolleague-a",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1231?v=4",
+            "html_url": "https://github.com/colleague-b",
+            "id": 1230,
+            "login": "colleague-b",
+            "node_id": "MDQ6VXNlcjEwcolleague-b",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1233?v=4",
+            "html_url": "https://github.com/colleague-c",
+            "id": 1232,
+            "login": "colleague-c",
+            "node_id": "MDQ6VXNlcjEwcolleague-c",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:private-dev type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:private-dev type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/private-dev/private-dev/languages",
+      "response": {
+        "body": {
+          "Markdown": 200
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/private-dev/private-dev/readme",
+      "response": {
+        "body": {
+          "content": "VGhpcyBpcyBhIHByb2ZpbGUgcmVhZG1lLgoKV2VsY29tZSB0byBteSBHaXRIdWIgcHJvZmlsZS4KCk1vcmUgY29udGVudCBjb21pbmcgc29vbi4K",
+          "download_url": "https://raw.githubusercontent.com/private-dev/private-dev/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/private-dev/private-dev/git/blobs/3d21ec53",
+          "html_url": "https://github.com/private-dev/private-dev/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 112,
+          "type": "file",
+          "url": "https://api.github.com/repos/private-dev/private-dev/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "private-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/private-dev/private-dev/commits",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/private-dev/private-dev/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/private-dev/private-dev/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/private-dev/work-in-progress/languages",
+      "response": {
+        "body": {
+          "Python": 1500
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/private-dev/work-in-progress/readme",
+      "response": {
+        "body": {
+          "message": "Not Found"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "private-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/private-dev/work-in-progress/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1235?v=4",
+              "html_url": "https://github.com/private-dev",
+              "id": 1234,
+              "login": "private-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_private-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/private-dev/Private Dev/commits/nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn/comments",
+            "commit": {
+              "author": {
+                "date": "2025-11-20T09:00:00Z",
+                "email": "private@example.org",
+                "name": "Private Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-11-20T09:00:00Z",
+                "email": "private@example.org",
+                "name": "Private Dev"
+              },
+              "message": "wip: initial sketch",
+              "url": "https://api.github.com/repos/private-dev/Private Dev/git/commits/nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1237?v=4",
+              "html_url": "https://github.com/private-dev",
+              "id": 1236,
+              "login": "private-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_private-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/private-dev/Private Dev/commit/nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+            "parents": [],
+            "sha": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+            "url": "https://api.github.com/repos/private-dev/Private Dev/commits/nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/private-dev/work-in-progress/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/private-dev/work-in-progress/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/private-dev/work-in-progress/stargazers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1239?v=4",
+            "html_url": "https://github.com/silent-observer",
+            "id": 1238,
+            "login": "silent-observer",
+            "node_id": "MDQ6VXNlcjEwsilent-observer",
+            "site_admin": false,
+            "starred_at": "2025-12-01T00:00:00Z",
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}

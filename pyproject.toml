@@ -25,6 +25,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "hypothesis>=6.165.9",
     "mypy>=1.11",
     "pre-commit>=3.8",
     "pytest>=8.2",
@@ -73,3 +74,11 @@ warn_unused_configs = true
 addopts = "-q"
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.coverage]
+[tool.coverage.run]
+source = ["ghdtk"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true

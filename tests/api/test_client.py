@@ -8,11 +8,13 @@ malformed/validation failures surface as typed errors.
 from __future__ import annotations
 
 import time
+from pathlib import Path
 from typing import Any
 
 import httpx
 import pytest
 
+from ghdtk.api.cache import DiskCache
 from ghdtk.api.client import (
     STARGAZER_TIMELINE_ACCEPT,
     GitHubClient,
@@ -28,7 +30,8 @@ from ghdtk.api.errors import (
     RateLimitError,
     UserNotFoundError,
 )
-from ghdtk.api.rate_limit import BackoffPolicy
+from ghdtk.api.rate_limit import BackoffPolicy, RateLimitState
+from ghdtk.config.settings import Settings
 
 FixtureLoader = Any
 
@@ -546,3 +549,120 @@ def test_rate_limit_wait_pauses_before_next_page(load_raw_fixture: FixtureLoader
     assert client.requests_made == 2
     assert len(slept) == 1
     assert 1.0 <= slept[0] <= 3.0
+
+
+# --- coverage gaps: construction, defensive branches, GraphQL errors ---------
+
+
+def test_from_settings_enables_disk_cache(tmp_path: Path) -> None:
+    settings = Settings(
+        github_token="test-token",
+        cache_enabled=True,
+        cache_dir=tmp_path,
+        cache_ttl_seconds=3600,
+    )
+    client = GitHubClient.from_settings(settings)
+    try:
+        cache = client._cache
+        assert cache is not None
+        assert isinstance(cache.backend, DiskCache)
+        assert cache.backend._directory == tmp_path
+    finally:
+        client.close()
+
+
+def test_from_settings_disables_cache_when_configured(tmp_path: Path) -> None:
+    settings = Settings(
+        github_token="test-token",
+        cache_enabled=False,
+        cache_dir=tmp_path,
+    )
+    client = GitHubClient.from_settings(settings)
+    try:
+        assert client._cache is None
+    finally:
+        client.close()
+
+
+def test_rate_limit_property_exposes_state() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"login": "octocat"})
+
+    with _client(handler) as client:
+        assert isinstance(client.rate_limit, RateLimitState)
+
+
+def test_retryable_status_without_retry_after_retries_with_backoff() -> None:
+    calls: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(str(request.url))
+        if len(calls) < 3:
+            return httpx.Response(429, request=request)
+        return _json_response(request, {"login": "octocat"})
+
+    with _client(handler) as client:
+        user = client.get_user("octocat")
+    assert user.login == "octocat"
+    assert len(calls) == 3
+
+
+def test_secondary_rate_limit_403_with_retry_after_raises() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(403, headers={"Retry-After": "2"}, request=request)
+
+    with _client(handler) as client:
+        with pytest.raises(RateLimitError) as excinfo:
+            client.get_user("octocat")
+    assert excinfo.value.status_code == 403
+    assert excinfo.value.retry_after == 2.0
+
+
+def test_403_without_retry_after_raises_authentication_error() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(403, request=request)
+
+    with _client(handler, max_retries=1) as client:
+        with pytest.raises(AuthenticationError):
+            client.get_user("octocat")
+
+
+def test_invalid_rate_limit_reset_is_tolerated() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            403,
+            headers={"X-RateLimit-Remaining": "0", "X-RateLimit-Reset": "not-a-number"},
+            request=request,
+        )
+
+    with _client(handler, max_retries=1) as client:
+        with pytest.raises(RateLimitError) as excinfo:
+            client.get_user("octocat")
+    assert excinfo.value.reset_at is None
+
+
+def test_search_pull_requests_missing_items_raises() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"message": "no items"})
+
+    with _client(handler) as client:
+        with pytest.raises(MalformedResponseError):
+            client.search_pull_requests("author:octocat type:pr")
+
+
+def test_contribution_calendar_missing_user_raises() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"data": None})
+
+    with _client(handler) as client:
+        with pytest.raises(MalformedResponseError):
+            client.get_contribution_calendar("octocat")
+
+
+def test_contribution_calendar_missing_calendar_raises() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"data": {"user": {}}})
+
+    with _client(handler) as client:
+        with pytest.raises(MalformedResponseError):
+            client.get_contribution_calendar("octocat")

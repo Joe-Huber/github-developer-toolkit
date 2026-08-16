@@ -1,0 +1,457 @@
+{
+  "profile": {
+    "description": "A brand-new account just getting started.",
+    "id": "newcomer",
+    "now": "2026-01-01T12:00:00Z",
+    "username": "new-dev"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/users/new-dev",
+      "response": {
+        "body": {
+          "avatar_url": "https://avatars.githubusercontent.com/u/1065?v=4",
+          "bio": "Learning to code.",
+          "blog": null,
+          "company": null,
+          "created_at": "2025-08-15T00:00:00Z",
+          "email": null,
+          "followers": 1,
+          "followers_url": "https://api.github.com/users/new-dev/followers",
+          "following": 2,
+          "following_url": "https://api.github.com/users/new-dev/following",
+          "hireable": null,
+          "html_url": "https://github.com/new-dev",
+          "id": 1064,
+          "location": null,
+          "login": "new-dev",
+          "name": "New Dev",
+          "node_id": "MDQ6VXNlcinew-dev",
+          "public_gists": 0,
+          "public_repos": 1,
+          "repos_url": "https://api.github.com/users/new-dev/repos",
+          "site_admin": false,
+          "twitter_username": null,
+          "type": "User",
+          "updated_at": "2025-12-01T00:00:00Z",
+          "url": "https://api.github.com/users/new-dev"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/new-dev/repos",
+      "response": {
+        "body": [
+          {
+            "allow_forking": true,
+            "archived": false,
+            "created_at": "2025-09-01T00:00:00Z",
+            "default_branch": "main",
+            "description": "My first project",
+            "disabled": false,
+            "fork": false,
+            "forks_count": 3,
+            "full_name": "new-dev/first-project",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_wiki": true,
+            "homepage": null,
+            "html_url": "https://github.com/new-dev/first-project",
+            "id": 1066,
+            "is_template": false,
+            "language": "Python",
+            "license": null,
+            "name": "first-project",
+            "node_id": "MDEwOlJlcG9zaXRvcnkfirst-project",
+            "open_issues_count": 0,
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1068?v=4",
+              "html_url": "https://github.com/new-dev",
+              "id": 1067,
+              "login": "new-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_new-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "private": false,
+            "pushed_at": "2025-12-20T00:00:00Z",
+            "size": 100,
+            "stargazers_count": 3,
+            "topics": [
+              "learning"
+            ],
+            "updated_at": "2025-12-20T00:00:00Z",
+            "url": "https://api.github.com/repos/new-dev/first-project",
+            "visibility": "public",
+            "watchers_count": 3,
+            "web_commit_signoff_required": false
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "response": {
+        "body": {
+          "data": {
+            "user": {
+              "contributionsCollection": {
+                "contributionCalendar": {
+                  "totalContributions": 6,
+                  "weeks": [
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 2,
+                          "date": "2025-10-06",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-10-06"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 1,
+                          "date": "2025-11-03",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-11-03"
+                    },
+                    {
+                      "contributionDays": [
+                        {
+                          "color": "#39d353",
+                          "contributionCount": 3,
+                          "date": "2025-12-01",
+                          "weekday": 0
+                        }
+                      ],
+                      "firstDay": "2025-12-01"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/new-dev/followers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1070?v=4",
+            "html_url": "https://github.com/friend-one",
+            "id": 1069,
+            "login": "friend-one",
+            "node_id": "MDQ6VXNlcjEwfriend-one",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/users/new-dev/following",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1072?v=4",
+            "html_url": "https://github.com/mentor",
+            "id": 1071,
+            "login": "mentor",
+            "node_id": "MDQ6VXNlcjEwmentor",
+            "site_admin": false,
+            "type": "User"
+          },
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1074?v=4",
+            "html_url": "https://github.com/hero",
+            "id": 1073,
+            "login": "hero",
+            "node_id": "MDQ6VXNlcjEwhero",
+            "site_admin": false,
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:new-dev type:pr"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "q": "author:new-dev type:issue"
+      },
+      "path": "/search/issues",
+      "response": {
+        "body": {
+          "incomplete_results": false,
+          "items": [],
+          "total_count": 0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/new-dev/first-project/languages",
+      "response": {
+        "body": {
+          "Python": 5000
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/repos/new-dev/first-project/readme",
+      "response": {
+        "body": {
+          "content": "IyBGaXJzdCBQcm9qZWN0CgpNeSB2ZXJ5IGZpcnN0IHByb2plY3QuCg==",
+          "download_url": "https://raw.githubusercontent.com/new-dev/first-project/main/README.md",
+          "encoding": "base64",
+          "git_url": "https://api.github.com/repos/new-dev/first-project/git/blobs/3d21ec53",
+          "html_url": "https://github.com/new-dev/first-project/blob/main/README.md",
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+          "size": 56,
+          "type": "file",
+          "url": "https://api.github.com/repos/new-dev/first-project/contents/README.md"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "author": "new-dev",
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/new-dev/first-project/commits",
+      "response": {
+        "body": [
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1076?v=4",
+              "html_url": "https://github.com/new-dev",
+              "id": 1075,
+              "login": "new-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_new-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/new-dev/New Dev/commits/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/comments",
+            "commit": {
+              "author": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "new@example.org",
+                "name": "New Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-11-01T09:00:00Z",
+                "email": "new@example.org",
+                "name": "New Dev"
+              },
+              "message": "feat: initial commit",
+              "url": "https://api.github.com/repos/new-dev/New Dev/git/commits/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1078?v=4",
+              "html_url": "https://github.com/new-dev",
+              "id": 1077,
+              "login": "new-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_new-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/new-dev/New Dev/commit/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "parents": [],
+            "sha": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "url": "https://api.github.com/repos/new-dev/New Dev/commits/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          {
+            "author": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1080?v=4",
+              "html_url": "https://github.com/new-dev",
+              "id": 1079,
+              "login": "new-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_new-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "comments_url": "https://api.github.com/repos/new-dev/New Dev/commits/ffffffffffffffffffffffffffffffffffffffff/comments",
+            "commit": {
+              "author": {
+                "date": "2025-12-20T09:00:00Z",
+                "email": "new@example.org",
+                "name": "New Dev"
+              },
+              "comment_count": 0,
+              "committer": {
+                "date": "2025-12-20T09:00:00Z",
+                "email": "new@example.org",
+                "name": "New Dev"
+              },
+              "message": "fix: readme",
+              "url": "https://api.github.com/repos/new-dev/New Dev/git/commits/ffffffffffffffffffffffffffffffffffffffff"
+            },
+            "committer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/1082?v=4",
+              "html_url": "https://github.com/new-dev",
+              "id": 1081,
+              "login": "new-dev",
+              "node_id": "MDQ6VXNlcntidF90_#!_id_new-dev",
+              "site_admin": false,
+              "type": "User"
+            },
+            "html_url": "https://github.com/new-dev/New Dev/commit/ffffffffffffffffffffffffffffffffffffffff",
+            "parents": [],
+            "sha": "ffffffffffffffffffffffffffffffffffffffff",
+            "url": "https://api.github.com/repos/new-dev/New Dev/commits/ffffffffffffffffffffffffffffffffffffffff"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/new-dev/first-project/pulls",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100",
+        "state": "all"
+      },
+      "path": "/repos/new-dev/first-project/issues",
+      "response": {
+        "body": [],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    },
+    {
+      "method": "GET",
+      "params": {
+        "page": "1",
+        "per_page": "100"
+      },
+      "path": "/repos/new-dev/first-project/stargazers",
+      "response": {
+        "body": [
+          {
+            "avatar_url": "https://avatars.githubusercontent.com/u/1084?v=4",
+            "html_url": "https://github.com/friend-one",
+            "id": 1083,
+            "login": "friend-one",
+            "node_id": "MDQ6VXNlcjEwfriend-one",
+            "site_admin": false,
+            "starred_at": "2025-12-01T00:00:00Z",
+            "type": "User"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "version": 1
+}
