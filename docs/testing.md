@@ -3,7 +3,8 @@
 This document describes the testing strategy and the recorded-response fixture
 corpus used to exercise the collection pipeline without touching the live API.
 It is the fixture guide referenced by issue #59 and the base for the unit (#60)
-and integration/end-to-end (#61) suites.
+and integration/end-to-end (#61) suites. The quality gates described here back
+the epic [#58](https://github.com/Joe-Huber/github-developer-toolkit/issues/58).
 
 ## Test strategy
 
@@ -19,12 +20,32 @@ Three layers build on each other:
    recordings of the requests a full collection makes for each profile and the
    responses it receives. This document is their guide.
 2. **Unit tests** (`tests/api`, `tests/collectors`, `tests/analyzers`,
-   `tests/scoring`, ...) — targeted per-module tests, including raw JSON
-   fixtures under `tests/fixtures/raw/`.
-3. **Integration & end-to-end tests** — replay a full profile session end to
-   end (`collect_profile` → profile README → `ReportAssembler` → all
-   renderers), asserting the artifacts are complete, deterministic and
-   regression-free (issue #61).
+   `tests/scoring`, `tests/report`, `tests/models`, ...) — targeted per-module
+   tests, including raw JSON fixtures under `tests/fixtures/raw/`.
+   Normalization/property tests (`tests/api/test_normalizers_property.py`) use
+   **hypothesis** to generate inputs and assert invariants (shares sum to one,
+   counts are bounded, summaries agree with their inputs).
+3. **Integration & end-to-end tests** (`tests/fixtures/test_end_to_end.py`) —
+   replay every full profile session end to end (`collect_profile` → profile
+   README → `ReportAssembler` → all renderers), asserting the artifacts are
+   complete, deterministic and regression-free (issue #61).
+
+## Coverage gate
+
+The repository enforces a unit-test coverage floor of **95%** on the `ghdtk`
+package, configured in `[tool.coverage]` in `pyproject.toml`. The gate runs as:
+
+```sh
+make coverage        # pytest --cov=ghdtk; threshold read from pyproject
+```
+
+`make coverage` reports per-module gaps with missing line numbers, so an
+uncovered branch in a new module is visible immediately. The `make check` gate
+is the fast loop (lint → format-check → typecheck → test) and does not run
+coverage; run `make coverage` before merging to confirm the floor still holds.
+Pre-commit hooks run the same checks on every commit, with mypy given the same
+dependency set the project uses (including `hypothesis` for the property
+tests).
 
 ## Corpus layout
 
