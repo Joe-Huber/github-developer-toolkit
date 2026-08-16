@@ -76,7 +76,7 @@ models/derived  DimensionScore
 recommendations/  findings -> prioritized Recommendation
    │
    ▼
-report/         assemble ProfileAnalysis + Report DTO -> JSON
+report/         assemble Report DTO -> JSON / Markdown / HTML
 ```
 
 The pipeline is strict **raw → derived**: `api/` and `collectors/` never read
@@ -379,6 +379,35 @@ to the finding or score that motivated it, so a report stays answerable:
   deterministic (severity then id, priority then effort then id), so identical
   inputs produce identical syntheses.
 
+## Report layer (`report/`)
+
+Turns the assessment into shareable artifacts (issues #54–#57). The `Report`
+DTO assembled here is the canonical serializable output; every renderer consumes
+it directly, so all formats stay consistent and deterministic.
+
+- **Assembly** (`report/assemble.py`, issue #55) — `run_analyses` executes every
+  analyzer over a raw snapshot and wraps the results in a lazy `ProfileAnalyses`
+  container, then `ReportAssembler.assemble` folds the analyses, dimensions,
+  findings and recommendations into the final `Report` DTO. `Report` is
+  `model_dump`-able and round-trips losslessly through JSON.
+- **Markdown** (`report/markdown.py`, issue #56) — `render_markdown` emits a
+  well-formatted document: per-analysis sections with curated property tables
+  (byte units, percentages, `—` for missing values), sorted data tables for
+  commits/PRs/issues/languages/domains, findings and recommendations ordered by
+  severity and priority, and a flattened metrics appendix. The output is
+  compared byte-for-byte against a checked-in golden file.
+- **JSON** (`report/json.py`, issue #56) — `render_json`/`write_json` serialize
+  the `Report` DTO losslessly, with `indent` and `ensure_ascii` options.
+- **HTML** (`report/html.py`, issue #57) — `render_html` produces a fully static,
+  self-contained dashboard: inline CSS dark theme, CSS-only bar charts for
+  dimension scores, monthly contributions, language distribution and the
+  most-starred ranking, collapsible findings/recommendations, and a full metrics
+  table. No JavaScript and no external resources, so the file works offline and
+  is byte-deterministic. Every dynamic value is HTML-escaped.
+
+All renderers are pure functions over a `Report` and are covered by golden and
+smoke tests under `tests/report/`.
+
 ## Derived data layer (`models/derived`)
 
 - `MetricRecord` — id, label, value, **sources** (provenance), timestamp,
@@ -392,7 +421,8 @@ to the finding or score that motivated it, so a report stays answerable:
   estimate, linked findings/metrics.
 - `Synthesis` — strengths, weaknesses, red flags and the prioritized plan.
 - `ProfileAnalysis` — snapshot container for one profile's analysis.
-- `Report` — final serializable DTO.
+- `ProfileAnalyses` — lazy container holding every analyzer's output.
+- `Report` — final serializable DTO assembled in the report layer.
 
 All derived models serialize to JSON and round-trip losslessly.
 
