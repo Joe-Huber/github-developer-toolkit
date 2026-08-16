@@ -20,6 +20,7 @@ from ghdtk.models.derived import (
     MetricRecord,
     ProfileAnalysis,
     Recommendation,
+    RecommendationEffort,
     RecommendationPriority,
     Report,
     ScoreBreakdown,
@@ -89,6 +90,9 @@ def _recommendation() -> Recommendation:
         priority=RecommendationPriority.HIGH,
         action="Push a commit to octocat/Hello-World.",
         rationale="Recent activity improves the activity dimension score.",
+        template_id="repo.stale_repository",
+        severity=FindingSeverity.LOW,
+        effort=RecommendationEffort.LOW,
         finding_ids=["f1"],
         metric_ids=["repo.stars"],
         sources=[_source()],
@@ -171,6 +175,9 @@ def test_recommendation_roundtrip() -> None:
     loaded = Recommendation.model_validate_json(_recommendation().model_dump_json())
     assert loaded == _recommendation()
     assert loaded.priority is RecommendationPriority.HIGH
+    assert loaded.template_id == "repo.stale_repository"
+    assert loaded.severity is FindingSeverity.LOW
+    assert loaded.effort is RecommendationEffort.LOW
     assert loaded.metric_ids == ["repo.stars"]
 
 
