@@ -12,7 +12,11 @@ from ghdtk.models.derived.analysis import ProfileAnalysis, Report
 from ghdtk.models.derived.finding import Finding, FindingSeverity
 from ghdtk.models.derived.metric import MetricRecord, MetricValue
 from ghdtk.models.derived.provenance import SourceEntityKind, SourceReference
-from ghdtk.models.derived.recommendation import Recommendation, RecommendationPriority
+from ghdtk.models.derived.recommendation import (
+    Recommendation,
+    RecommendationEffort,
+    RecommendationPriority,
+)
 from ghdtk.models.derived.score import (
     DimensionContribution,
     DimensionId,
@@ -20,6 +24,7 @@ from ghdtk.models.derived.score import (
     OverallScore,
     ScoreBreakdown,
 )
+from ghdtk.models.derived.synthesis import Synthesis
 
 __all__ = [
     "DimensionContribution",
@@ -32,9 +37,11 @@ __all__ = [
     "OverallScore",
     "ProfileAnalysis",
     "Recommendation",
+    "RecommendationEffort",
     "RecommendationPriority",
     "Report",
     "ScoreBreakdown",
     "SourceEntityKind",
     "SourceReference",
+    "Synthesis",
 ]
