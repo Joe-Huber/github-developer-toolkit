@@ -346,6 +346,39 @@ scored from data that was not collected.
   capped lists, breaking ties on dimension id. `ProfileAnalysis` carries the
   result in its `overall` field.
 
+## Recommendation layer (`recommendations/`)
+
+Turns findings and low dimension scores into actionable, prioritized,
+evidence-backed recommendations (issues #51–#53). Every recommendation is tied
+to the finding or score that motivated it, so a report stays answerable:
+*"why does this recommendation exist?"*.
+
+- **Rule library** (`recommendations/rules.py`, issue #52) — `DEFAULT_RULES`
+  maps every finding the analyzers emit to one of three classes: an actionable
+  rule (producing a `Recommendation` with a template id, rationale, effort
+  estimate, priority and metric references), a disclosure (`DISCLOSURE_PREFIXES`
+  — missing/unavailable data surfaced as a red flag, never a recommendation) or
+  a positive standout (`POSITIVE_PREFIXES` — surfaced as a strength). Rule
+  patterns support exact, dotted-prefix and `*` single-segment wildcard
+  matching; `extract_value` captures the matched segment for template
+  interpolation, and `classify` raises on any unclassified finding so a missing
+  rule surfaces immediately.
+- **Engine** (`recommendations/engine.py`, issue #52) — `RecommendationEngine`
+  maps findings to rules (one recommendation per actionable finding, carrying
+  the finding's evidence as sources and severity) and emits low-score
+  recommendations for dimensions at or below the weakness threshold, with
+  severity/priority bands and a `dimension.low_score` template. The result is
+  sorted into plan order by priority, then effort (quick wins first), then id.
+  `backfill_finding_links` fills `Finding.recommendation_ids` so findings link
+  back to the recommendations they produced.
+- **Synthesis** (`recommendations/synthesis.py`, issue #53) — `synthesize`
+  assembles the assessment narrative deterministically: strengths (dimension
+  strengths plus positive standouts), weaknesses (dimension weaknesses plus
+  quality issues), red flags (missing information, placeholder values and
+  disclosures of unavailable data) and the prioritized plan. Ordering is fully
+  deterministic (severity then id, priority then effort then id), so identical
+  inputs produce identical syntheses.
+
 ## Derived data layer (`models/derived`)
 
 - `MetricRecord` — id, label, value, **sources** (provenance), timestamp,
@@ -355,7 +388,9 @@ scored from data that was not collected.
 - `OverallScore` + `DimensionContribution` — weighted overall score with
   per-dimension contributions and deterministic strengths/weaknesses.
 - `Finding` — type, severity, evidence, recommendation references.
-- `Recommendation` — priority, action, rationale, linked findings/metrics.
+- `Recommendation` — priority, action, rationale, template id, severity, effort
+  estimate, linked findings/metrics.
+- `Synthesis` — strengths, weaknesses, red flags and the prioritized plan.
 - `ProfileAnalysis` — snapshot container for one profile's analysis.
 - `Report` — final serializable DTO.
 
