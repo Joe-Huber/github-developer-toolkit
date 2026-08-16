@@ -26,6 +26,7 @@ from ghdtk.models.derived import (
     ScoreBreakdown,
     SourceEntityKind,
     SourceReference,
+    Synthesis,
 )
 
 
@@ -198,7 +199,30 @@ def test_profile_analysis_defaults_empty() -> None:
     assert analysis.scores == []
     assert analysis.findings == []
     assert analysis.recommendations == []
+    assert analysis.synthesis is None
     assert analysis.schema_version == 1
+
+
+def test_synthesis_roundtrip() -> None:
+    synthesis = Synthesis(
+        strengths=["Open source (85/100)"],
+        weaknesses=["Profile presence (40/100)"],
+        red_flags=["Commit history has no author dates."],
+        plan=[_recommendation()],
+    )
+    loaded = Synthesis.model_validate_json(synthesis.model_dump_json())
+    assert loaded == synthesis
+    assert loaded.plan[0].template_id == "repo.stale_repository"
+
+
+def test_profile_analysis_synthesis_roundtrip() -> None:
+    analysis = _report().profile.model_copy(
+        update={"synthesis": Synthesis(strengths=["Activity"], red_flags=["Partial data"])}
+    )
+    loaded = ProfileAnalysis.model_validate_json(analysis.model_dump_json())
+    assert loaded == analysis
+    assert loaded.synthesis is not None
+    assert loaded.synthesis.strengths == ["Activity"]
 
 
 def test_report_matches_analysis_content() -> None:

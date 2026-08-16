@@ -16,6 +16,7 @@ from ghdtk.models.derived.finding import Finding
 from ghdtk.models.derived.metric import MetricRecord
 from ghdtk.models.derived.recommendation import Recommendation
 from ghdtk.models.derived.score import DimensionScore, OverallScore
+from ghdtk.models.derived.synthesis import Synthesis
 
 
 class ProfileAnalysis(BaseModel):
@@ -31,6 +32,7 @@ class ProfileAnalysis(BaseModel):
     overall: OverallScore | None = None
     findings: list[Finding] = Field(default_factory=list)
     recommendations: list[Recommendation] = Field(default_factory=list)
+    synthesis: Synthesis | None = None
 
 
 class Report(BaseModel):

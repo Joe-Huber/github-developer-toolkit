@@ -1,7 +1,7 @@
 """Recommendation engine.
 
-Turns findings into actionable, prioritized, evidence-backed recommendations,
-each referencing the evidence and metrics that motivated it.
+Turns findings and low scores into actionable, prioritized, evidence-backed
+recommendations (issues #51-#53).
 
 Implemented layers:
 
@@ -11,6 +11,9 @@ Implemented layers:
 - :mod:`~ghdtk.recommendations.engine` — the :class:`RecommendationEngine`
   that turns findings and low scores into recommendations with evidence
   (issue #52).
+- :mod:`~ghdtk.recommendations.synthesis` — :func:`synthesize`, which
+  assembles strengths, weaknesses, red flags and a prioritized plan (issue
+  #53).
 """
 
 from __future__ import annotations
@@ -29,6 +32,7 @@ from ghdtk.recommendations.rules import (
     extract_value,
     match_rule,
 )
+from ghdtk.recommendations.synthesis import synthesize
 
 __all__ = [
     "DEFAULT_RULES",
@@ -41,4 +45,5 @@ __all__ = [
     "extract_value",
     "match_rule",
     "order_key",
+    "synthesize",
 ]
