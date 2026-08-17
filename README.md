@@ -64,6 +64,65 @@ uv run ghdtk config          # inspect the resolved configuration
 The profile-analysis commands are built out in later milestones; the data
 models, configuration, and module boundaries are in place now.
 
+## Architecture
+
+The pipeline follows a strict **raw -> derived** flow. Raw GitHub data is
+fetched, deserialized into immutable typed models, then analyzed into
+explainable metrics, dimension scores, findings and recommendations. Every
+score carries provenance pointing at the exact raw data that produced it.
+
+```
+GitHub API
+   |
+   v
+api/             requests with auth/retry, returns payloads
+   |
+   v
+collectors/      fetch API data -> immutable raw snapshots
+   |
+   v
+models/raw       source of truth -- frozen, faithful, never modified
+   |
+   v
+analyzers/       raw snapshots -> metrics + findings (each carries provenance)
+   |
+   v
+scoring/         metrics -> dimension scores with weighted breakdown
+   |
+   v
+recommendations/ findings -> actionable, prioritized recommendations
+   |
+   v
+report/          analysis -> Report DTO -> JSON / Markdown / HTML
+```
+
+### Module-to-epic mapping
+
+| Module | Epic / Issue | Description |
+|---|---|---|
+| `api/` | #18 — API client | Auth, retries, rate limiting, response caching |
+| `models/raw/` | #14 — Raw data models | Frozen Pydantic models mirroring GitHub payloads |
+| `models/derived/` | #15 — Derived data models | MetricRecord, Finding, DimensionScore, Recommendation |
+| `collectors/` | #22 — Collection pipeline | Orchestrates data fetching with budget and parallelism (#63) |
+| `analyzers/` | #23 — Analyzers | 16 analyzers producing metrics and findings |
+| `scoring/` | #46 — Scoring framework | 8 dimension scorers with weighted aggregation |
+| `recommendations/` | #51 — Recommendations | Rule-based engine producing actionable items |
+| `report/` | #54 — Report layer | Markdown, JSON and HTML renderers |
+| `config/` | #13 — Configuration | Settings from env vars, `.env` and `ghdtk.toml` |
+| `observability/` | #65 — Observability | Structured logging, correlation ids, run metrics |
+
+### Key resources
+
+- **Methodology & scoring**: [docs/methodology.md](docs/methodology.md) --
+  how every metric is computed, how scores are weighted, what the thresholds
+  mean, and what data limitations exist.
+- **Architecture deep-dive**: [docs/architecture.md](docs/architecture.md) --
+  module boundaries, data flow, design principles, all analyzer descriptions.
+- **Testing strategy**: [docs/testing.md](docs/testing.md) -- fixture corpus,
+  deterministic replay, coverage gate.
+- **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md) -- dev setup, quality
+  gates, configuration reference.
+
 ## Quality gates
 
 Every change must pass all gates:
@@ -99,14 +158,17 @@ src/ghdtk/
 ├── recommendations/  # findings → recommendations
 ├── report/           # analysis → report DTO
 ├── config/           # configuration (file + env + defaults)
+├── observability/    # structured logging, correlation ids, run metrics
 └── cli/              # command-line interface
 ```
 
 ## Contributing
 
 PRs are welcome. Before opening one, make sure `make check` passes and the
-pre-commit hooks are green. See [docs/architecture.md](docs/architecture.md)
-for the design principles every contribution should follow.
+pre-commit hooks are green. See [CONTRIBUTING.md](CONTRIBUTING.md) for dev
+setup, quality gates, configuration reference, and issue/PR conventions.
+See [docs/architecture.md](docs/architecture.md) for the design principles
+every contribution should follow.
 
 ## License
 
