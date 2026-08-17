@@ -231,14 +231,22 @@ class ResponseCache:
         now = now or datetime.now(UTC)
         return entry.expires_at > now
 
+    _SKIP_HEADERS = frozenset({"content-encoding", "transfer-encoding"})
+
     def set(self, key: str, response: httpx.Response, url: str) -> None:
-        """Store a successful response under ``key``."""
+        """Store a successful response under ``key``.
+
+        ``response.content`` is already decoded by httpx, so compression
+        headers are stripped to prevent double-decompression when the entry
+        is rebuilt by :func:`_entry_to_response`.
+        """
         now = datetime.now(UTC)
+        headers = {k: v for k, v in response.headers.items() if k.lower() not in self._SKIP_HEADERS}
         entry = CachedResponse(
             key=key,
             url=url,
             status_code=response.status_code,
-            headers=dict(response.headers),
+            headers=headers,
             content=response.content,
             stored_at=now,
             expires_at=now + timedelta(seconds=self._ttl),
@@ -257,12 +265,21 @@ class ResponseCache:
         self._backend.clear()
 
 
+_SKIP_HEADERS = frozenset({"content-encoding", "transfer-encoding"})
+
+
 def _entry_to_response(entry: CachedResponse, *, url: str) -> httpx.Response:
-    """Rebuild an ``httpx.Response`` from a cached entry."""
+    """Rebuild an ``httpx.Response`` from a cached entry.
+
+    Compression headers are stripped because ``entry.content`` is already
+    decoded; keeping them causes httpx to double-decompress and raise
+    ``DecodingError``.
+    """
+    headers = {k: v for k, v in entry.headers.items() if k.lower() not in _SKIP_HEADERS}
     return httpx.Response(
         entry.status_code,
         content=entry.content,
-        headers=entry.headers,
+        headers=headers,
         request=httpx.Request("GET", url),
     )
 

@@ -137,6 +137,10 @@ def _cmd_analyze(args: argparse.Namespace) -> int:
     from ghdtk.report.markdown import write_markdown
 
     quiet = args.quiet
+    if args.verbose:
+        from ghdtk.observability import configure_logging
+
+        configure_logging()
     username: str = args.username
     output_format: str = args.output_format
     ext = {"md": "md", "json": "json", "html": "html"}[output_format]
