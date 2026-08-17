@@ -136,6 +136,36 @@ def test_response_cache_set_from_response() -> None:
     assert entry.content == response.content
 
 
+def test_response_cache_strips_compression_headers() -> None:
+    """Content-Encoding and Transfer-Encoding must not be stored.
+
+    ``response.content`` is already decoded by httpx; keeping the compression
+    headers causes double-decompression when the entry is rebuilt via
+    :func:`_entry_to_response`.
+    """
+    from ghdtk.api.cache import _entry_to_response
+
+    cache = ResponseCache(InMemoryCache(), ttl_seconds=3600)
+    request = httpx.Request("GET", "https://api.github.com/users/octocat")
+    response = httpx.Response(
+        200,
+        json={"login": "octocat"},
+        headers={"ETag": '"abc"'},
+        request=request,
+    )
+    cache.set("k", response, "https://api.github.com/users/octocat")
+    entry = cache.get("k")
+    assert entry is not None
+    assert "content-encoding" not in entry.headers
+    assert "transfer-encoding" not in entry.headers
+    assert entry.headers["etag"] == '"abc"'
+
+    # Rebuilding from cache must not raise DecodingError
+    rebuilt = _entry_to_response(entry, url="https://api.github.com/users/octocat")
+    assert rebuilt.status_code == 200
+    assert rebuilt.json()["login"] == "octocat"
+
+
 def test_response_cache_revalidate() -> None:
     cache = ResponseCache(InMemoryCache(), ttl_seconds=3600)
     stale = _entry(

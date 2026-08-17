@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -28,7 +29,11 @@ def test_no_command_prints_help(capsys: pytest.CaptureFixture[str]) -> None:
     assert "usage:" in capsys.readouterr().out
 
 
-def test_config_without_token_fails(capsys: pytest.CaptureFixture[str]) -> None:
+def test_config_without_token_fails(
+    capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.delenv("GHDTK_GITHUB_TOKEN", raising=False)
+    monkeypatch.chdir(tmp_path)
     assert main(["config"]) == 2
     err = capsys.readouterr().err
     assert "could not load configuration" in err

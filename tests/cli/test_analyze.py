@@ -165,8 +165,10 @@ class TestCmdConfig:
         self,
         capsys: pytest.CaptureFixture[str],
         monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
     ) -> None:
         monkeypatch.delenv("GHDTK_GITHUB_TOKEN", raising=False)
+        monkeypatch.chdir(tmp_path)
         assert main(["config"]) == EXIT_CONFIG
         err = capsys.readouterr().err
         assert "could not load configuration" in err
@@ -353,9 +355,11 @@ def test_max_workers_flag_accepted(
 def test_analyze_bad_config_exits_config_code(
     capsys: pytest.CaptureFixture[str],
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     """Missing token should exit with EXIT_CONFIG (2)."""
     monkeypatch.delenv("GHDTK_GITHUB_TOKEN", raising=False)
+    monkeypatch.chdir(tmp_path)
     rc = main(["analyze", "octocat"])
     assert rc == EXIT_CONFIG
     err = capsys.readouterr().err
