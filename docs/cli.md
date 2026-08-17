@@ -12,7 +12,7 @@ pip install ghdtk
 Or directly from the repository:
 
 ```bash
-pip install git+https://github.com/nicobailon/github-developer-toolkit.git
+pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
 
 ## Quick Start
