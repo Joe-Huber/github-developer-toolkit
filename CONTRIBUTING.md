@@ -29,8 +29,10 @@ cp .env.example .env
 uv run pre-commit install
 ```
 
-A GitHub Personal Access Token with public-data read access is required for
-live runs. It is never needed for tests, which use a recorded-response corpus.
+A GitHub Personal Access Token is required for live runs. `ghdtk` is
+read-only — any valid token works for public profiles; add the `repo`
+scope to include private repositories. Tokens are never needed for tests,
+which use a recorded-response corpus.
 
 ---
 

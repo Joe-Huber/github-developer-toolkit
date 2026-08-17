@@ -28,8 +28,10 @@ recommendations. A core design principle is the strict separation between
 - [Python](https://www.python.org/) 3.11+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
 - [Make](https://www.gnu.org/software/make/) (optional, for the quality gates)
-- A GitHub [Personal Access Token](https://github.com/settings/tokens) with
-  read access to the data the analyzer fetches
+- A GitHub [Personal Access Token](https://github.com/settings/tokens).
+  `ghdtk` is **read-only** and never modifies any data. Any valid token
+  works for public profiles; add the `repo` scope to include private
+  repositories (see [docs/cli.md](docs/cli.md#token--permissions)).
 
 ## Setup
 

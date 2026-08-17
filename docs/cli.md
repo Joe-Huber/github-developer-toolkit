@@ -85,6 +85,31 @@ ghdtk --version
 # ghdtk 0.1.0
 ```
 
+## Token & Permissions
+
+`ghdtk` is **read-only** — it never modifies any GitHub data. The token only
+needs to read public profile data.
+
+| Use case | Minimum scope | Token type |
+|---|---|---|
+| Public profiles only | None (any valid token works) | Classic PAT or fine-grained PAT |
+| Profiles with private repos | `repo` | Classic PAT with `repo` scope |
+
+**Classic PAT** (recommended): create at
+<https://github.com/settings/tokens>. No scopes needed for public data;
+add the `repo` scope if you want private repositories included in the
+analysis.
+
+**Fine-grained PAT**: create at
+<https://github.com/settings/personal-access-tokens/new>. Grant
+"Repository permissions: Metadata (Read-only)" for public data. Add
+"Contents", "Pull requests", and "Issues" read permissions for private
+repos.
+
+**Rate limits**: an unauthenticated token gets 60 requests/hour.
+Any valid token raises this to 5,000 requests/hour. The tool defaults to
+a budget of 500 requests per profile run.
+
 ## Exit Codes
 
 | Code | Meaning |
