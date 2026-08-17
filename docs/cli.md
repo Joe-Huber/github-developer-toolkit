@@ -6,13 +6,13 @@ pipeline, and writes Markdown, JSON, or HTML reports.
 ## Installation
 
 ```bash
-pip install ghdtk
+python3 -m pip install ghdtk
 ```
 
 Or directly from the repository:
 
 ```bash
-pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
+python3 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
 
 ## Quick Start
