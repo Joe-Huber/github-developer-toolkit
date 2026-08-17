@@ -20,11 +20,15 @@ Three layers build on each other:
    recordings of the requests a full collection makes for each profile and the
    responses it receives. This document is their guide.
 2. **Unit tests** (`tests/api`, `tests/collectors`, `tests/analyzers`,
-   `tests/scoring`, `tests/report`, `tests/models`, ...) — targeted per-module
-   tests, including raw JSON fixtures under `tests/fixtures/raw/`.
-   Normalization/property tests (`tests/api/test_normalizers_property.py`) use
-   **hypothesis** to generate inputs and assert invariants (shares sum to one,
-   counts are bounded, summaries agree with their inputs).
+   `tests/scoring`, `tests/report`, `tests/models`, `tests/observability`, ...)
+   — targeted per-module tests, including raw JSON fixtures under
+   `tests/fixtures/raw/`. Normalization/property tests
+   (`tests/api/test_normalizers_property.py`) use **hypothesis** to generate
+   inputs and assert invariants (shares sum to one, counts are bounded,
+   summaries agree with their inputs). Observability tests
+   (`tests/observability/`) cover structured formatter JSON shape, correlation
+   id scoping and thread propagation, configure_logging idempotency, and
+   thread-safe CollectionMetrics timing/counters.
 3. **Integration & end-to-end tests** (`tests/fixtures/test_end_to_end.py`) —
    replay every full profile session end to end (`collect_profile` → profile
    README → `ReportAssembler` → all renderers), asserting the artifacts are

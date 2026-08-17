@@ -43,6 +43,7 @@ src/ghdtk/
 ├── recommendations/  # findings -> recommendations
 ├── report/           # analysis -> report DTO / JSON
 ├── config/           # configuration: file + env + defaults (#13)
+├── observability/    # structured logging, correlation ids, run metrics (#65)
 └── cli/              # command-line interface
 ```
 
@@ -114,12 +115,18 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
   calendar, followers, following) → cross-repository PR and issue collections
   (`pull_requests:search`, `issues:search`) → per-repository metadata for repos
   sorted by stars → the stargazer timeline for the most-starred **owned**
-  (non-fork) repository, recorded under `stargazers:<full_name>`. Sequencing is
-  sequential.
+  (non-fork) repository, recorded under `stargazers:<full_name>`. The
+  per-repository metadata phase runs **sequentially by default**
+  (`max_workers=1`, deterministic and byte-identical across runs); a higher
+  `max_workers` value dispatches per-repository groups in a thread pool
+  (issue #63). Every parallel burst is budget-reserved up front so the request
+  cap is never exceeded, and the snapshot is merged back in star order.
 - `ghdtk.collectors.budget.CollectionBudget` — hard cap on requests per run
-  (default 500, `collection_max_requests`). Paginated collections never exceed
-  the remaining budget; collections that no longer fit are skipped with an
-  explicit `budget_exhausted` status.
+  (default 500, `collection_max_requests`). The budget planner supports
+  reservation-based accounting (`reserve`/`settle`) so the orchestrator can
+  dispatch parallel groups without letting combined bursts exceed the cap.
+  Paginated collections never exceed the remaining budget; collections that no
+  longer fit are skipped with an explicit `budget_exhausted` status.
 - `ProfileSnapshot` (`models/raw/profile.py`) — the run's container with a
   per-collection `CollectionRecord` (status, reason, detail, requests used).
   Runs never crash on partial failure: a failed collection is recorded and
@@ -146,6 +153,17 @@ missing/extra fields; invalid *types* still raise, surfacing real problems.
 Analyzers consume raw snapshots (or collection artifacts like `ProfileReadme`)
 and produce derived `MetricRecord`s and `Finding`s (issue #23). They are pure:
 no network access, no mutation of raw data, deterministic for a fixed input.
+
+Every `MetricRecord` carries a typed `MetricAvailability` enum
+(`AVAILABLE` / `PARTIAL` / `UNAVAILABLE`, issue #64). A centralized matrix
+(`analyzers/availability.py`) maps metric-id prefixes to their documented
+availability: metrics whose data is never exposed by the pipeline
+(e.g. `network.followers.growth`, `network.orgs.count`) are hard-coded
+`UNAVAILABLE` with `value=None`; analyzers always declare `UNAVAILABLE` when the
+required raw data was not collected; and `PARTIAL` covers metrics that are
+meaningful only when a sufficiently large sample exists (e.g. growth velocity,
+commit activity, PR/issue trends). The matrix is the single source of truth
+and is tested against every metric id the report emits.
 
 - `assess_profile_presence(user)` (issue #24) — per-field assessment of the
   presentation fields (name, bio, website, company, location, email, Twitter,
@@ -407,6 +425,37 @@ it directly, so all formats stay consistent and deterministic.
 
 All renderers are pure functions over a `Report` and are covered by golden and
 smoke tests under `tests/report/`.
+
+## Observability (`observability/`)
+
+Every `collect_profile` run emits structured, correlation-tagged log events and
+collects per-collection timing and error metrics (issue #65), making a failed
+run actionable from the JSON log stream alone.
+
+- **Structured logging** (`observability/logging.py`) — stdlib `logging` with
+  `StructuredFormatter`: each line is a single JSON object carrying `ts`
+  (ISO 8601 with milliseconds), `level`, `logger`, `correlation_id`,
+  `message`, and any caller-supplied `extra` fields. Stdlib reserved fields
+  are stripped. `configure_logging(level, stream)` is idempotent; the
+  `ghdtk` logger propagates to no parent.
+- **Correlation ids** (`observability.logging.run_correlation`) — a
+  `contextvars.ContextVar` scoped to each `collect_profile` call. Because
+  Python < 3.12 does not propagate contextvars to `ThreadPoolExecutor` threads,
+  worker functions receive the correlation id explicitly and wrap their body in
+  `run_correlation(correlation_id)` so every log line — including lines from
+  worker threads — carries the parent run's tag.
+- **Run and collection metrics** (`observability.metrics.CollectionMetrics`) —
+  lock-guarded timing per collection (wall-clock duration, count, mean) and
+  named counters (`errors`, `errors:<collection>`). A snapshot is taken at run
+  end and emitted as the `metrics` field of `collection.run.end`, so the
+  structured log shows total elapsed time, per-collection timings, request
+  usage, and error tallies in one event.
+- **Orchestrator events** — each run emits `collection.run.start` (username,
+  budget, max_workers), `collection.skipped` (reason), `collection.start`
+  (per-collection), `collection.end` (requests used, duration), and
+  `collection.failed` (error type, detail, duration). The final
+  `collection.run.end` carries the per-status tallies, budget used/max, and
+  the metrics snapshot.
 
 ## Derived data layer (`models/derived`)
 

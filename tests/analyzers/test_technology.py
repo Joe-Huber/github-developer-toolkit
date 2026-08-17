@@ -11,7 +11,12 @@ from ghdtk.analyzers.technology import (
     assess_technology_diversity,
 )
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import DimensionId, FindingSeverity, MetricValue
+from ghdtk.models.derived import (
+    DimensionId,
+    FindingSeverity,
+    MetricAvailability,
+    MetricValue,
+)
 from ghdtk.models.raw import LanguageStats, ProfileSnapshot, Repository
 
 NOW = datetime(2026, 1, 1, tzinfo=UTC)
@@ -45,6 +50,10 @@ def _snapshot(
 
 def _metric(result: TechnologyDiversityAnalysis, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: TechnologyDiversityAnalysis, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def test_generalist_profile_from_fixture(load_raw_fixture: Any) -> None:
@@ -216,7 +225,8 @@ def test_topics_only_profile() -> None:
     assert result.simpson_index is None
     assert result.domains_count == 0
     assert result.topic_presence == {"infrastructure": 2}
-    assert _metric(result, "tech.simpson_index") == "unavailable"
+    assert _metric(result, "tech.simpson_index") is None
+    assert _availability(result, "tech.simpson_index") is MetricAvailability.UNAVAILABLE
     assert _metric(result, "tech.topics.infrastructure") == 2
 
     finding = next(f for f in result.findings if f.id == "tech.no_byte_evidence")
@@ -233,7 +243,8 @@ def test_no_evidence() -> None:
     assert result.total_bytes == 0
     assert result.simpson_index is None
     assert result.domains_count == 0
-    assert _metric(result, "tech.simpson_index") == "unavailable"
+    assert _metric(result, "tech.simpson_index") is None
+    assert _availability(result, "tech.simpson_index") is MetricAvailability.UNAVAILABLE
     finding = next(f for f in result.findings if f.id == "tech.no_evidence")
     assert finding.severity is FindingSeverity.INFO
 

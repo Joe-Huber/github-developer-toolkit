@@ -390,11 +390,20 @@ def _recommendations_list(recommendations: list[Recommendation]) -> str:
 def _metrics_table(metrics: list[MetricRecord]) -> str:
     if not metrics:
         return '<p class="empty">No metrics.</p>'
+
+    def cell(metric: MetricRecord) -> str:
+        if metric.is_unavailable:
+            return "unavailable"
+        value = metric.value
+        if value is None:
+            return "—"
+        return _escape(str(value))
+
     rows = "".join(
         "<tr>"
         f"<td><code>{_escape(metric.id)}</code></td>"
         f"<td>{_escape(metric.label)}</td>"
-        f"<td>{_escape(metric.value)}</td>"
+        f"<td>{cell(metric)}</td>"
         f"<td>{_pct(metric.confidence)}</td>"
         "</tr>"
         for metric in metrics

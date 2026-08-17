@@ -9,7 +9,7 @@ from ghdtk.analyzers.contribution_calendar import (
     assess_contribution_calendar,
 )
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import FindingSeverity, MetricValue
+from ghdtk.models.derived import FindingSeverity, MetricAvailability, MetricValue
 from ghdtk.models.raw import (
     ContributionCalendar,
     ContributionDay,
@@ -46,6 +46,10 @@ def _snapshot(calendar: ContributionCalendar | None) -> ProfileSnapshot:
 
 def _metric(result: ContributionCalendarAnalysis, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: ContributionCalendarAnalysis, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def _days(*specs: tuple[str, int]) -> list[tuple[str, int]]:
@@ -237,8 +241,16 @@ def test_unavailable_calendar() -> None:
     result = assess_contribution_calendar(_snapshot(None))
 
     assert result.total_contributions is None
-    assert _metric(result, "contribution_calendar.total_contributions") == "unavailable"
-    assert _metric(result, "contribution_calendar.restricted_contributions") == "unavailable"
+    assert _metric(result, "contribution_calendar.total_contributions") is None
+    assert _metric(result, "contribution_calendar.restricted_contributions") is None
+    assert (
+        _availability(result, "contribution_calendar.total_contributions")
+        is MetricAvailability.UNAVAILABLE
+    )
+    assert (
+        _availability(result, "contribution_calendar.restricted_contributions")
+        is MetricAvailability.UNAVAILABLE
+    )
     finding = next(f for f in result.findings if f.id == "contribution_calendar.unavailable")
     assert finding.severity is FindingSeverity.INFO
     assert "was not collected" in finding.message

@@ -18,6 +18,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import threading
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from hashlib import sha256
@@ -127,37 +128,49 @@ class CacheBackend(Protocol):
 
 
 class InMemoryCache:
-    """A dict-backed cache for tests and short-lived runs."""
+    """A dict-backed cache for tests and short-lived runs.
+
+    Lock-guarded so concurrent collectors can share it (issue #63).
+    """
 
     def __init__(self) -> None:
         self._entries: dict[str, CachedResponse] = {}
+        self._lock = threading.Lock()
 
     def get(self, key: str) -> CachedResponse | None:
-        return self._entries.get(key)
+        with self._lock:
+            return self._entries.get(key)
 
     def set(self, key: str, value: CachedResponse) -> None:
-        self._entries[key] = value
+        with self._lock:
+            self._entries[key] = value
 
     def delete(self, key: str) -> None:
-        self._entries.pop(key, None)
+        with self._lock:
+            self._entries.pop(key, None)
 
     def clear(self) -> None:
-        self._entries.clear()
+        with self._lock:
+            self._entries.clear()
 
     def __len__(self) -> int:
-        return len(self._entries)
+        with self._lock:
+            return len(self._entries)
 
 
 class DiskCache:
     """A directory-backed cache storing one JSON file per key.
 
     URLs are redacted before persistence; the ``Authorization`` header is never
-    stored. Corrupt or unreadable files are treated as cache misses.
+    stored. Corrupt or unreadable files are treated as cache misses. Reads,
+    writes and deletions are lock-guarded (and writes go through a temp-file
+    rename) so parallel collectors never observe partial entries (issue #63).
     """
 
     def __init__(self, directory: Path) -> None:
         self._directory = directory
         directory.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.Lock()
 
     def _path(self, key: str) -> Path:
         return self._directory / f"{key}.json"
@@ -166,25 +179,29 @@ class DiskCache:
         path = self._path(key)
         if not path.is_file():
             return None
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-            return CachedResponse.from_dict(data)
-        except (OSError, ValueError, KeyError):
-            return None
+        with self._lock:
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                return CachedResponse.from_dict(data)
+            except (OSError, ValueError, KeyError):
+                return None
 
     def set(self, key: str, value: CachedResponse) -> None:
         path = self._path(key)
-        path.write_text(
-            json.dumps(value.redacted().to_dict(), sort_keys=True),
-            encoding="utf-8",
-        )
+        content = json.dumps(value.redacted().to_dict(), sort_keys=True)
+        with self._lock:
+            tmp = path.with_name(f".{path.name}.tmp")
+            tmp.write_text(content, encoding="utf-8")
+            tmp.replace(path)
 
     def delete(self, key: str) -> None:
-        self._path(key).unlink(missing_ok=True)
+        with self._lock:
+            self._path(key).unlink(missing_ok=True)
 
     def clear(self) -> None:
-        for path in self._directory.glob("*.json"):
-            path.unlink(missing_ok=True)
+        with self._lock:
+            for path in self._directory.glob("*.json"):
+                path.unlink(missing_ok=True)
 
 
 class ResponseCache:

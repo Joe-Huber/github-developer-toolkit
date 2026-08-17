@@ -15,7 +15,11 @@ from __future__ import annotations
 from ghdtk.models.derived.analyses import ProfileAnalyses, ensure_built
 from ghdtk.models.derived.analysis import ProfileAnalysis, Report
 from ghdtk.models.derived.finding import Finding, FindingSeverity
-from ghdtk.models.derived.metric import MetricRecord, MetricValue
+from ghdtk.models.derived.metric import (
+    MetricAvailability,
+    MetricRecord,
+    MetricValue,
+)
 from ghdtk.models.derived.provenance import SourceEntityKind, SourceReference
 from ghdtk.models.derived.recommendation import (
     Recommendation,
@@ -37,6 +41,7 @@ __all__ = [
     "DimensionScore",
     "Finding",
     "FindingSeverity",
+    "MetricAvailability",
     "MetricRecord",
     "MetricValue",
     "OverallScore",

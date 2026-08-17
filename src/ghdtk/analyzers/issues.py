@@ -39,6 +39,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -46,8 +47,6 @@ from ghdtk.models.derived import (
 from ghdtk.models.raw import Issue, ProfileSnapshot
 
 __all__ = ["IssueParticipationAnalysis", "assess_issue_participation"]
-
-_UNAVAILABLE = "unavailable"
 
 
 def _ensure_utc(value: datetime) -> datetime:
@@ -365,21 +364,36 @@ def assess_issue_participation(
         MetricRecord(
             id="issues.close_rate",
             label="Close rate (share of collected issues closed)",
-            value=_round(close_rate) if close_rate is not None else _UNAVAILABLE,
+            value=_round(close_rate) if close_rate is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if close_rate is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="issues.median_close_days",
             label="Median time to close (days)",
-            value=_round(median_close_days) if median_close_days is not None else _UNAVAILABLE,
+            value=_round(median_close_days) if median_close_days is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if median_close_days is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="issues.oldest_open_days",
             label="Oldest open issue (days)",
-            value=oldest_open_days if oldest_open_days is not None else _UNAVAILABLE,
+            value=oldest_open_days if oldest_open_days is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if oldest_open_days is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -400,7 +414,12 @@ def assess_issue_participation(
         MetricRecord(
             id="issues.commented_share",
             label="Share of issues with comments",
-            value=_round(commented_share) if commented_share is not None else _UNAVAILABLE,
+            value=_round(commented_share) if commented_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if commented_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -414,7 +433,12 @@ def assess_issue_participation(
         MetricRecord(
             id="issues.external_share",
             label="External repository share",
-            value=_round(external_share) if external_share is not None else _UNAVAILABLE,
+            value=_round(external_share) if external_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if external_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -435,14 +459,20 @@ def assess_issue_participation(
         MetricRecord(
             id="issues.coverage_start",
             label="Coverage window start",
-            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else _UNAVAILABLE,
+            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_start else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="issues.coverage_end",
             label="Coverage window end",
-            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else _UNAVAILABLE,
+            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_end else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
