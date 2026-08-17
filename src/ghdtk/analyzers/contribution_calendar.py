@@ -36,6 +36,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -43,8 +44,6 @@ from ghdtk.models.derived import (
 from ghdtk.models.raw import ContributionCalendar, ProfileSnapshot
 
 __all__ = ["ContributionCalendarAnalysis", "assess_contribution_calendar"]
-
-_UNAVAILABLE = "unavailable"
 
 
 def _source(username: str, field: str) -> SourceReference:
@@ -129,14 +128,16 @@ def assess_contribution_calendar(
                 MetricRecord(
                     id="contribution_calendar.total_contributions",
                     label="Total contributions",
-                    value=_UNAVAILABLE,
+                    value=None,
+                    availability=MetricAvailability.UNAVAILABLE,
                     timestamp=now_ts,
                     sources=sources,
                 ),
                 MetricRecord(
                     id="contribution_calendar.restricted_contributions",
                     label="Hidden (private) contributions",
-                    value=_UNAVAILABLE,
+                    value=None,
+                    availability=MetricAvailability.UNAVAILABLE,
                     timestamp=now_ts,
                     sources=sources,
                 ),
@@ -299,7 +300,12 @@ def assess_contribution_calendar(
         MetricRecord(
             id="contribution_calendar.restricted_contributions",
             label="Hidden (private) contributions",
-            value=restricted if restricted is not None else _UNAVAILABLE,
+            value=restricted,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if restricted is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=[_source(username, "restricted_contributions_count")],
         ),

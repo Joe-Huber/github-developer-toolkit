@@ -36,6 +36,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -44,7 +45,6 @@ from ghdtk.models.raw import Commit, ProfileSnapshot
 
 __all__ = ["CommitActivity", "assess_commit_activity"]
 
-_UNAVAILABLE = "unavailable"
 _WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 _HOUR_BUCKETS = [f"{start:02d}-{start + 2:02d}" for start in range(0, 24, 3)]
 _DAYS_PER_MONTH = 30.4375
@@ -275,21 +275,32 @@ def assess_commit_activity(
         MetricRecord(
             id="commit_activity.coverage_start",
             label="Coverage window start",
-            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else _UNAVAILABLE,
+            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_start else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="commit_activity.coverage_end",
             label="Coverage window end",
-            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else _UNAVAILABLE,
+            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_end else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="commit_activity.span_days",
             label="Coverage span (days)",
-            value=span_days if span_days is not None else _UNAVAILABLE,
+            value=span_days if span_days is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if span_days is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -303,21 +314,36 @@ def assess_commit_activity(
         MetricRecord(
             id="commit_activity.cadence_per_month",
             label="Average commits per month",
-            value=_round(cadence_per_month) if cadence_per_month is not None else _UNAVAILABLE,
+            value=_round(cadence_per_month) if cadence_per_month is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if cadence_per_month is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="commit_activity.longest_gap_days",
             label="Longest gap between commits (days)",
-            value=longest_gap_days if longest_gap_days is not None else _UNAVAILABLE,
+            value=longest_gap_days if longest_gap_days is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if longest_gap_days is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="commit_activity.median_gap_days",
             label="Median gap between commits (days)",
-            value=_round(median_gap_days) if median_gap_days is not None else _UNAVAILABLE,
+            value=_round(median_gap_days) if median_gap_days is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if median_gap_days is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),

@@ -33,6 +33,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -45,8 +46,6 @@ __all__ = [
     "RepositoryLanguages",
     "assess_language_distribution",
 ]
-
-_UNAVAILABLE = "unavailable"
 
 
 def _round(value: float, digits: int = 2) -> float:
@@ -354,14 +353,24 @@ def assess_language_distribution(
         MetricRecord(
             id="languages.dominant_language",
             label="Dominant language",
-            value=dominant_language if dominant_language is not None else _UNAVAILABLE,
+            value=dominant_language,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if dominant_language is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="languages.dominant_share",
             label="Dominant language share",
-            value=_round(dominant_share) if dominant_share is not None else _UNAVAILABLE,
+            value=_round(dominant_share) if dominant_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if dominant_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -393,7 +402,12 @@ def assess_language_distribution(
             MetricRecord(
                 id=f"languages.primary.{row.full_name}",
                 label=f"Primary language of {row.full_name}",
-                value=row.primary if row.primary is not None else _UNAVAILABLE,
+                value=row.primary,
+                availability=(
+                    MetricAvailability.AVAILABLE
+                    if row.primary is not None
+                    else MetricAvailability.UNAVAILABLE
+                ),
                 timestamp=now_ts,
                 sources=[_source(row.full_name, "language")],
             )
@@ -402,7 +416,12 @@ def assess_language_distribution(
             MetricRecord(
                 id=f"languages.repo_bytes.{row.full_name}",
                 label=f"Language bytes in {row.full_name}",
-                value=row.bytes_total if row.bytes_total is not None else _UNAVAILABLE,
+                value=row.bytes_total,
+                availability=(
+                    MetricAvailability.AVAILABLE
+                    if row.bytes_total is not None
+                    else MetricAvailability.UNAVAILABLE
+                ),
                 timestamp=now_ts,
                 sources=[_source(row.full_name, "language")],
             )

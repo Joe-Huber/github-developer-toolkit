@@ -16,6 +16,7 @@ typed :class:`~ghdtk.api.errors.RateLimitError`.
 from __future__ import annotations
 
 import json
+import threading
 from collections.abc import Callable
 from datetime import UTC, datetime
 from types import TracebackType
@@ -128,6 +129,8 @@ class GitHubClient:
         self._rate_limit = RateLimitState()
         self._requests_made = 0
         self._cache = cache
+        self._lock = threading.Lock()
+        self._thread_local = threading.local()
 
     @classmethod
     def from_settings(cls, settings: Any) -> GitHubClient:
@@ -159,6 +162,16 @@ class GitHubClient:
     def requests_made(self) -> int:
         """Number of HTTP requests sent (retries count)."""
         return self._requests_made
+
+    @property
+    def thread_requests_made(self) -> int:
+        """Requests sent by the *current thread* (used by concurrent collectors).
+
+        Parallel collections share one client, so a per-thread counter keeps
+        per-collection request accounting accurate when several collectors run
+        concurrently (issue #63).
+        """
+        return int(getattr(self._thread_local, "count", 0))
 
     @property
     def rate_limit(self) -> RateLimitState:
@@ -197,7 +210,9 @@ class GitHubClient:
         attempts = 0
         while True:
             attempts += 1
-            self._requests_made += 1
+            with self._lock:
+                self._requests_made += 1
+                self._thread_local.count = int(getattr(self._thread_local, "count", 0)) + 1
             try:
                 response = self._client.request(
                     method,
@@ -217,7 +232,8 @@ class GitHubClient:
                 self._backoff.sleep(self._backoff.delay(attempts))
                 continue
 
-            self._rate_limit.update_from(response)
+            with self._lock:
+                self._rate_limit.update_from(response)
             if (
                 response.status_code == 304
                 and cache is not None

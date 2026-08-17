@@ -36,6 +36,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -43,8 +44,6 @@ from ghdtk.models.derived import (
 from ghdtk.models.raw import ProfileSnapshot
 
 __all__ = ["FollowerNetwork", "assess_follower_network"]
-
-_UNAVAILABLE = "unavailable"
 
 
 def _source(identifier: str, field: str) -> SourceReference:
@@ -236,21 +235,36 @@ def assess_follower_network(
         MetricRecord(
             id="network.followers.count",
             label="Followers",
-            value=followers_count if followers_count is not None else _UNAVAILABLE,
+            value=followers_count,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if followers_count is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=[followers_source],
         ),
         MetricRecord(
             id="network.following.count",
             label="Following",
-            value=following_count if following_count is not None else _UNAVAILABLE,
+            value=following_count,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if following_count is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=[following_source],
         ),
         MetricRecord(
             id="network.followers.ratio",
             label="Followers to following ratio",
-            value=ratio if ratio is not None else _UNAVAILABLE,
+            value=ratio,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if ratio is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=[followers_source, following_source],
         ),
@@ -279,7 +293,12 @@ def assess_follower_network(
         MetricRecord(
             id="network.mutual_follows.count",
             label="Mutual follows (estimated from samples)",
-            value=mutual_follows if mutual_follows is not None else _UNAVAILABLE,
+            value=mutual_follows,
+            availability=(
+                MetricAvailability.PARTIAL
+                if mutual_follows is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             confidence=min(follower_coverage, following_coverage),
             sources=[mutual_source],
@@ -287,14 +306,16 @@ def assess_follower_network(
         MetricRecord(
             id="network.orgs.count",
             label="Org memberships",
-            value=_UNAVAILABLE,
+            value=None,
+            availability=MetricAvailability.UNAVAILABLE,
             timestamp=now_ts,
             sources=[_source(username, "organizations_url")],
         ),
         MetricRecord(
             id="network.followers.growth",
             label="Follower growth",
-            value=_UNAVAILABLE,
+            value=None,
+            availability=MetricAvailability.UNAVAILABLE,
             timestamp=now_ts,
             sources=[followers_source],
         ),

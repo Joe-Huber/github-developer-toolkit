@@ -10,7 +10,12 @@ from ghdtk.analyzers.languages import (
     assess_language_distribution,
 )
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import DimensionId, FindingSeverity, MetricValue
+from ghdtk.models.derived import (
+    DimensionId,
+    FindingSeverity,
+    MetricAvailability,
+    MetricValue,
+)
 from ghdtk.models.raw import LanguageStats, ProfileSnapshot, Repository
 
 NOW = datetime(2026, 1, 1, tzinfo=UTC)
@@ -44,6 +49,10 @@ def _snapshot(
 
 def _metric(result: LanguageDistributionAnalysis, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: LanguageDistributionAnalysis, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def _repo_row(result: LanguageDistributionAnalysis, full_name: str) -> Any:
@@ -163,7 +172,11 @@ def test_declared_only_and_unknown_repos() -> None:
     assert result.dominant_language is None
     assert result.distribution == []
     assert _metric(result, "languages.primary.octocat/declared") == "Go"
-    assert _metric(result, "languages.repo_bytes.octocat/declared") == "unavailable"
+    assert _metric(result, "languages.repo_bytes.octocat/declared") is None
+    assert (
+        _availability(result, "languages.repo_bytes.octocat/declared")
+        is MetricAvailability.UNAVAILABLE
+    )
 
     coverage = next(f for f in result.findings if f.id == "languages.coverage_gap")
     assert "1 repository(ies) only carry a declared primary language" in coverage.message

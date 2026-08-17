@@ -6,7 +6,12 @@ from datetime import UTC, datetime
 
 from ghdtk.analyzers.pull_requests import PullRequestAnalysis, assess_pull_request_collaboration
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import DimensionId, FindingSeverity, MetricValue
+from ghdtk.models.derived import (
+    DimensionId,
+    FindingSeverity,
+    MetricAvailability,
+    MetricValue,
+)
 from ghdtk.models.raw import ProfileSnapshot, PullRequest, Repository
 
 NOW = datetime(2026, 1, 1, tzinfo=UTC)
@@ -49,13 +54,18 @@ def _metric(result: PullRequestAnalysis, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
 
 
+def _availability(result: PullRequestAnalysis, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
+
+
 def test_solo_developer_without_pull_requests() -> None:
     result = assess_pull_request_collaboration(_snapshot([]))
 
     assert result.total_pull_requests == 0
     assert result.merge_rate is None
     assert _metric(result, "pull_requests.total_pull_requests") == 0
-    assert _metric(result, "pull_requests.merge_rate") == "unavailable"
+    assert _metric(result, "pull_requests.merge_rate") is None
+    assert _availability(result, "pull_requests.merge_rate") is MetricAvailability.UNAVAILABLE
     finding = next(f for f in result.findings if f.id == "pull_requests.no_pull_requests")
     assert finding.severity is FindingSeverity.INFO
     assert not any(f.id == "pull_requests.coverage_window" for f in result.findings)
@@ -189,4 +199,8 @@ def test_time_to_merge_derivable_only_with_dates() -> None:
 
     assert result.merged_count == 1
     assert result.median_time_to_merge_days is None
-    assert _metric(result, "pull_requests.median_time_to_merge_days") == "unavailable"
+    assert _metric(result, "pull_requests.median_time_to_merge_days") is None
+    assert (
+        _availability(result, "pull_requests.median_time_to_merge_days")
+        is MetricAvailability.UNAVAILABLE
+    )

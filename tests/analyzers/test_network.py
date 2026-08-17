@@ -9,6 +9,7 @@ from ghdtk.analyzers.thresholds import AnalysisThresholds
 from ghdtk.models.derived import (
     DimensionId,
     FindingSeverity,
+    MetricAvailability,
     MetricValue,
     SourceEntityKind,
     SourceReference,
@@ -51,6 +52,10 @@ def _snapshot(
 
 def _metric(result: FollowerNetwork, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: FollowerNetwork, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def test_balanced_counts_and_ratio() -> None:
@@ -153,7 +158,8 @@ def test_mutual_follows_unavailable_when_following_not_collected() -> None:
     )
 
     assert result.mutual_follows is None
-    assert _metric(result, "network.mutual_follows.count") == "unavailable"
+    assert _metric(result, "network.mutual_follows.count") is None
+    assert _availability(result, "network.mutual_follows.count") is MetricAvailability.UNAVAILABLE
     finding = next(f for f in result.findings if f.id == "network.mutual_follows.unavailable")
     assert "was not collected" in finding.message
 
@@ -161,8 +167,10 @@ def test_mutual_follows_unavailable_when_following_not_collected() -> None:
 def test_growth_and_org_counts_always_unavailable() -> None:
     result = assess_follower_network(_snapshot())
 
-    assert _metric(result, "network.followers.growth") == "unavailable"
-    assert _metric(result, "network.orgs.count") == "unavailable"
+    assert _metric(result, "network.followers.growth") is None
+    assert _metric(result, "network.orgs.count") is None
+    assert _availability(result, "network.followers.growth") is MetricAvailability.UNAVAILABLE
+    assert _availability(result, "network.orgs.count") is MetricAvailability.UNAVAILABLE
     growth = next(f for f in result.findings if f.id == "network.followers.growth_unavailable")
     assert "never inferred" in growth.message
     orgs = next(f for f in result.findings if f.id == "network.orgs.unavailable")
@@ -176,8 +184,10 @@ def test_missing_user_data_reports_unavailable() -> None:
     assert result.following_count is None
     assert result.ratio is None
     assert result.reach_estimate == 0
-    assert _metric(result, "network.followers.count") == "unavailable"
-    assert _metric(result, "network.followers.ratio") == "unavailable"
+    assert _metric(result, "network.followers.count") is None
+    assert _metric(result, "network.followers.ratio") is None
+    assert _availability(result, "network.followers.count") is MetricAvailability.UNAVAILABLE
+    assert _availability(result, "network.followers.ratio") is MetricAvailability.UNAVAILABLE
     assert not any(
         finding.id in {"network.followers.zero", "network.followers.audience_driven"}
         for finding in result.findings

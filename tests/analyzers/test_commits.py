@@ -6,7 +6,12 @@ from datetime import UTC, datetime
 
 from ghdtk.analyzers.commits import CommitActivity, assess_commit_activity
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import DimensionId, FindingSeverity, MetricValue
+from ghdtk.models.derived import (
+    DimensionId,
+    FindingSeverity,
+    MetricAvailability,
+    MetricValue,
+)
 from ghdtk.models.raw import Commit, CommitDetail, GitUser, ProfileSnapshot
 
 NOW = datetime(2026, 1, 1, tzinfo=UTC)
@@ -25,6 +30,10 @@ def _snapshot(commits: dict[str, list[Commit]]) -> ProfileSnapshot:
 
 def _metric(result: CommitActivity, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: CommitActivity, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def test_coverage_window_and_cadence() -> None:
@@ -116,7 +125,10 @@ def test_no_commits() -> None:
     assert result.total_commits == 0
     assert result.repos_collected == 0
     assert result.span_days is None
-    assert _metric(result, "commit_activity.cadence_per_month") == "unavailable"
+    assert _metric(result, "commit_activity.cadence_per_month") is None
+    assert (
+        _availability(result, "commit_activity.cadence_per_month") is MetricAvailability.UNAVAILABLE
+    )
     finding = next(f for f in result.findings if f.id == "commit_activity.no_commits")
     assert finding.severity is FindingSeverity.INFO
     assert not any(finding.id == "commit_activity.coverage_window" for finding in result.findings)
@@ -128,8 +140,10 @@ def test_commits_without_dates_report_unavailable_window() -> None:
 
     assert result.total_commits == 1
     assert result.span_days is None
-    assert _metric(result, "commit_activity.coverage_start") == "unavailable"
-    assert _metric(result, "commit_activity.span_days") == "unavailable"
+    assert _metric(result, "commit_activity.coverage_start") is None
+    assert _metric(result, "commit_activity.span_days") is None
+    assert _availability(result, "commit_activity.coverage_start") is MetricAvailability.UNAVAILABLE
+    assert _availability(result, "commit_activity.span_days") is MetricAvailability.UNAVAILABLE
     finding = next(f for f in result.findings if f.id == "commit_activity.no_dates")
     assert "none carried an author date" in finding.message
 

@@ -6,7 +6,12 @@ from datetime import UTC, datetime
 
 from ghdtk.analyzers.issues import IssueParticipationAnalysis, assess_issue_participation
 from ghdtk.analyzers.thresholds import AnalysisThresholds
-from ghdtk.models.derived import DimensionId, FindingSeverity, MetricValue
+from ghdtk.models.derived import (
+    DimensionId,
+    FindingSeverity,
+    MetricAvailability,
+    MetricValue,
+)
 from ghdtk.models.raw import Issue, ProfileSnapshot, Repository
 
 NOW = datetime(2026, 1, 1, tzinfo=UTC)
@@ -43,6 +48,10 @@ def _snapshot(issues: list[Issue]) -> ProfileSnapshot:
 
 def _metric(result: IssueParticipationAnalysis, metric_id: str) -> MetricValue:
     return next(metric.value for metric in result.metrics if metric.id == metric_id)
+
+
+def _availability(result: IssueParticipationAnalysis, metric_id: str) -> MetricAvailability:
+    return next(metric.availability for metric in result.metrics if metric.id == metric_id)
 
 
 def test_participation_patterns() -> None:
@@ -180,7 +189,8 @@ def test_no_issues() -> None:
     assert result.total_issues == 0
     assert result.close_rate is None
     assert result.trend_direction is None
-    assert _metric(result, "issues.close_rate") == "unavailable"
+    assert _metric(result, "issues.close_rate") is None
+    assert _availability(result, "issues.close_rate") is MetricAvailability.UNAVAILABLE
     finding = next(f for f in result.findings if f.id == "issues.no_issues")
     assert finding.severity is FindingSeverity.INFO
     assert not any(f.id == "issues.coverage_window" for f in result.findings)

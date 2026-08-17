@@ -39,6 +39,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -51,8 +52,6 @@ __all__ = [
     "TechnologyDiversityAnalysis",
     "assess_technology_diversity",
 ]
-
-_UNAVAILABLE = "unavailable"
 
 DEFAULT_DOMAIN_MAP: dict[str, str] = {
     # Web
@@ -403,14 +402,24 @@ def assess_technology_diversity(
         MetricRecord(
             id="tech.mapped_share",
             label="Share of bytes mapped to a domain",
-            value=_round(mapped_share) if mapped_share is not None else _UNAVAILABLE,
+            value=_round(mapped_share) if mapped_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if mapped_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=all_repo_sources,
         ),
         MetricRecord(
             id="tech.unmapped_share",
             label="Share of bytes not mapped to a domain",
-            value=_round(unmapped_share) if unmapped_share is not None else _UNAVAILABLE,
+            value=_round(unmapped_share) if unmapped_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if unmapped_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=[_source(name, "language") for name in sorted(unmapped_repos)],
         ),
@@ -424,21 +433,36 @@ def assess_technology_diversity(
         MetricRecord(
             id="tech.simpson_index",
             label="Technology diversity (Simpson index)",
-            value=_round(simpson_index) if simpson_index is not None else _UNAVAILABLE,
+            value=_round(simpson_index) if simpson_index is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if simpson_index is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=all_repo_sources,
         ),
         MetricRecord(
             id="tech.top_domain",
             label="Dominant technology domain",
-            value=top_domain if top_domain is not None else _UNAVAILABLE,
+            value=top_domain,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if top_domain is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=all_repo_sources,
         ),
         MetricRecord(
             id="tech.top_domain_share",
             label="Dominant domain share",
-            value=_round(top_domain_share) if top_domain_share is not None else _UNAVAILABLE,
+            value=_round(top_domain_share) if top_domain_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if top_domain_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=all_repo_sources,
         ),

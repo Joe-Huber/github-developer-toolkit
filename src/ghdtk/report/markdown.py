@@ -19,8 +19,8 @@ from ghdtk.models.derived import (
     DimensionScore,
     Finding,
     MetricRecord,
-    MetricValue,
     OverallScore,
+    ProfileAnalyses,
     Recommendation,
     Report,
     SourceReference,
@@ -50,7 +50,6 @@ if TYPE_CHECKING:
     from ghdtk.analyzers.star_growth import StarGrowthAnalysis
     from ghdtk.analyzers.stars import StarsAnalysis
     from ghdtk.analyzers.technology import TechnologyDiversityAnalysis
-    from ghdtk.models.derived.analyses import ProfileAnalyses
 
 _SEVERITY_RANK: dict[str, int] = {
     "critical": 0,
@@ -288,7 +287,10 @@ def _raw_number(value: float) -> str:
     return f"{value:.2f}".rstrip("0").rstrip(".")
 
 
-def _metric_value(value: MetricValue) -> str:
+def _metric_value(metric: MetricRecord) -> str:
+    if metric.is_unavailable:
+        return "unavailable"
+    value = metric.value
     if value is None:
         return "—"
     if isinstance(value, bool):
@@ -298,13 +300,16 @@ def _metric_value(value: MetricValue) -> str:
     return str(value)
 
 
-def _property_value(metric_id: str, value: MetricValue) -> str:
+def _property_value(metric: MetricRecord) -> str:
+    if metric.is_unavailable:
+        return "unavailable"
+    value = metric.value
     if value is None:
         return "—"
     if isinstance(value, bool):
         return _yes_no(value)
     if isinstance(value, float):
-        if metric_id in _PERCENT_METRIC_IDS:
+        if metric.id in _PERCENT_METRIC_IDS:
             return _pct(value)
         return _raw_number(value)
     return str(value)
@@ -365,7 +370,7 @@ def _properties(metrics: list[MetricRecord], ids: tuple[str, ...]) -> list[list[
     for metric_id in ids:
         metric = by_id.get(metric_id)
         if metric is not None:
-            rows.append([metric.label, _property_value(metric.id, metric.value)])
+            rows.append([metric.label, _property_value(metric)])
     return rows
 
 
@@ -773,7 +778,7 @@ def _render_metrics(lines: list[str], metrics: list[MetricRecord]) -> None:
     for metric in metrics:
         source = _source_text(metric.sources[0]) if metric.sources else "—"
         rows.append(
-            [metric.id, metric.label, _metric_value(metric.value), _pct(metric.confidence), source]
+            [metric.id, metric.label, _metric_value(metric), _pct(metric.confidence), source]
         )
     lines.extend(_table(["Metric", "Label", "Value", "Confidence", "Source"], rows))
     lines.append("")

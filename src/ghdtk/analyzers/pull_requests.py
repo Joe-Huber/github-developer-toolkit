@@ -35,6 +35,7 @@ from ghdtk.models.derived import (
     DimensionId,
     Finding,
     FindingSeverity,
+    MetricAvailability,
     MetricRecord,
     SourceEntityKind,
     SourceReference,
@@ -42,8 +43,6 @@ from ghdtk.models.derived import (
 from ghdtk.models.raw import ProfileSnapshot, PullRequest
 
 __all__ = ["PullRequestAnalysis", "assess_pull_request_collaboration"]
-
-_UNAVAILABLE = "unavailable"
 
 
 def _ensure_utc(value: datetime) -> datetime:
@@ -304,7 +303,12 @@ def assess_pull_request_collaboration(
         MetricRecord(
             id="pull_requests.merge_rate",
             label="Merge rate (share of resolved pull requests merged)",
-            value=_round(merge_rate) if merge_rate is not None else _UNAVAILABLE,
+            value=_round(merge_rate) if merge_rate is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if merge_rate is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -318,7 +322,12 @@ def assess_pull_request_collaboration(
         MetricRecord(
             id="pull_requests.external_share",
             label="External repository share",
-            value=_round(external_share) if external_share is not None else _UNAVAILABLE,
+            value=_round(external_share) if external_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if external_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -340,9 +349,12 @@ def assess_pull_request_collaboration(
             id="pull_requests.median_time_to_merge_days",
             label="Median time to merge (days)",
             value=(
-                _round(median_time_to_merge_days)
+                _round(median_time_to_merge_days) if median_time_to_merge_days is not None else None
+            ),
+            availability=(
+                MetricAvailability.AVAILABLE
                 if median_time_to_merge_days is not None
-                else _UNAVAILABLE
+                else MetricAvailability.UNAVAILABLE
             ),
             timestamp=now_ts,
             sources=repo_sources,
@@ -350,14 +362,20 @@ def assess_pull_request_collaboration(
         MetricRecord(
             id="pull_requests.coverage_start",
             label="Coverage window start",
-            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else _UNAVAILABLE,
+            value=coverage_start.strftime("%Y-%m-%d") if coverage_start else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_start else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
         MetricRecord(
             id="pull_requests.coverage_end",
             label="Coverage window end",
-            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else _UNAVAILABLE,
+            value=coverage_end.strftime("%Y-%m-%d") if coverage_end else None,
+            availability=(
+                MetricAvailability.AVAILABLE if coverage_end else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),
@@ -378,7 +396,12 @@ def assess_pull_request_collaboration(
         MetricRecord(
             id="pull_requests.reviewed_share",
             label="Share of pull requests with review comments",
-            value=_round(reviewed_share) if reviewed_share is not None else _UNAVAILABLE,
+            value=_round(reviewed_share) if reviewed_share is not None else None,
+            availability=(
+                MetricAvailability.AVAILABLE
+                if reviewed_share is not None
+                else MetricAvailability.UNAVAILABLE
+            ),
             timestamp=now_ts,
             sources=repo_sources,
         ),

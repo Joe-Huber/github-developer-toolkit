@@ -79,6 +79,7 @@ class Settings(BaseSettings):
 
     # --- Collection pipeline --------------------------------------------
     collection_max_requests: int = Field(default=500, ge=1)
+    collection_max_workers: int = Field(default=1, ge=1, le=32)
 
     # --- Analysis thresholds --------------------------------------------
     analysis_minimum_stars: int = Field(default=10, ge=0)
