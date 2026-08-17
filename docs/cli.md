@@ -5,14 +5,16 @@ pipeline, and writes Markdown, JSON, or HTML reports.
 
 ## Installation
 
-```bash
-python3 -m pip install ghdtk
-```
-
-Or directly from the repository:
+Requires Python 3.11+.
 
 ```bash
 python3 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
+```
+
+After the first PyPI release, this will simplify to:
+
+```bash
+python3 -m pip install ghdtk
 ```
 
 ## Quick Start
