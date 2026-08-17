@@ -5,10 +5,17 @@ pipeline, and writes Markdown, JSON, or HTML reports.
 
 ## Installation
 
-Requires Python 3.11+.
+Requires Python 3.11+. On macOS, make sure `python3` resolves to 3.11+
+(e.g. via `brew install python@3.12` and adding its path to `$PATH`).
 
 ```bash
 python3 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
+```
+
+If your `python3` is older than 3.11, use an explicit version:
+
+```bash
+python3.12 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
 
 After the first PyPI release, this will simplify to:
