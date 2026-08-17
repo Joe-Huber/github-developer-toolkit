@@ -5,24 +5,33 @@ pipeline, and writes Markdown, JSON, or HTML reports.
 
 ## Installation
 
-Requires Python 3.11+. On macOS, make sure `python3` resolves to 3.11+
-(e.g. via `brew install python@3.12` and adding its path to `$PATH`).
+Requires Python 3.11+.
+
+### With `uv` (recommended)
 
 ```bash
-python3 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
+uv tool install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
 
-If your `python3` is older than 3.11, use an explicit version:
+This installs `ghdtk` as a standalone CLI tool in an isolated environment.
+No conflicts with system packages.
+
+### With `pipx`
 
 ```bash
-python3.12 -m pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
+pipx install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
 
-After the first PyPI release, this will simplify to:
+### With `pip` (in a virtual environment)
 
 ```bash
-python3 -m pip install ghdtk
+python3 -m venv .venv
+source .venv/bin/activate
+pip install git+https://github.com/Joe-Huber/github-developer-toolkit.git
 ```
+
+> **Note:** Modern macOS with Homebrew Python blocks `pip install` outside
+> virtual environments (PEP 668). Use `uv`, `pipx`, or a venv instead.
 
 ## Quick Start
 
