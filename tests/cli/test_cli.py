@@ -29,7 +29,7 @@ def test_no_command_prints_help(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_config_without_token_fails(capsys: pytest.CaptureFixture[str]) -> None:
-    assert main(["config"]) == 1
+    assert main(["config"]) == 2
     err = capsys.readouterr().err
     assert "could not load configuration" in err
     assert "github_token" in err
