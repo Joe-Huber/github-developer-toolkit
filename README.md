@@ -61,10 +61,13 @@ See [.env.example](.env.example) for every available variable.
 # CLI entry point
 uv run ghdtk --version
 uv run ghdtk config          # inspect the resolved configuration
-```
 
-The profile-analysis commands are built out in later milestones; the data
-models, configuration, and module boundaries are in place now.
+# Analyze a GitHub profile
+uv run ghdtk analyze octocat
+
+# Launch the interactive dashboard
+uv run ghdtk dashboard octocat   # opens browser at http://localhost:8000
+```
 
 ## Architecture
 
@@ -112,6 +115,7 @@ report/          analysis -> Report DTO -> JSON / Markdown / HTML
 | `report/` | #54 — Report layer | Markdown, JSON and HTML renderers |
 | `config/` | #13 — Configuration | Settings from env vars, `.env` and `ghdtk.toml` |
 | `observability/` | #65 — Observability | Structured logging, correlation ids, run metrics |
+| `dashboard/` | #76 — Dashboard | FastAPI REST API + React frontend ([docs/dashboard.md](docs/dashboard.md)) |
 
 ### Key resources
 
@@ -122,6 +126,8 @@ report/          analysis -> Report DTO -> JSON / Markdown / HTML
   module boundaries, data flow, design principles, all analyzer descriptions.
 - **Testing strategy**: [docs/testing.md](docs/testing.md) -- fixture corpus,
   deterministic replay, coverage gate.
+- **Dashboard**: [docs/dashboard.md](docs/dashboard.md) -- FastAPI + React
+  web dashboard for interactive profile visualization.
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md) -- dev setup, quality
   gates, configuration reference.
 
@@ -161,7 +167,10 @@ src/ghdtk/
 ├── report/           # analysis → report DTO
 ├── config/           # configuration (file + env + defaults)
 ├── observability/    # structured logging, correlation ids, run metrics
-└── cli/              # command-line interface
+├── cli/              # command-line interface
+└── dashboard/        # FastAPI backend (REST API + static file serving)
+
+dashboard-ui/         # React frontend (Vite + TypeScript + Tailwind + Chart.js)
 ```
 
 ## Contributing
