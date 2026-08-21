@@ -101,6 +101,34 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Suppress progress output; only errors go to stderr.",
     )
+
+    dashboard = subparsers.add_parser(
+        "dashboard",
+        help="Launch the interactive web dashboard.",
+    )
+    dashboard.add_argument("username", help="GitHub username to analyze and display.")
+    dashboard.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port for the dashboard server (default: 8000).",
+    )
+    dashboard.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host for the dashboard server (default: 127.0.0.1).",
+    )
+    dashboard.add_argument(
+        "--no-open",
+        action="store_true",
+        help="Don't automatically open the browser.",
+    )
+    dashboard.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Verbose output: show per-collection timing and budget usage.",
+    )
     return parser
 
 
@@ -278,6 +306,39 @@ def _classify_api_error(exc: Exception) -> None:
         print(f"error: API request failed ({name}): {msg}", file=sys.stderr)
 
 
+def _cmd_dashboard(args: argparse.Namespace) -> int:
+    """Launch the interactive web dashboard."""
+    if args.verbose:
+        from ghdtk.observability import configure_logging
+
+        configure_logging()
+
+    try:
+        import uvicorn
+    except ImportError:
+        print(
+            "error: dashboard requires extra dependencies.\n"
+            "Install with: pip install 'ghdtk[dashboard]'",
+            file=sys.stderr,
+        )
+        return EXIT_CONFIG
+
+    from ghdtk.dashboard.app import create_app
+
+    app = create_app()
+
+    if not args.no_open:
+        import webbrowser
+
+        webbrowser.open(f"http://{args.host}:{args.port}")
+
+    _emit(f"Dashboard serving @{args.username} at http://{args.host}:{args.port}", quiet=False)
+    _emit("Press Ctrl+C to stop.", quiet=False)
+
+    uvicorn.run(app, host=args.host, port=args.port, log_level="info")
+    return EXIT_SUCCESS
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -299,5 +360,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "analyze":
         return _cmd_analyze(args)
+
+    if args.command == "dashboard":
+        return _cmd_dashboard(args)
 
     return EXIT_SUCCESS
