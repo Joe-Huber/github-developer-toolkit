@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import type { Finding, FindingSeverity, DimensionId } from "../types/report";
 
 const SEVERITY_STYLES: Record<FindingSeverity, string> = {
@@ -34,6 +34,8 @@ export function FindingsList({ findings, title }: FindingsListProps) {
   );
   const [dimensionFilter, setDimensionFilter] = useState<Set<DimensionId> | null>(null);
   const [sortBy, setSortBy] = useState<"severity" | "dimension" | "title">("severity");
+  const dimensionSelectId = useId();
+  const sortSelectId = useId();
 
   const dimensions = [...new Set(findings.map((f) => f.dimension).filter(Boolean))] as DimensionId[];
 
@@ -68,11 +70,12 @@ export function FindingsList({ findings, title }: FindingsListProps) {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-4 text-sm">
-        <div className="flex gap-1">
+        <div className="flex gap-1" role="group" aria-label="Filter by severity">
           {SEVERITY_ORDER.map((sev) => (
             <button
               key={sev}
               onClick={() => toggleSeverity(sev)}
+              aria-pressed={severityFilter.has(sev)}
               className={`px-2 py-1 rounded text-xs capitalize transition-colors ${
                 severityFilter.has(sev)
                   ? SEVERITY_STYLES[sev]
@@ -85,32 +88,44 @@ export function FindingsList({ findings, title }: FindingsListProps) {
         </div>
 
         {dimensions.length > 0 && (
-          <select
-            className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
-            onChange={(e) => {
-              const val = e.target.value;
-              setDimensionFilter(val ? new Set([val as DimensionId]) : null);
-            }}
-            value={dimensionFilter ? [...dimensionFilter][0] : ""}
-          >
-            <option value="">All dimensions</option>
-            {dimensions.map((d) => (
-              <option key={d} value={d}>
-                {DIMENSION_LABELS[d]}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2">
+            <label htmlFor={dimensionSelectId} className="text-muted text-xs">
+              Dimension
+            </label>
+            <select
+              id={dimensionSelectId}
+              className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
+              onChange={(e) => {
+                const val = e.target.value;
+                setDimensionFilter(val ? new Set([val as DimensionId]) : null);
+              }}
+              value={dimensionFilter ? [...dimensionFilter][0] : ""}
+            >
+              <option value="">All dimensions</option>
+              {dimensions.map((d) => (
+                <option key={d} value={d}>
+                  {DIMENSION_LABELS[d] ?? d}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
 
-        <select
-          className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
-          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          value={sortBy}
-        >
-          <option value="severity">Sort by severity</option>
-          <option value="dimension">Sort by dimension</option>
-          <option value="title">Sort by title</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <label htmlFor={sortSelectId} className="text-muted text-xs">
+            Sort by
+          </label>
+          <select
+            id={sortSelectId}
+            className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            value={sortBy}
+          >
+            <option value="severity">Severity</option>
+            <option value="dimension">Dimension</option>
+            <option value="title">Title</option>
+          </select>
+        </div>
       </div>
 
       {/* List */}
@@ -129,7 +144,7 @@ export function FindingsList({ findings, title }: FindingsListProps) {
               <span className="font-medium text-text text-sm">{f.title}</span>
               {f.dimension && (
                 <span className="text-xs text-muted ml-auto">
-                  {DIMENSION_LABELS[f.dimension]}
+                  {DIMENSION_LABELS[f.dimension] ?? f.dimension}
                 </span>
               )}
             </div>

@@ -28,14 +28,23 @@ def _network(
     )
 
 
-def test_large_balanced_network_scores_100() -> None:
+def test_balanced_network_scores_100() -> None:
     result = CommunityScorer().score(
-        ScoreInputs(network=_network(followers=2000, following=1000, ratio=2.0, reach=8000))
+        ScoreInputs(network=_network(followers=1000, following=1000, ratio=1.0, reach=8000))
     )
     assert result is not None
     assert result.dimension is DimensionId.ENGAGEMENT
     assert result.score == 100.0
     assert sum(item.contribution for item in result.breakdown) == pytest.approx(100.0)
+
+
+def test_audience_driven_network_is_penalized_for_balance() -> None:
+    result = CommunityScorer().score(
+        ScoreInputs(network=_network(followers=2000, following=1000, ratio=2.0, reach=8000))
+    )
+    assert result is not None
+    assert result.score == pytest.approx(85.0)
+    assert sum(item.contribution for item in result.breakdown) == pytest.approx(85.0)
 
 
 def test_no_followers_scores_zero() -> None:

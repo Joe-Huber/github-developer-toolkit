@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import type { Recommendation, RecommendationPriority, RecommendationEffort } from "../types/report";
 
 const PRIORITY_STYLES: Record<RecommendationPriority, string> = {
@@ -23,6 +23,7 @@ export function RecommendationsList({ recommendations, title }: RecommendationsL
     new Set(["high", "medium", "low"])
   );
   const [sortBy, setSortBy] = useState<"priority" | "effort" | "action">("priority");
+  const sortSelectId = useId();
 
   const PRIORITY_ORDER: RecommendationPriority[] = ["high", "medium", "low"];
   const EFFORT_ORDER: RecommendationEffort[] = ["low", "medium", "high"];
@@ -57,11 +58,12 @@ export function RecommendationsList({ recommendations, title }: RecommendationsL
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-4 text-sm">
-        <div className="flex gap-1">
+        <div className="flex gap-1" role="group" aria-label="Filter by priority">
           {PRIORITY_ORDER.map((p) => (
             <button
               key={p}
               onClick={() => togglePriority(p)}
+              aria-pressed={priorityFilter.has(p)}
               className={`px-2 py-1 rounded text-xs capitalize transition-colors ${
                 priorityFilter.has(p) ? PRIORITY_STYLES[p] : "bg-border/30 text-muted/50"
               }`}
@@ -71,15 +73,21 @@ export function RecommendationsList({ recommendations, title }: RecommendationsL
           ))}
         </div>
 
-        <select
-          className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
-          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          value={sortBy}
-        >
-          <option value="priority">Sort by priority</option>
-          <option value="effort">Sort by effort</option>
-          <option value="action">Sort by action</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <label htmlFor={sortSelectId} className="text-muted text-xs">
+            Sort by
+          </label>
+          <select
+            id={sortSelectId}
+            className="bg-border/30 text-text text-xs rounded px-2 py-1 border border-border"
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            value={sortBy}
+          >
+            <option value="priority">Priority</option>
+            <option value="effort">Effort</option>
+            <option value="action">Action</option>
+          </select>
+        </div>
       </div>
 
       {/* List */}

@@ -15,12 +15,12 @@ from ghdtk.dashboard.schemas import HealthResponse, ReportResponse
 router = APIRouter(prefix="/api")
 
 
-@router.get("/health", response_model=HealthResponse)  # type: ignore[untyped-decorator]
+@router.get("/health", response_model=HealthResponse)
 async def health_check() -> HealthResponse:
     return HealthResponse()
 
 
-@router.get("/report/{username}", response_model=ReportResponse)  # type: ignore[untyped-decorator]
+@router.get("/report/{username}", response_model=ReportResponse)
 async def get_report(username: str) -> ReportResponse:
     """Run the full analysis pipeline and return the report as JSON."""
     from ghdtk.api.client import GitHubClient

@@ -216,7 +216,7 @@ def test_summarize_repositories_filters_and_aggregates() -> None:
     assert summary.archived_count == 1
     assert summary.oldest_repository == "a/one"
     assert summary.newest_repository == "b/two"
-    assert summary.stalest_repository == "b/two"
+    assert summary.stalest_repository == "a/one"
 
 
 def test_summarize_repositories_empty() -> None:

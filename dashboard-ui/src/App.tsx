@@ -80,8 +80,15 @@ function App() {
         </form>
 
         {loading && (
-          <div className="mt-4 text-center text-muted text-sm">
-            <div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-accent border-t-transparent mr-2" />
+          <div
+            role="status"
+            aria-label="Loading"
+            className="mt-4 text-center text-muted text-sm"
+          >
+            <div
+              aria-hidden="true"
+              className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-accent border-t-transparent mr-2"
+            />
             Fetching profile data...
           </div>
         )}

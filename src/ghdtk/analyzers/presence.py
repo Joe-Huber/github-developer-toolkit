@@ -138,6 +138,7 @@ def assess_profile_presence(
     findings: list[Finding] = []
     placeholder_counts: dict[str, list[str]] = {}
 
+    bio_present = False
     for field, label in _TEXT_FIELDS:
         raw = getattr(user, field)
         value = (raw or "").strip()
@@ -197,8 +198,10 @@ def assess_profile_presence(
                 sources=[source],
             )
         )
+        if field == "bio":
+            bio_present = True
 
-    if user.bio and len(user.bio.split()) < _SHORT_BIO_WORDS:
+    if bio_present and len((user.bio or "").split()) < _SHORT_BIO_WORDS:
         findings.append(
             Finding(
                 id="presence.bio.short",
@@ -213,15 +216,6 @@ def assess_profile_presence(
 
     hireable_source = _source(user, "hireable")
     if user.hireable is None:
-        fields.append(
-            FieldAssessment(
-                field="hireable",
-                label="Hireable flag",
-                status=FieldStatus.MISSING,
-                reason="not set",
-                sources=[hireable_source],
-            )
-        )
         findings.append(
             Finding(
                 id="presence.hireable.unset",
