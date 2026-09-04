@@ -8,9 +8,10 @@ export function useReport(username: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setData(null);
+    setError(null);
     if (!username) return;
     setLoading(true);
-    setError(null);
     fetchReport(username)
       .then(setData)
       .catch((err: Error) => setError(err.message))
