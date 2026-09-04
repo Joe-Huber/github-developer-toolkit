@@ -16,8 +16,3 @@ export async function fetchReport(
   }
   return resp.json();
 }
-
-export async function fetchHealth(): Promise<{ status: string }> {
-  const resp = await fetch(`${BASE_URL}/health`);
-  return resp.json();
-}
