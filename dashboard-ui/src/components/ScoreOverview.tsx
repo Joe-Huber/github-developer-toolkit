@@ -48,7 +48,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
   const { profile } = report;
   const overall = profile.overall?.overall ?? 0;
 
-  const labels = profile.scores.map((s) => DIMENSION_LABELS[s.dimension]);
+  const labels = profile.scores.map((s) => DIMENSION_LABELS[s.dimension] ?? s.dimension);
   const values = profile.scores.map((s) => s.score);
 
   const radarData = {

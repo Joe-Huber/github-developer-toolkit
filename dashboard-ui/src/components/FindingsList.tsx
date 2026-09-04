@@ -104,7 +104,7 @@ export function FindingsList({ findings, title }: FindingsListProps) {
               <option value="">All dimensions</option>
               {dimensions.map((d) => (
                 <option key={d} value={d}>
-                  {DIMENSION_LABELS[d]}
+                  {DIMENSION_LABELS[d] ?? d}
                 </option>
               ))}
             </select>
@@ -144,7 +144,7 @@ export function FindingsList({ findings, title }: FindingsListProps) {
               <span className="font-medium text-text text-sm">{f.title}</span>
               {f.dimension && (
                 <span className="text-xs text-muted ml-auto">
-                  {DIMENSION_LABELS[f.dimension]}
+                  {DIMENSION_LABELS[f.dimension] ?? f.dimension}
                 </span>
               )}
             </div>
