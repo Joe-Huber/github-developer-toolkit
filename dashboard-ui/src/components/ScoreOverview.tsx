@@ -152,7 +152,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Radar chart — 2 columns */}
-        <div className="lg:col-span-2 h-80">
+        <div className="lg:col-span-2 h-80" role="img" aria-label="Dimension scores radar chart">
           <Radar data={radarData} options={radarOptions} />
         </div>
 
@@ -160,7 +160,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
         {hasLanguageChart && donutData && (
           <div className="bg-bg/50 rounded-lg p-4 border border-border">
             <h3 className="text-sm font-medium text-muted mb-3">Languages</h3>
-            <div className="h-52">
+            <div className="h-52" role="img" aria-label="Language distribution donut chart">
               <Doughnut data={donutData} options={donutOptions} />
             </div>
             <div className="mt-3 space-y-1">

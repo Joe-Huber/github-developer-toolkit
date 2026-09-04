@@ -57,7 +57,7 @@ export function Charts({ breakdown }: ChartsProps) {
   };
 
   return (
-    <div className="h-64">
+    <div className="h-64" role="img" aria-label="Dimension contribution bar chart">
       <Bar data={barData} options={barOptions} />
     </div>
   );
