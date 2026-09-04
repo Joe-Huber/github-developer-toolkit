@@ -113,6 +113,7 @@ class GitHubClient:
         per_page: int = 100,
         max_retries: int = 3,
         backoff: BackoffPolicy | None = None,
+        rate_limit_wait_max_seconds: float = 3600.0,
         cache: ResponseCache | None = None,
     ) -> None:
         secret = token.get_secret_value() if isinstance(token, SecretStr) else token
@@ -126,6 +127,7 @@ class GitHubClient:
         self._per_page = per_page
         self._max_retries = max_retries
         self._backoff = backoff if backoff is not None else BackoffPolicy()
+        self._rate_limit_wait_max_seconds = rate_limit_wait_max_seconds
         self._rate_limit = RateLimitState()
         self._requests_made = 0
         self._cache = cache
@@ -153,6 +155,7 @@ class GitHubClient:
             timeout=settings.github_timeout_seconds,
             per_page=settings.github_per_page,
             max_retries=settings.github_max_retries,
+            rate_limit_wait_max_seconds=settings.github_rate_limit_wait_max_seconds,
             cache=cache,
         )
 
@@ -316,11 +319,17 @@ class GitHubClient:
             return None
 
     def _wait_for_rate_limit(self) -> None:
-        """Pause when the primary budget is exhausted, or fail predictably."""
+        """Pause until the primary budget resets, or fail predictably.
+
+        GitHub primary rate-limit windows can reset up to an hour later, so the
+        wait ceiling is decoupled from the (much smaller) secondary-backoff
+        ``max_delay`` and is configurable via ``rate_limit_wait_max_seconds``
+        (default 3600s). Only waits that exceed that ceiling are rejected.
+        """
         wait = self._rate_limit.wait_seconds()
         if wait <= 0:
             return
-        if wait <= self._backoff.max_delay:
+        if wait <= self._rate_limit_wait_max_seconds:
             self._backoff.sleep(wait)
             return
         raise RateLimitError(
@@ -700,6 +709,7 @@ def create_client(
     per_page: int = 100,
     max_retries: int = 3,
     backoff: BackoffPolicy | None = None,
+    rate_limit_wait_max_seconds: float = 3600.0,
     cache: ResponseCache | None = None,
 ) -> GitHubClient:
     """Create a :class:`GitHubClient` for the given token and base URL."""
@@ -711,6 +721,7 @@ def create_client(
         per_page=per_page,
         max_retries=max_retries,
         backoff=backoff,
+        rate_limit_wait_max_seconds=rate_limit_wait_max_seconds,
         cache=cache,
     )
 

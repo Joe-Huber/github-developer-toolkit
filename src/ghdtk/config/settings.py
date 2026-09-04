@@ -71,6 +71,7 @@ class Settings(BaseSettings):
     github_timeout_seconds: float = Field(default=30.0, gt=0)
     github_max_retries: int = Field(default=3, ge=0)
     github_per_page: int = Field(default=100, ge=1, le=100)
+    github_rate_limit_wait_max_seconds: float = Field(default=3600.0, gt=0)
 
     # --- Caching --------------------------------------------------------
     cache_enabled: bool = True

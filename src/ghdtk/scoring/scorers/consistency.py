@@ -17,8 +17,12 @@ Documented formula (blended, 0-100):
 
 Empty-data handling: without the commit analysis the dimension cannot be scored
 and ``None`` is returned; a coverage window with no commits scores zero on the
-commit-regularity component. The calendar component is dropped (and remaining
-weight re-normalized) when the calendar analysis was not run.
+commit-regularity component. When cadence is missing (e.g. activity compressed
+into a single day, so no gap-based span), the cadence sub-component falls back
+to a neutral 50 (the midpoint of the normalization range) instead of zero, so
+high-volume developers aren't penalized for single-day activity. The calendar
+component is dropped (and remaining weight re-normalized) when the calendar
+analysis was not run.
 """
 
 from __future__ import annotations
@@ -82,7 +86,7 @@ class ConsistencyScorer(BaseScorer):
             cadence_component = (
                 normalize_linear(cadence, 0.0, self.config.cadence_target)
                 if cadence is not None
-                else 0.0
+                else 0.5
             )
             gap_component = self._gap_component(median_gap)
             if span_days:
