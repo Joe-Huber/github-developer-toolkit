@@ -82,7 +82,14 @@ def _heading_texts(text: str) -> list[str]:
 
 
 def _count_fences(text: str) -> int:
-    return len(_FENCE_RE.findall(text)) // 2
+    count = 0
+    in_fence = False
+    for line in text.splitlines():
+        if _FENCE_RE.match(line):
+            in_fence = not in_fence
+            if not in_fence:
+                count += 1
+    return count
 
 
 def _count_badges(text: str) -> int:
