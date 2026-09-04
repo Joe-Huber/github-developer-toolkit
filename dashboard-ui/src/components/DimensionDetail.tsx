@@ -50,6 +50,12 @@ export function DimensionDetail({
           )}
         </div>
 
+        {!score && (
+          <p className="text-muted text-sm">
+            No score data available for this dimension.
+          </p>
+        )}
+
         {score?.rationale && (
           <p className="text-muted text-sm mb-4">{score.rationale}</p>
         )}
