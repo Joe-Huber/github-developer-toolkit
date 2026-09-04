@@ -85,6 +85,10 @@ module = [
 ]
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = ["ghdtk.dashboard.routes"]
+disable_error_code = ["untyped-decorator"]
+
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
