@@ -180,6 +180,27 @@ def test_blended_mid_range_score() -> None:
     assert result.score == pytest.approx(48.90, abs=0.005)
 
 
+def test_missing_staleness_uses_neutral_not_minimum() -> None:
+    activity = _activity(
+        [
+            _metric("portfolio.activity.repos.total", 4),
+            _metric("portfolio.activity.repos.active", 4),
+        ]
+    )
+    portfolio = _portfolio(
+        ["octocat/a", "octocat/b", "octocat/c"],
+        [_metric("portfolio.composition.total_stars", 8000)],
+    )
+    inputs = ScoreInputs(
+        repository_quality=_quality(_perfect_quality()),
+        repository_activity=activity,
+        portfolio=portfolio,
+    )
+    result = RepositoryScorer().score(inputs)
+    assert result is not None
+    assert result.score == pytest.approx(85.79, abs=0.005)
+
+
 def test_no_repositories_scores_zero() -> None:
     quality = _quality([], count=0)
     activity = _activity(
