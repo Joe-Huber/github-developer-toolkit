@@ -157,7 +157,7 @@ def test_participation_patterns() -> None:
     assert result.external_count == 9
     assert result.external_share == 0.75
     assert result.repository_diversity == 2
-    assert result.trend_direction == "rising"
+    assert result.trend_direction is None
     assert result.monthly_opened["2024-01"] == 2
     assert result.monthly_opened["2024-10"] == 2
     assert result.monthly_closed["2024-01"] == 2
@@ -179,8 +179,8 @@ def test_participation_patterns() -> None:
     community = next(f for f in result.findings if f.id == "issues.community_participation")
     assert "community participation" in community.title
 
-    rising = next(f for f in result.findings if f.id == "issues.trend_rising")
-    assert rising.dimension is DimensionId.ACTIVITY
+    assert not any(f.id == "issues.trend_rising" for f in result.findings)
+    assert not any(f.id == "issues.trend_slowing" for f in result.findings)
 
 
 def test_no_issues() -> None:

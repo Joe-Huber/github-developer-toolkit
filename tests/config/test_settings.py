@@ -49,6 +49,7 @@ def test_defaults(project_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.github_timeout_seconds == 30.0
     assert settings.github_max_retries == 3
     assert settings.github_per_page == 100
+    assert settings.github_rate_limit_wait_max_seconds == 3600.0
     assert settings.cache_enabled is True
     assert settings.cache_ttl_seconds == 86_400
     assert settings.cache_dir is None

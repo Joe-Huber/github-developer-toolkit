@@ -50,13 +50,13 @@ def aggregate_dimension_scores(
     ]
     strengths = _top_dimensions(
         scored,
-        at_or_above=config.strength_threshold,
+        threshold=config.strength_threshold,
         limit=config.max_strengths,
         weakest_first=False,
     )
     weaknesses = _top_dimensions(
         scored,
-        at_or_above=config.weakness_threshold,
+        threshold=config.weakness_threshold,
         limit=config.max_weaknesses,
         weakest_first=True,
     )
@@ -71,7 +71,7 @@ def aggregate_dimension_scores(
 def _top_dimensions(
     scores: Sequence[DimensionScore],
     *,
-    at_or_above: float,
+    threshold: float,
     limit: int,
     weakest_first: bool,
 ) -> list[str]:
@@ -82,10 +82,10 @@ def _top_dimensions(
     worst first. Ties break on the dimension id so the output is deterministic.
     """
     if weakest_first:
-        filtered = [score for score in scores if score.score <= at_or_above]
+        filtered = [score for score in scores if score.score <= threshold]
         ordered = sorted(filtered, key=lambda s: (s.score, s.dimension.value))
     else:
-        filtered = [score for score in scores if score.score >= at_or_above]
+        filtered = [score for score in scores if score.score >= threshold]
         ordered = sorted(filtered, key=lambda s: (-s.score, s.dimension.value))
     return [
         f"{dimension_label(score.dimension)} ({score.score:.0f}/100)" for score in ordered[:limit]

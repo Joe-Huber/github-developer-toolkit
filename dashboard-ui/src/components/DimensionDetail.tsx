@@ -40,7 +40,7 @@ export function DimensionDetail({
       <div className="bg-panel rounded-lg border border-border p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-text">
-            {DIMENSION_LABELS[dimension]}
+            {DIMENSION_LABELS[dimension] ?? dimension}
           </h2>
           {score && (
             <div className="text-3xl font-bold text-accent">
@@ -49,6 +49,12 @@ export function DimensionDetail({
             </div>
           )}
         </div>
+
+        {!score && (
+          <p className="text-muted text-sm">
+            No score data available for this dimension.
+          </p>
+        )}
 
         {score?.rationale && (
           <p className="text-muted text-sm mb-4">{score.rationale}</p>

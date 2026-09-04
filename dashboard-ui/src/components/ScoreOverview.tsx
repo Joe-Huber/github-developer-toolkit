@@ -48,7 +48,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
   const { profile } = report;
   const overall = profile.overall?.overall ?? 0;
 
-  const labels = profile.scores.map((s) => DIMENSION_LABELS[s.dimension]);
+  const labels = profile.scores.map((s) => DIMENSION_LABELS[s.dimension] ?? s.dimension);
   const values = profile.scores.map((s) => s.score);
 
   const radarData = {
@@ -152,7 +152,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Radar chart — 2 columns */}
-        <div className="lg:col-span-2 h-80">
+        <div className="lg:col-span-2 h-80" role="img" aria-label="Dimension scores radar chart">
           <Radar data={radarData} options={radarOptions} />
         </div>
 
@@ -160,7 +160,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
         {hasLanguageChart && donutData && (
           <div className="bg-bg/50 rounded-lg p-4 border border-border">
             <h3 className="text-sm font-medium text-muted mb-3">Languages</h3>
-            <div className="h-52">
+            <div className="h-52" role="img" aria-label="Language distribution donut chart">
               <Doughnut data={donutData} options={donutOptions} />
             </div>
             <div className="mt-3 space-y-1">
@@ -184,8 +184,8 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
           <div>
             <h3 className="text-sm font-medium text-good mb-2">Strengths</h3>
             <ul className="space-y-1">
-              {profile.overall!.strengths.map((s, i) => (
-                <li key={i} className="text-sm text-muted">
+              {profile.overall!.strengths.map((s) => (
+                <li key={s} className="text-sm text-muted">
                   {s}
                 </li>
               ))}
@@ -194,8 +194,8 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
           <div>
             <h3 className="text-sm font-medium text-bad mb-2">Weaknesses</h3>
             <ul className="space-y-1">
-              {profile.overall!.weaknesses.map((w, i) => (
-                <li key={i} className="text-sm text-muted">
+              {profile.overall!.weaknesses.map((w) => (
+                <li key={w} className="text-sm text-muted">
                   {w}
                 </li>
               ))}

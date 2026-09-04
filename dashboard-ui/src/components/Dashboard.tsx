@@ -38,15 +38,20 @@ export function Dashboard({
 }: DashboardProps) {
   const validTab = DIMENSIONS.some((d) => d.id === initialTab) ? (initialTab as DimensionId | "overview") : "overview";
   const [activeTab, setActiveTab] = useState<DimensionId | "overview">(validTab);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const profile = report.profile;
 
   const switchTab = (tab: DimensionId | "overview") => {
     setActiveTab(tab);
     onTabChange?.(tab);
+    setSidebarOpen(false);
   };
 
   const findingsByDimension = (dim: DimensionId): Finding[] =>
     profile.findings.filter((f) => f.dimension === dim);
+
+  const activeFindings =
+    activeTab === "overview" ? [] : findingsByDimension(activeTab);
 
   const recommendationsForFindings = (findings: Finding[]): Recommendation[] => {
     const ids = new Set(findings.flatMap((f) => f.recommendation_ids));
@@ -54,9 +59,26 @@ export function Dashboard({
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen md:flex">
+      {/* Mobile top bar */}
+      <header className="md:hidden sticky top-0 z-20 flex items-center gap-4 bg-panel border-b border-border px-4 py-3">
+        <button
+          onClick={() => setSidebarOpen((open) => !open)}
+          aria-label="Toggle navigation"
+          aria-expanded={sidebarOpen}
+          className="text-lg text-text hover:text-accent transition-colors"
+        >
+          {sidebarOpen ? "\u2715" : "\u2630"}
+        </button>
+        <h1 className="text-lg font-semibold text-accent">ghdtk</h1>
+      </header>
+
       {/* Sidebar */}
-      <aside className="w-56 shrink-0 bg-panel border-r border-border p-4">
+      <aside
+        className={`w-56 shrink-0 bg-panel border-r border-border p-4 md:block ${
+          sidebarOpen ? "block" : "hidden"
+        }`}
+      >
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-lg font-semibold text-accent">ghdtk</h1>
           {onBack && (
@@ -93,7 +115,7 @@ export function Dashboard({
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-6 overflow-auto">
+      <main className="flex-1 p-4 md:p-6 overflow-auto">
         {activeTab === "overview" ? (
           <div className="space-y-6">
             <ScoreOverview report={report} />
@@ -110,8 +132,8 @@ export function Dashboard({
           <DimensionDetail
             dimension={activeTab}
             scores={profile.scores}
-            findings={findingsByDimension(activeTab)}
-            recommendations={recommendationsForFindings(findingsByDimension(activeTab))}
+            findings={activeFindings}
+            recommendations={recommendationsForFindings(activeFindings)}
           />
         )}
       </main>

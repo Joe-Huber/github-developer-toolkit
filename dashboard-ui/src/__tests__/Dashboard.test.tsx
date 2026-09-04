@@ -67,4 +67,10 @@ describe("Dashboard", () => {
     render(<Dashboard {...defaultProps} initialTab="code_quality" />);
     expect(screen.getByText("High quality code.")).toBeInTheDocument();
   });
+
+  it("renders a mobile navigation toggle", () => {
+    render(<Dashboard {...defaultProps} />);
+    const toggle = screen.getByRole("button", { name: "Toggle navigation" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
 });

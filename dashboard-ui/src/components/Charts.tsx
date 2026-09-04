@@ -56,9 +56,20 @@ export function Charts({ breakdown }: ChartsProps) {
     },
   };
 
+  // Scale container height so bars stay readable regardless of breakdown size;
+  // cap it and allow vertical scroll for very long lists.
+  const minHeightRem = 16;
+  const heightPx = Math.max(minHeightRem, breakdown.length * 1.5) * 16;
+
   return (
-    <div className="h-64">
-      <Bar data={barData} options={barOptions} />
+    <div
+      className="max-h-96 overflow-y-auto"
+      role="img"
+      aria-label="Dimension contribution bar chart"
+    >
+      <div style={{ height: `${heightPx}px` }}>
+        <Bar data={barData} options={barOptions} />
+      </div>
     </div>
   );
 }
