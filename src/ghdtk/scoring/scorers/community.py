@@ -55,10 +55,10 @@ class CommunityScorer(BaseScorer):
             float(followers), 1.0, float(self.config.follower_volume_target)
         )
         if ratio is None:
-            if following and followers:
+            if following and following > 0 and followers:
                 ratio = followers / following
             elif followers > 0:
-                ratio = 1.0
+                ratio = float("inf")
             else:
                 ratio = 0.0
         balance_component = clamp(ratio, 0.0, 1.0) * 100.0
@@ -100,7 +100,8 @@ class CommunityScorer(BaseScorer):
             ),
         ]
         score, breakdown = blend(components)
+        ratio_desc = ">100" if ratio == float("inf") else f"{ratio:.2f}"
         rationale = (
-            f"{followers} followers / {following} following (ratio {ratio:.2f}), reach {reach:.0f}"
+            f"{followers} followers / {following} following (ratio {ratio_desc}), reach {reach:.0f}"
         )
         return self._result(score, rationale, breakdown)
