@@ -303,7 +303,6 @@ class GitHubClient:
     def _primary_limit_exhausted(response: httpx.Response) -> bool:
         return response.status_code == 403 and (
             response.headers.get("X-RateLimit-Remaining") == "0"
-            or response.headers.get("X-RateLimit-Reset") is not None
         )
 
     @staticmethod
