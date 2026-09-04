@@ -248,7 +248,7 @@ def assess_portfolio_composition(
             )
         )
     elif total_stars > 0 and top_repo_share > thresholds.concentration_top_share:
-        dominant = scored[0]
+        dominant = max(scored, key=lambda s: s.stars)
         findings.append(
             Finding(
                 id="portfolio.composition.star_concentration",
