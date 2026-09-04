@@ -66,7 +66,7 @@ def test_minimal_profile(load_raw_fixture: FixtureLoader) -> None:
     by_status: dict[str, int] = {}
     for field in result.fields:
         by_status[field.status.value] = by_status.get(field.status.value, 0) + 1
-    assert by_status == {"missing": 8, "present": 1}
+    assert by_status == {"missing": 7, "present": 1}
 
     finding_ids = {finding.id for finding in result.findings}
     assert {
@@ -91,7 +91,7 @@ def test_minimal_profile(load_raw_fixture: FixtureLoader) -> None:
     assert hireable.evidence[0].field == "hireable"
 
     metric_by_id = {metric.id: metric for metric in result.metrics}
-    assert metric_by_id["presence.completeness"].value == 1 / 9
+    assert metric_by_id["presence.completeness"].value == 1 / 8
 
 
 def test_minimal_profile_recent_account(load_raw_fixture: FixtureLoader) -> None:
@@ -131,6 +131,8 @@ def test_placeholder_heavy_profile(load_raw_fixture: FixtureLoader) -> None:
     assert placeholder_findings["presence.bio.placeholder"].severity is FindingSeverity.HIGH
     assert placeholder_findings["presence.blog.placeholder"].severity is FindingSeverity.HIGH
     assert placeholder_findings["presence.company.placeholder"].severity is FindingSeverity.MEDIUM
+
+    assert "presence.bio.short" not in {finding.id for finding in result.findings}
 
     metric_by_id = {metric.id: metric for metric in result.metrics}
     assert metric_by_id["presence.fields.placeholder"].value == 4

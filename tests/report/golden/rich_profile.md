@@ -4,7 +4,7 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 
 ## Overall score
 
-**50.2 / 100**
+**47.3 / 100**
 
 | Dimension    | Score | Weight | Contribution |
 | ------------ | ----- | ------ | ------------ |
@@ -13,13 +13,9 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 | Consistency  | 54.0  | 1.0    | 5.7          |
 | Activity     | 18.9  | 1.5    | 3.0          |
 | Contribution | 54.9  | 1.5    | 8.7          |
-| Engagement   | 95.0  | 1.0    | 10.0         |
+| Engagement   | 67.0  | 1.0    | 7.0          |
 | Open Source  | 43.6  | 1.0    | 4.6          |
 | Visibility   | 55.8  | 1.0    | 5.9          |
-
-**Strengths**
-
-- Community (95/100)
 
 **Weaknesses**
 
@@ -76,14 +72,14 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 | Contribution density | 0.3    | 35.0         | user:octocat#contribution_calendar |
 | Streaks and gaps     | 0.2    | 11.5         | user:octocat#contribution_calendar |
 
-### Engagement — 95.0 / 100
+### Engagement — 67.0 / 100
 
 1200 followers / 80 following (ratio 15.00), reach 1200
 
 | Component         | Weight | Contribution | Source                 |
 | ----------------- | ------ | ------------ | ---------------------- |
 | Follower audience | 0.4    | 40.0         | user:octocat#followers |
-| Follower balance  | 0.3    | 30.0         | user:octocat#followers |
+| Follower balance  | 0.3    | 2.0          | user:octocat#followers |
 | Network reach     | 0.3    | 25.0         | user:octocat#followers |
 
 ### Open Source — 43.6 / 100
@@ -110,7 +106,6 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 
 **Strengths**
 
-- Community (95/100)
 - Audience-driven profile
 - Issues attract community participation
 - Profile is specialized in data
@@ -739,6 +734,7 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 | readme.section.skills                          | Skills section                                      | yes             | 100%       | readme:octocat/octocat#content:section:skills  |
 | readme.section.contact                         | Contact section                                     | yes             | 100%       | readme:octocat/octocat#content:section:contact |
 | readme.username_mentions                       | Username mentions                                   | 0               | 100%       | readme:octocat/octocat#content                 |
+| readme.boilerplate                             | Generic boilerplate wording detected                | no              | 100%       | readme:octocat/octocat#content                 |
 | portfolio.repositories.count                   | Repositories collected                              | 2               | 100%       | repository:octocat/toolkit#name                |
 | portfolio.quality.description_coverage         | Repositories with a description                     | 0.5             | 100%       | repository:octocat/toolkit#description         |
 | portfolio.quality.readme_coverage              | Repositories with a README                          | 0               | 95%        | repository:octocat/toolkit#readme              |
