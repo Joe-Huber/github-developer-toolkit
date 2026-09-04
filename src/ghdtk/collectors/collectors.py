@@ -147,7 +147,8 @@ def collect_pull_requests(
     max_pages: int = 10,
 ) -> list[PullRequest]:
     """Collect the author's pull requests in one repository (paginated)."""
-    return client.list_pull_requests(owner, repo, max_pages=max_pages)
+    all_prs = client.list_pull_requests(owner, repo, max_pages=max_pages)
+    return [pr for pr in all_prs if pr.user is not None and pr.user.login == author]
 
 
 def collect_issues(
@@ -159,7 +160,8 @@ def collect_issues(
     max_pages: int = 10,
 ) -> list[Issue]:
     """Collect the author's issues in one repository (paginated)."""
-    return client.list_issues(owner, repo, max_pages=max_pages)
+    all_issues = client.list_issues(owner, repo, max_pages=max_pages)
+    return [issue for issue in all_issues if issue.user is not None and issue.user.login == author]
 
 
 def collect_pull_request_search(
