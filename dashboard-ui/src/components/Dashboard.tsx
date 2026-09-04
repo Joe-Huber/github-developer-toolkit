@@ -50,6 +50,9 @@ export function Dashboard({
   const findingsByDimension = (dim: DimensionId): Finding[] =>
     profile.findings.filter((f) => f.dimension === dim);
 
+  const activeFindings =
+    activeTab === "overview" ? [] : findingsByDimension(activeTab);
+
   const recommendationsForFindings = (findings: Finding[]): Recommendation[] => {
     const ids = new Set(findings.flatMap((f) => f.recommendation_ids));
     return profile.recommendations.filter((r) => ids.has(r.id));
@@ -129,8 +132,8 @@ export function Dashboard({
           <DimensionDetail
             dimension={activeTab}
             scores={profile.scores}
-            findings={findingsByDimension(activeTab)}
-            recommendations={recommendationsForFindings(findingsByDimension(activeTab))}
+            findings={activeFindings}
+            recommendations={recommendationsForFindings(activeFindings)}
           />
         )}
       </main>
