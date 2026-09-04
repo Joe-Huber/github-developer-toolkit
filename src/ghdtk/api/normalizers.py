@@ -339,7 +339,7 @@ def summarize_repositories(
         archived_count=sum(1 for repo in considered if repo.archived),
         oldest_repository=min(created, key=lambda item: item[1])[0].full_name if created else None,
         newest_repository=max(created, key=lambda item: item[1])[0].full_name if created else None,
-        stalest_repository=max(pushed, key=lambda item: item[1])[0].full_name if pushed else None,
+        stalest_repository=min(pushed, key=lambda item: item[1])[0].full_name if pushed else None,
     )
 
 
