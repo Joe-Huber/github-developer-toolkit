@@ -319,6 +319,15 @@ def assess_readme_quality(
         )
 
     boilerplate = find_boilerplate(content)
+    metrics.append(
+        MetricRecord(
+            id="readme.boilerplate",
+            label="Generic boilerplate wording detected",
+            value=bool(boilerplate),
+            timestamp=now,
+            sources=[source],
+        )
+    )
     if boilerplate:
         phrase = boilerplate[0]
         line = _line_number(content, phrase)
