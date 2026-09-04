@@ -103,3 +103,11 @@ def test_no_activity_anywhere_scores_zero() -> None:
 
 def test_without_commit_analysis_dimension_is_unscorable() -> None:
     assert ConsistencyScorer().score(ScoreInputs()) is None
+
+
+def test_single_day_high_volume_not_penalized_for_missing_cadence() -> None:
+    commits = _commits(total=200, cadence=None, median_gap=None, span=None, active=10)
+    result = ConsistencyScorer().score(ScoreInputs(commits=commits))
+    assert result is not None
+    assert result.score == pytest.approx(32.47, abs=0.005)
+    assert result.score > 30.0
