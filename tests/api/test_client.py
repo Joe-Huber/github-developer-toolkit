@@ -41,6 +41,7 @@ def _client(
     *,
     max_retries: int = 3,
     backoff: BackoffPolicy | None = None,
+    rate_limit_wait_max_seconds: float | None = None,
 ) -> GitHubClient:
     if backoff is None:
         backoff = BackoffPolicy(
@@ -49,11 +50,15 @@ def _client(
             sleep_fn=lambda seconds: None,
             random_fn=lambda low, high: 0.0,
         )
+    kwargs: dict[str, Any] = {}
+    if rate_limit_wait_max_seconds is not None:
+        kwargs["rate_limit_wait_max_seconds"] = rate_limit_wait_max_seconds
     return create_client(
         "test-token",
         transport=httpx.MockTransport(handler),
         max_retries=max_retries,
         backoff=backoff,
+        **kwargs,
     )
 
 
@@ -515,7 +520,7 @@ def test_primary_rate_limit_exhaustion_raises_before_next_page(
             200, json=[load_raw_fixture("repository")], headers=headers, request=request
         )
 
-    with _client(handler) as client:
+    with _client(handler, rate_limit_wait_max_seconds=10.0) as client:
         with pytest.raises(RateLimitError) as excinfo:
             client.list_user_repositories("octocat")
     assert excinfo.value.status_code == 403
@@ -551,6 +556,64 @@ def test_rate_limit_wait_pauses_before_next_page(load_raw_fixture: FixtureLoader
     assert 1.0 <= slept[0] <= 3.0
 
 
+def test_primary_wait_uses_configured_ceiling_not_backoff_max_delay(
+    load_raw_fixture: FixtureLoader,
+) -> None:
+    slept: list[float] = []
+    backoff = BackoffPolicy(
+        base_delay=0.0,
+        max_delay=0.0,
+        sleep_fn=slept.append,
+        random_fn=lambda low, high: 0.0,
+    )
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if "page=2" in str(request.url):
+            return _json_response(request, [load_raw_fixture("repository")])
+        reset = int(time.time()) + 2
+        headers = {
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": str(reset),
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"',
+        }
+        return httpx.Response(
+            200, json=[load_raw_fixture("repository")], headers=headers, request=request
+        )
+
+    with _client(handler, backoff=backoff, rate_limit_wait_max_seconds=3600.0) as client:
+        repos = client.list_user_repositories("octocat")
+    assert len(repos) == 2
+    assert len(slept) == 1
+    assert 1.0 <= slept[0] <= 3.0
+
+
+def test_primary_wait_over_configured_ceiling_raises(load_raw_fixture: FixtureLoader) -> None:
+    slept: list[float] = []
+    backoff = BackoffPolicy(
+        base_delay=0.0,
+        max_delay=60.0,
+        sleep_fn=slept.append,
+        random_fn=lambda low, high: 0.0,
+    )
+    reset = int(time.time()) + 3600
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        headers = {
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": str(reset),
+            "Link": '<https://api.github.com/users/octocat/repos?page=2&per_page=100>; rel="next"',
+        }
+        return httpx.Response(
+            200, json=[load_raw_fixture("repository")], headers=headers, request=request
+        )
+
+    with _client(handler, backoff=backoff, rate_limit_wait_max_seconds=10.0) as client:
+        with pytest.raises(RateLimitError) as excinfo:
+            client.list_user_repositories("octocat")
+    assert excinfo.value.status_code == 403
+    assert len(slept) == 0
+
+
 # --- coverage gaps: construction, defensive branches, GraphQL errors ---------
 
 
@@ -580,6 +643,15 @@ def test_from_settings_disables_cache_when_configured(tmp_path: Path) -> None:
     client = GitHubClient.from_settings(settings)
     try:
         assert client._cache is None
+    finally:
+        client.close()
+
+
+def test_from_settings_passes_rate_limit_wait_ceiling() -> None:
+    settings = Settings(github_token="test-token", github_rate_limit_wait_max_seconds=7200.0)
+    client = GitHubClient.from_settings(settings)
+    try:
+        assert client._rate_limit_wait_max_seconds == 7200.0
     finally:
         client.close()
 
