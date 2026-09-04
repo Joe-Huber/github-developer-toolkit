@@ -176,15 +176,21 @@ def assess_repository_activity(
     staleness = [signal.staleness_days or 0 for signal in with_push]
     max_staleness = max(staleness, default=None)
 
-    buckets = {"<30": 0, "30-90": 0, "90-365": 0, ">365": 0}
+    staleness_threshold = thresholds.staleness_days
+    buckets = {
+        "<30": 0,
+        f"30-{staleness_threshold}": 0,
+        f"{staleness_threshold}-365": 0,
+        ">365": 0,
+    }
     for signal in with_push:
         days = signal.staleness_days or 0
         if days < _RECENT_BUCKET_DAYS:
             buckets["<30"] += 1
-        elif days < thresholds.staleness_days:
-            buckets["30-90"] += 1
+        elif days < staleness_threshold:
+            buckets[f"30-{staleness_threshold}"] += 1
         elif days < _LONG_INACTIVE_DAYS:
-            buckets["90-365"] += 1
+            buckets[f"{staleness_threshold}-365"] += 1
         else:
             buckets[">365"] += 1
 
@@ -254,16 +260,20 @@ def assess_repository_activity(
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),
         MetricRecord(
-            id="portfolio.activity.pushed_90d",
+            id=f"portfolio.activity.pushed_{staleness_threshold}d",
             label="Repositories pushed within the staleness window",
-            value=buckets["<30"] + buckets["30-90"],
+            value=buckets["<30"] + buckets[f"30-{staleness_threshold}"],
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),
         MetricRecord(
             id="portfolio.activity.pushed_365d",
             label="Repositories pushed within a year",
-            value=buckets["<30"] + buckets["30-90"] + buckets["90-365"],
+            value=(
+                buckets["<30"]
+                + buckets[f"30-{staleness_threshold}"]
+                + buckets[f"{staleness_threshold}-365"]
+            ),
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),

@@ -172,8 +172,9 @@ def assess_issue_participation(
             monthly_closed[key] = monthly_closed.get(key, 0) + 1
 
     months = sorted(monthly_opened)
-    early_months = months[: len(months) // 2]
-    recent_months = months[len(months) // 2 :]
+    split = (len(months) + 1) // 2
+    early_months = months[:split]
+    recent_months = months[split:]
     early_total = sum(monthly_opened[month] for month in early_months)
     recent_total = sum(monthly_opened[month] for month in recent_months)
 

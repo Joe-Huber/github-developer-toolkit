@@ -82,7 +82,14 @@ def _heading_texts(text: str) -> list[str]:
 
 
 def _count_fences(text: str) -> int:
-    return len(_FENCE_RE.findall(text)) // 2
+    count = 0
+    in_fence = False
+    for line in text.splitlines():
+        if _FENCE_RE.match(line):
+            in_fence = not in_fence
+            if not in_fence:
+                count += 1
+    return count
 
 
 def _count_badges(text: str) -> int:
@@ -90,9 +97,7 @@ def _count_badges(text: str) -> int:
 
 
 def _count_username_mentions(text: str, username: str) -> int:
-    plain = re.findall(rf"\b{re.escape(username)}\b", text, re.IGNORECASE)
-    at = re.findall(rf"@\s*{re.escape(username)}\b", text, re.IGNORECASE)
-    return len(plain) + len(at)
+    return len(re.findall(rf"@?\s*{re.escape(username)}\b", text, re.IGNORECASE))
 
 
 def _section_presence(headings: list[str]) -> dict[str, bool]:
@@ -319,6 +324,15 @@ def assess_readme_quality(
         )
 
     boilerplate = find_boilerplate(content)
+    metrics.append(
+        MetricRecord(
+            id="readme.boilerplate",
+            label="Generic boilerplate wording detected",
+            value=bool(boilerplate),
+            timestamp=now,
+            sources=[source],
+        )
+    )
     if boilerplate:
         phrase = boilerplate[0]
         line = _line_number(content, phrase)
