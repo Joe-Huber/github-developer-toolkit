@@ -184,8 +184,8 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
           <div>
             <h3 className="text-sm font-medium text-good mb-2">Strengths</h3>
             <ul className="space-y-1">
-              {profile.overall!.strengths.map((s, i) => (
-                <li key={i} className="text-sm text-muted">
+              {profile.overall!.strengths.map((s) => (
+                <li key={s} className="text-sm text-muted">
                   {s}
                 </li>
               ))}
@@ -194,8 +194,8 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
           <div>
             <h3 className="text-sm font-medium text-bad mb-2">Weaknesses</h3>
             <ul className="space-y-1">
-              {profile.overall!.weaknesses.map((w, i) => (
-                <li key={i} className="text-sm text-muted">
+              {profile.overall!.weaknesses.map((w) => (
+                <li key={w} className="text-sm text-muted">
                   {w}
                 </li>
               ))}
