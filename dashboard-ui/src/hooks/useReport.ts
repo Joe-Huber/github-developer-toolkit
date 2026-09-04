@@ -8,14 +8,22 @@ export function useReport(username: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     setData(null);
     setError(null);
     if (!username) return;
     setLoading(true);
-    fetchReport(username)
-      .then(setData)
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setLoading(false));
+    fetchReport(username, controller.signal)
+      .then((report) => {
+        if (!controller.signal.aborted) setData(report);
+      })
+      .catch((err: Error) => {
+        if (!controller.signal.aborted) setError(err.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, [username]);
 
   return { data, loading, error };

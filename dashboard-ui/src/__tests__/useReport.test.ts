@@ -65,4 +65,23 @@ describe("useReport", () => {
     expect(result.current.data).toBeNull();
     expect(result.current.loading).toBe(false);
   });
+
+  it("passes an abort signal and aborts the in-flight request on change", async () => {
+    mockedFetchReport.mockResolvedValue(report);
+
+    const initialProps: { username: string | null } = { username: "octocat" };
+    const { rerender, unmount } = renderHook(
+      ({ username }: { username: string | null }) => useReport(username),
+      { initialProps },
+    );
+
+    await waitFor(() => expect(mockedFetchReport).toHaveBeenCalledTimes(1));
+    const signal = mockedFetchReport.mock.calls[0][1];
+    expect(signal).toBeInstanceOf(AbortSignal);
+    expect(signal?.aborted).toBe(false);
+
+    rerender({ username: "torvalds" });
+    expect(signal?.aborted).toBe(true);
+    unmount();
+  });
 });
