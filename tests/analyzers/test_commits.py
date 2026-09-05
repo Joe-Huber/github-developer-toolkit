@@ -181,3 +181,27 @@ def test_weekday_and_hour_distribution() -> None:
     assert result.hour_bucket_counts["21-23"] == 1
     assert _metric(result, "commit_activity.weekday.Mon") == 1
     assert _metric(result, "commit_activity.hour.21-23") == 1
+
+
+def test_coverage_window_sorted_regardless_of_dict_insertion_order() -> None:
+    """Regression test for #172: coverage window must use chronological order.
+
+    Repo B is inserted first but contains the oldest commit; repo A is
+    inserted second but contains the newest commit.  Without sorting,
+    coverage_start would be 2024-06-01 (first entry by dict order) and
+    coverage_end would be 2024-01-15 (last entry by dict order) — both wrong.
+    """
+    commits = {
+        "octocat/B": [_commit("2024-01-15T12:00:00+00:00")],
+        "octocat/A": [_commit("2024-06-01T08:00:00+00:00")],
+    }
+    result = assess_commit_activity(_snapshot(commits))
+
+    assert result.coverage_start is not None
+    assert result.coverage_start.isoformat().startswith("2024-01-15"), (
+        "coverage_start must be the earliest commit date, not the first dict entry"
+    )
+    assert result.coverage_end is not None
+    assert result.coverage_end.isoformat().startswith("2024-06-01"), (
+        "coverage_end must be the latest commit date, not the last dict entry"
+    )
