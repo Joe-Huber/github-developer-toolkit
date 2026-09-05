@@ -43,14 +43,14 @@ async def get_report(username: str) -> ReportResponse:
                 max_requests=settings.collection_max_requests,
                 max_workers=settings.collection_max_workers,
             )
+            try:
+                readme = collect_profile_readme(
+                    client, username, repositories=snapshot.repositories
+                )
+            except Exception:
+                readme = None
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"Collection failed: {exc}") from exc
-
-    try:
-        with client:
-            readme = collect_profile_readme(client, username, repositories=snapshot.repositories)
-    except Exception:
-        readme = None
 
     now = datetime.now(UTC)
     report = ReportAssembler().assemble(
