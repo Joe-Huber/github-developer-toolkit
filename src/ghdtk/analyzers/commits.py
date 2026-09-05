@@ -128,8 +128,9 @@ def assess_commit_activity(
     repos_with_commits = sum(1 for count in per_repo_total.values() if count > 0)
 
     active_dates = sorted({_ensure_utc(date).date() for _, date in dated})
-    coverage_start = dated[0][1] if dated else None
-    coverage_end = dated[-1][1] if dated else None
+    sorted_dated = sorted(dated, key=lambda t: _ensure_utc(t[1]))
+    coverage_start = sorted_dated[0][1] if sorted_dated else None
+    coverage_end = sorted_dated[-1][1] if sorted_dated else None
     span_days = (active_dates[-1] - active_dates[0]).days + 1 if len(active_dates) >= 2 else None
     active_days = len(active_dates)
 
