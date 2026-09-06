@@ -135,10 +135,12 @@ _STAR_GROWTH_PROPERTIES: tuple[str, ...] = (
     "star_growth.observed_stars",
     "star_growth.reported_stars",
     "star_growth.coverage",
-    "star_growth.trend",
     "star_growth.stars_30d",
     "star_growth.stars_90d",
     "star_growth.stars_365d",
+    "star_growth.velocity_30d",
+    "star_growth.velocity_90d",
+    "star_growth.trend",
 )
 
 _NETWORK_PROPERTIES: tuple[str, ...] = (
