@@ -34,6 +34,37 @@ describe("App", () => {
     expect(screen.getByText("ghdtk dashboard")).toBeInTheDocument();
   });
 
+  it("renders demo profile quick-select chips", () => {
+    render(<App />);
+    expect(screen.getAllByRole("button", { name: "octocat" }).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("button", { name: "torvalds" })).toBeInTheDocument();
+  });
+
+  it("loads a demo profile when its chip is clicked", async () => {
+    const user = userEvent.setup();
+    mockedUseReport
+      .mockReturnValueOnce({ data: null, loading: false, error: null })
+      .mockReturnValue({ data: MOCK_REPORT, loading: false, error: null });
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "octocat" }));
+    expect(screen.getAllByText("@testuser").length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("shows cards for the scored dimensions", () => {
+    render(<App />);
+    expect(screen.getByRole("heading", { name: "Presence" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Code Quality" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Visibility" })).toBeInTheDocument();
+    expect(screen.getAllByText(/Contribution Calendar/).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Profile")).toBeInTheDocument();
+  });
+
+  it("links to the project repository", () => {
+    render(<App />);
+    const link = screen.getByRole("link", { name: /Learn more/ });
+    expect(link).toHaveAttribute("href", "https://github.com/Joe-Huber/github-developer-toolkit");
+  });
+
   it("disables button when input is empty", () => {
     render(<App />);
     expect(screen.getByRole("button", { name: /analyze/i })).toBeDisabled();
