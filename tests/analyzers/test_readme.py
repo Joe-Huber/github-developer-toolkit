@@ -152,6 +152,12 @@ def test_boilerplate_finding_messages_note_heuristic() -> None:
     assert "false positive" in boilerplate.message
 
 
+def test_username_mention_requires_word_boundary() -> None:
+    content = "# Developer profile\n\nBuilding webdev tools, hosting on github.com @dan\n"
+    result = assess_readme_quality(_present(content, username="dan"), now=NOW)
+    assert _metric_value(result, "readme.username_mentions") == 1
+
+
 def test_missing_readme_states() -> None:
     expected: dict[ProfileReadmeStatus, FindingSeverity] = {
         ProfileReadmeStatus.NO_PROFILE_REPO: FindingSeverity.LOW,
