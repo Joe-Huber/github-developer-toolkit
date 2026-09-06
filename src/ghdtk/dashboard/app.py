@@ -6,7 +6,7 @@ React frontend as static files.
 
 from __future__ import annotations
 
-from pathlib import Path
+from importlib import resources
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +14,7 @@ from fastapi.staticfiles import StaticFiles
 
 from ghdtk.dashboard.routes import router
 
-_DASHBOARD_UI_DIST = Path(__file__).resolve().parents[3] / "dashboard-ui" / "dist"
+_DASHBOARD_UI_STATIC = resources.files("ghdtk.dashboard") / "static"
 
 
 def create_app(*, cors_origins: list[str] | None = None) -> FastAPI:
@@ -43,7 +43,11 @@ def create_app(*, cors_origins: list[str] | None = None) -> FastAPI:
 
     app.include_router(router)
 
-    if _DASHBOARD_UI_DIST.is_dir():
-        app.mount("/", StaticFiles(directory=str(_DASHBOARD_UI_DIST), html=True), name="static")
+    if _DASHBOARD_UI_STATIC.is_dir():
+        app.mount(
+            "/",
+            StaticFiles(directory=str(_DASHBOARD_UI_STATIC), html=True),
+            name="static",
+        )
 
     return app
