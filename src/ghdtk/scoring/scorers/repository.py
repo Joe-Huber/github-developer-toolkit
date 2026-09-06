@@ -20,7 +20,7 @@ Empty-data handling: without the repository-quality analysis the dimension
 cannot be scored and ``None`` is returned; a profile with no repositories
 scores zero on the quality component with an explanatory rationale. When the
 activity component is assessed but no median-staleness data is available, the
-staleness sub-component falls back to a neutral 0.5 (the midpoint of the
+staleness sub-component falls back to a neutral 50.0 (the midpoint of the
 normalization range) instead of the minimum, so the activity score isn't
 arbitrarily halved. The activity and portfolio components are dropped (and
 remaining weight re-normalized) when their analyses were not run.
@@ -116,7 +116,7 @@ class RepositoryScorer(BaseScorer):
             staleness = (
                 normalize_linear(float(median_staleness), 0.0, _STALE_DAYS, high_is_good=False)
                 if median_staleness is not None
-                else 0.5
+                else 50.0
             )
             value = 0.50 * active_share + 0.50 * staleness
         sources = metric_sources(

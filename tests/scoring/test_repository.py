@@ -198,7 +198,7 @@ def test_missing_staleness_uses_neutral_not_minimum() -> None:
     )
     result = RepositoryScorer().score(inputs)
     assert result is not None
-    assert result.score == pytest.approx(85.79, abs=0.005)
+    assert result.score == pytest.approx(92.86, abs=0.005)
 
 
 def test_no_repositories_scores_zero() -> None:
