@@ -97,7 +97,7 @@ def _count_badges(text: str) -> int:
 
 
 def _count_username_mentions(text: str, username: str) -> int:
-    return len(re.findall(rf"@?\s*{re.escape(username)}\b", text, re.IGNORECASE))
+    return len(re.findall(rf"(?:@|\b){re.escape(username)}\b", text, re.IGNORECASE))
 
 
 def _section_presence(headings: list[str]) -> dict[str, bool]:
