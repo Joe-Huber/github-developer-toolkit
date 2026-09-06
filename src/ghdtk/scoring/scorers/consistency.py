@@ -86,7 +86,7 @@ class ConsistencyScorer(BaseScorer):
             cadence_component = (
                 normalize_linear(cadence, 0.0, self.config.cadence_target)
                 if cadence is not None
-                else 0.5
+                else 50.0
             )
             gap_component = self._gap_component(median_gap)
             if span_days:

@@ -109,5 +109,5 @@ def test_single_day_high_volume_not_penalized_for_missing_cadence() -> None:
     commits = _commits(total=200, cadence=None, median_gap=None, span=None, active=10)
     result = ConsistencyScorer().score(ScoreInputs(commits=commits))
     assert result is not None
-    assert result.score == pytest.approx(32.47, abs=0.005)
-    assert result.score > 30.0
+    assert result.score == pytest.approx(57.22, abs=0.005)
+    assert result.score > 50.0
