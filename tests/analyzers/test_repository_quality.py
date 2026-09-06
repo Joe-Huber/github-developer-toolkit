@@ -190,6 +190,23 @@ def test_portfolio_aggregation_metrics() -> None:
     assert metric_by_id["portfolio.quality.repos_no_readme"].value == 3
 
 
+def test_forked_repositories_are_excluded_from_quality_signals() -> None:
+    repos = [
+        _repo(name="Owned", full_name="octocat/Owned", description="kept"),
+        _repo(name="Forked", full_name="octocat/Forked", description=None, fork=True),
+    ]
+    result = assess_repository_quality(_snapshot(repos))
+
+    assert [signal.full_name for signal in result.signals] == ["octocat/Owned"]
+    assert not any("octocat/Forked" in finding.id for finding in result.findings)
+
+    metric_by_id = {metric.id: metric for metric in result.metrics}
+    assert metric_by_id["portfolio.repositories.count"].value == 1
+    assert metric_by_id["portfolio.quality.forked_repos"].value == 1
+    assert metric_by_id["portfolio.quality.description_coverage"].value == 1.0
+    assert metric_by_id["portfolio.quality.repos_no_description"].value == 0
+
+
 def test_low_readme_coverage_finding() -> None:
     repos = [
         _repo(name="A", full_name="octocat/A", description="one"),
