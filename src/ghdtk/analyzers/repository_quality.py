@@ -9,6 +9,10 @@ README presence is only claimed when the collection record for that repository
 completed successfully: a README that was never fetched (budget skip or API
 failure) is reported as ``unknown`` so the analyzer never fabricates an
 absence.
+
+Forked repositories are not the user's own work, so they are excluded from
+quality signals and coverage percentages and only reported as a count
+(``portfolio.quality.forked_repos``).
 """
 
 from __future__ import annotations
@@ -112,14 +116,24 @@ def assess_repository_quality(
     *,
     thresholds: AnalysisThresholds | None = None,
 ) -> RepositoryQuality:
-    """Assess repository quality signals for every collected repository."""
+    """Assess repository quality signals for every collected repository.
+
+    Forked repositories are not the user's own work, so they are excluded from
+    quality signals and coverage percentages (matching ``repository_activity``
+    and ``portfolio``) and only reported as a count
+    (``portfolio.quality.forked_repos``).
+    """
     thresholds = thresholds or AnalysisThresholds()
     repositories = snapshot.repositories or []
     signals: list[RepositoryQualitySignals] = []
     findings: list[Finding] = []
+    forked_count = 0
 
     for repo in repositories:
         full_name = repo.full_name or ""
+        if repo.fork:
+            forked_count += 1
+            continue
         description = (repo.description or "").strip()
         placeholder = bool(description) and bool(find_placeholders(description))
         readme, readme_chars = _readme_state(snapshot, full_name)
@@ -208,6 +222,17 @@ def assess_repository_quality(
             value=len(signals),
             timestamp=now,
             sources=[_source(s.full_name, "name") for s in signals],
+        ),
+        MetricRecord(
+            id="portfolio.quality.forked_repos",
+            label="Forked repositories",
+            value=forked_count,
+            timestamp=now,
+            sources=[
+                _source(repo.full_name or "", "fork")
+                for repo in repositories
+                if repo.fork and repo.full_name
+            ],
         ),
         MetricRecord(
             id="portfolio.quality.description_coverage",
