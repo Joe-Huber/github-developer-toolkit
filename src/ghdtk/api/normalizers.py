@@ -222,13 +222,19 @@ class IssueStats(BaseModel):
 
 
 class PullRequestStats(BaseModel):
-    """Lifecycle statistics for a set of pull requests."""
+    """Lifecycle statistics for a set of pull requests.
+
+    ``closed`` mirrors GitHub's raw ``state`` field, so merged pull requests
+    (which GitHub closes on merge) are counted in both ``closed`` and
+    ``merged``; use ``closed_unmerged`` for closed-without-merge pulls.
+    """
 
     model_config = ConfigDict(frozen=True)
 
     total: int
     open: int
     closed: int
+    closed_unmerged: int
     merged: int
     median_merge_days: float | None
     oldest_open_days: int | None
@@ -437,7 +443,9 @@ def pull_request_stats(
             pull for pull in pulls if pull.user is not None and pull.user.login == author_login
         ]
     open_pulls = [pull for pull in pulls if pull.state == "open"]
+    closed = [pull for pull in pulls if pull.state == "closed"]
     merged = [pull for pull in pulls if pull.merged]
+    closed_unmerged = [pull for pull in closed if not pull.merged]
     merge_days = [
         _days_between(pull.merged_at, pull.created_at)
         for pull in merged
@@ -450,7 +458,8 @@ def pull_request_stats(
     return PullRequestStats(
         total=len(pulls),
         open=len(open_pulls),
-        closed=sum(1 for pull in pulls if pull.state == "closed"),
+        closed=len(closed),
+        closed_unmerged=len(closed_unmerged),
         merged=len(merged),
         median_merge_days=median(merge_days) if merge_days else None,
         oldest_open_days=_days_between(now, oldest_open) if oldest_open else None,

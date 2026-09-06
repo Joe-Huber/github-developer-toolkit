@@ -281,6 +281,8 @@ def test_pull_request_stats_counts_are_bounded(pulls_list: list[PullRequest]) ->
     assert 0 <= stats.open <= stats.total
     assert 0 <= stats.merged <= stats.total
     assert 0 <= stats.closed <= stats.total
+    assert 0 <= stats.closed_unmerged <= stats.closed
+    assert stats.merged + stats.closed_unmerged <= stats.total
     assert stats.median_merge_days is None or stats.median_merge_days >= 0
     assert stats.oldest_open_days is None or stats.oldest_open_days >= 0
 
