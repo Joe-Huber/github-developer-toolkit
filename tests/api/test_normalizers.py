@@ -371,7 +371,9 @@ def test_pull_request_stats_lifecycle() -> None:
     assert stats.total == 3
     assert stats.open == 1
     assert stats.closed == 2
+    assert stats.closed_unmerged == 1
     assert stats.merged == 1
+    assert stats.open + stats.closed_unmerged + stats.merged == stats.total
     assert stats.median_merge_days == 4.0
     assert stats.oldest_open_days == _days_until(datetime(2025, 1, 1, tzinfo=UTC))
 
