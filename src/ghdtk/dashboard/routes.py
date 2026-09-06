@@ -9,7 +9,9 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException
+from pydantic import ValidationError
 
+from ghdtk.api.errors import AuthenticationError
 from ghdtk.dashboard.schemas import HealthResponse, ReportResponse
 
 router = APIRouter(prefix="/api")
@@ -23,16 +25,22 @@ async def health_check() -> HealthResponse:
 @router.get("/report/{username}", response_model=ReportResponse)
 async def get_report(username: str) -> ReportResponse:
     """Run the full analysis pipeline and return the report as JSON."""
-    from ghdtk.api.client import GitHubClient
-    from ghdtk.collectors.collectors import collect_profile_readme
-    from ghdtk.collectors.orchestrator import collect_profile
     from ghdtk.config import load_settings
     from ghdtk.report.assemble import ReportAssembler
 
     try:
         settings = load_settings()
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Configuration error: {exc}") from exc
+    except ValidationError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid configuration; set GHDTK_GITHUB_TOKEN: {exc}",
+        ) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=400, detail=f"Configuration file error: {exc}") from exc
+
+    from ghdtk.api.client import GitHubClient
+    from ghdtk.collectors.collectors import collect_profile_readme
+    from ghdtk.collectors.orchestrator import collect_profile
 
     client = GitHubClient.from_settings(settings)
     try:
@@ -49,6 +57,11 @@ async def get_report(username: str) -> ReportResponse:
                 )
             except Exception:
                 readme = None
+    except AuthenticationError as exc:
+        raise HTTPException(
+            status_code=401,
+            detail=f"GitHub authentication failed for {username}: {exc}",
+        ) from exc
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"Collection failed: {exc}") from exc
 

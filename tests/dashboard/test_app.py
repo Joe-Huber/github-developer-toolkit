@@ -26,14 +26,15 @@ def test_health_check(client: TestClient) -> None:
     assert data["status"] == "ok"
 
 
-def test_report_endpoint_returns_502_without_token(
+def test_report_endpoint_returns_400_without_token(
     client: TestClient, monkeypatch: pytest.MonkeyPatch, tmp_path: Any
 ) -> None:
-    """Without a valid token the report endpoint should fail gracefully."""
+    """Without a valid token the report endpoint should fail with a handled error."""
     monkeypatch.delenv("GHDTK_GITHUB_TOKEN", raising=False)
     monkeypatch.chdir(tmp_path)
     resp = client.get("/api/report/octocat")
-    assert resp.status_code == 500
+    assert resp.status_code == 400
+    assert "GHDTK_GITHUB_TOKEN" in resp.json()["detail"]
 
 
 def test_app_has_cors_middleware(client: TestClient) -> None:
