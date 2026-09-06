@@ -133,6 +133,7 @@ export function Dashboard({
             scores={profile.scores}
             findings={activeFindings}
             recommendations={recommendationsForFindings(activeFindings)}
+            analyses={profile.analyses}
           />
         )}
       </main>
