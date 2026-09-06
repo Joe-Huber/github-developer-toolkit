@@ -736,6 +736,7 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 | readme.username_mentions                       | Username mentions                                   | 0               | 100%       | readme:octocat/octocat#content                 |
 | readme.boilerplate                             | Generic boilerplate wording detected                | no              | 100%       | readme:octocat/octocat#content                 |
 | portfolio.repositories.count                   | Repositories collected                              | 2               | 100%       | repository:octocat/toolkit#name                |
+| portfolio.quality.forked_repos                 | Forked repositories                                 | 0               | 100%       | —                                              |
 | portfolio.quality.description_coverage         | Repositories with a description                     | 0.5             | 100%       | repository:octocat/toolkit#description         |
 | portfolio.quality.readme_coverage              | Repositories with a README                          | 0               | 95%        | repository:octocat/toolkit#readme              |
 | portfolio.quality.license_coverage             | Repositories with a license                         | 1               | 100%       | repository:octocat/toolkit#license             |
