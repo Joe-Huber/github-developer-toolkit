@@ -10,8 +10,10 @@ Documented formula (blended, 0-100):
 - **Stars** (weight 0.6, or 1.0 when languages were not assessed): log-scaled
   total portfolio stars up to ``star_volume_target``.
 - **Languages** (weight 0.4, when assessed): 60% distinct-language count
-  (linear up to 8) plus 40% byte-coverage (share of repositories with usable
-  byte statistics).
+  (linear up to 8) plus 40% Simpson diversity index (1 — Σ share² of the
+  observed language distribution). The mix reflects the developer's actual
+  language spread, not how many repositories the collector could fetch byte
+  stats for.
 
 Empty-data handling: without the stars analysis the dimension cannot be scored
 and ``None`` is returned; a portfolio with no stars scores zero on the stars
@@ -74,22 +76,16 @@ class VisibilityScorer(BaseScorer):
 
     def _languages_component(self, languages: LanguageDistributionAnalysis) -> ScoredComponent:
         distinct = languages.distinct_languages
-        with_stats = languages.repos_with_stats
-        total = (
-            languages.repos_with_stats
-            + languages.declared_only_count
-            + languages.unknown_count
-            + languages.empty_count
-        )
+        shares = [entry.share for entry in languages.distribution]
+        simpson = 1.0 - sum(share * share for share in shares)
 
         distinct_component = normalize_linear(float(distinct), 0.0, _LANGUAGES_TARGET)
-        coverage_component = normalize_ratio(with_stats / total if total else 0.0)
-        value = 0.60 * distinct_component + 0.40 * coverage_component
+        diversity_component = normalize_ratio(simpson) if shares else 0.0
+        value = 0.60 * distinct_component + 0.40 * diversity_component
         sources = metric_sources(
             languages,
             "languages.distinct_languages",
-            "languages.repos.with_byte_stats",
-            "languages.repos.total",
+            "languages.diversity.simpson",
         )
         return ScoredComponent(
             component_id="language_mix",

@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from ghdtk.analyzers.languages import LanguageDistributionAnalysis
+from ghdtk.analyzers.languages import LanguageDistributionAnalysis, LanguageShare
 from ghdtk.analyzers.stars import StarsAnalysis, StarsRankingEntry
 from ghdtk.models.derived import DimensionId, MetricRecord
 from ghdtk.scoring import ScoreInputs
@@ -47,11 +47,16 @@ def _languages(
     declared: int = 0,
     unknown: int = 0,
     empty: int = 0,
+    shares: list[float] | None = None,
 ) -> LanguageDistributionAnalysis:
+    distribution = [
+        LanguageShare(language=f"lang{i}", bytes=0, share=share)
+        for i, share in enumerate(shares or [])
+    ]
     return LanguageDistributionAnalysis(
         username="octocat",
         repositories=[],
-        distribution=[],
+        distribution=distribution,
         distinct_languages=distinct,
         total_bytes=0,
         repos_with_stats=with_stats,
@@ -63,17 +68,45 @@ def _languages(
     )
 
 
-def test_many_stars_and_diverse_languages_score_100() -> None:
+def test_many_stars_and_diverse_languages_score_high() -> None:
     result = VisibilityScorer().score(
         ScoreInputs(
             stars=_stars(total=8000),
-            languages=_languages(distinct=8, with_stats=5),
+            languages=_languages(distinct=8, with_stats=5, shares=[0.125] * 8),
         )
     )
     assert result is not None
     assert result.dimension is DimensionId.VISIBILITY
-    assert result.score == 100.0
-    assert sum(item.contribution for item in result.breakdown) == pytest.approx(100.0)
+    assert result.score == pytest.approx(98.0)
+    assert sum(item.contribution for item in result.breakdown) == pytest.approx(98.0)
+
+
+def test_language_mix_ignores_byte_collection_coverage() -> None:
+    sparse = VisibilityScorer().score(
+        ScoreInputs(
+            stars=_stars(total=8000),
+            languages=_languages(distinct=6, with_stats=3, shares=[0.2] * 5),
+        )
+    )
+    full = VisibilityScorer().score(
+        ScoreInputs(
+            stars=_stars(total=8000),
+            languages=_languages(distinct=6, with_stats=8, shares=[0.2] * 5),
+        )
+    )
+    assert sparse is not None and full is not None
+    assert sparse.score == full.score
+
+
+def test_monodiverse_cluster_scores_low_on_language_mix() -> None:
+    result = VisibilityScorer().score(
+        ScoreInputs(
+            stars=_stars(total=8000),
+            languages=_languages(distinct=1, with_stats=5, shares=[1.0]),
+        )
+    )
+    assert result is not None
+    assert result.score == pytest.approx(63.0)
 
 
 def test_stars_only_renormalizes_without_languages() -> None:
