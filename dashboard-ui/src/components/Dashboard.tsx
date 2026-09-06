@@ -16,7 +16,6 @@ const DIMENSIONS: { id: DimensionId | "overview"; label: string }[] = [
   { id: "code_quality", label: "Code Quality" },
   { id: "activity", label: "Activity" },
   { id: "engagement", label: "Engagement" },
-  { id: "documentation", label: "Documentation" },
   { id: "open_source", label: "Open Source" },
   { id: "consistency", label: "Consistency" },
   { id: "contribution", label: "Contribution" },

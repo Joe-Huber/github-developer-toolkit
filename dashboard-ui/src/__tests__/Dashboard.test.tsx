@@ -24,6 +24,13 @@ describe("Dashboard", () => {
     expect(screen.getByRole("button", { name: "Visibility" })).toBeInTheDocument();
   });
 
+  it("does not render an unscored Documentation tab", () => {
+    render(<Dashboard {...defaultProps} />);
+    expect(
+      screen.queryByRole("button", { name: "Documentation" }),
+    ).not.toBeInTheDocument();
+  });
+
   it("renders the overall score", () => {
     render(<Dashboard {...defaultProps} />);
     expect(screen.getByText("65")).toBeInTheDocument();
@@ -43,8 +50,8 @@ describe("Dashboard", () => {
   it("switches to dimension detail when tab clicked", async () => {
     const user = userEvent.setup();
     render(<Dashboard {...defaultProps} />);
-    await user.click(screen.getByRole("button", { name: "Documentation" }));
-    expect(screen.getByText("Well documented.")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Activity" }));
+    expect(screen.getByText("Moderate activity.")).toBeInTheDocument();
   });
 
   it("calls onTabChange when switching tabs", async () => {
