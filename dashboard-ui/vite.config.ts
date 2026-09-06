@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    outDir: '../src/ghdtk/dashboard/static',
+    emptyOutDir: true,
+  },
   server: {
     proxy: {
       '/api': {

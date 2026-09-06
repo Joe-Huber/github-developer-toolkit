@@ -49,6 +49,14 @@ def test_app_has_cors_middleware(client: TestClient) -> None:
     assert "access-control-allow-origin" in resp.headers
 
 
+def test_app_serves_bundled_dashboard_static(client: TestClient) -> None:
+    """Issue #186: the wheel-shipped dashboard assets are served at the root."""
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "html" in resp.headers["content-type"]
+    assert 'id="root"' in resp.text
+
+
 def test_app_title() -> None:
     app = create_app()
     assert app.title == "ghdtk dashboard"
