@@ -287,7 +287,10 @@ class GitHubClient:
                 retry_after=retry_after,
                 reset_at=reset_at,
             )
-        if status == 403 and response.headers.get("Retry-After") is not None:
+        if status == 403 and (
+            response.headers.get("Retry-After") is not None
+            or self._is_secondary_rate_limit(response)
+        ):
             retry_after = parse_retry_after(response.headers.get("Retry-After"))
             raise RateLimitError(
                 "GitHub secondary rate limit reached; retry after the backoff.",
@@ -307,6 +310,23 @@ class GitHubClient:
         return response.status_code == 403 and (
             response.headers.get("X-RateLimit-Remaining") == "0"
         )
+
+    @staticmethod
+    def _is_secondary_rate_limit(response: httpx.Response) -> bool:
+        """Detect abuse-triggered secondary rate limits from the body.
+
+        GitHub's abuse detection may return 403 without a ``Retry-After``
+        header; the body message then names the secondary rate limit.
+        """
+        try:
+            body = response.json()
+        except json.JSONDecodeError:
+            return False
+        message = body.get("message") if isinstance(body, dict) else None
+        if not isinstance(message, str):
+            return False
+        text = message.lower()
+        return "secondary rate limit" in text or "abuse" in text
 
     @staticmethod
     def _rate_limit_reset(response: httpx.Response) -> datetime | None:

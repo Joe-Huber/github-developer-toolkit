@@ -699,6 +699,26 @@ def test_403_without_retry_after_raises_authentication_error() -> None:
             client.get_user("octocat")
 
 
+def test_secondary_rate_limit_403_without_retry_after_is_typed() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(
+            request,
+            {
+                "message": (
+                    "You have exceeded a secondary rate limit. "
+                    "Please wait a few minutes before you try again."
+                )
+            },
+            status=403,
+        )
+
+    with _client(handler, max_retries=1) as client:
+        with pytest.raises(RateLimitError) as excinfo:
+            client.get_user("octocat")
+    assert excinfo.value.status_code == 403
+    assert excinfo.value.retry_after is None
+
+
 def test_invalid_rate_limit_reset_is_tolerated() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(
