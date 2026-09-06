@@ -9,6 +9,7 @@ import { Charts } from "./Charts";
 import { FindingsList } from "./FindingsList";
 import { MetricsGrid } from "./MetricsGrid";
 import { RecommendationsList } from "./RecommendationsList";
+import { ScoreGauge } from "./ScoreGauge";
 import { ANALYSIS_LABELS, DIMENSION_ANALYSES, DIMENSION_LABELS } from "../lib/dimensions";
 
 interface DimensionDetailProps {
@@ -38,16 +39,11 @@ export function DimensionDetail({
   return (
     <div className="space-y-6">
       <div className="bg-panel rounded-lg border border-border p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <h2 className="text-xl font-semibold text-text">
             {DIMENSION_LABELS[dimension] ?? dimension}
           </h2>
-          {score && (
-            <div className="text-3xl font-bold text-accent">
-              {Math.round(score.score)}
-              <span className="text-sm text-muted">/100</span>
-            </div>
-          )}
+          {score && <ScoreGauge value={score.score} size={72} />}
         </div>
 
         {!score && (

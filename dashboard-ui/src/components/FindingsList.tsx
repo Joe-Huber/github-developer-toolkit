@@ -1,5 +1,6 @@
 import { useState, useId } from "react";
 import type { Finding, FindingSeverity, DimensionId } from "../types/report";
+import { ExternalLinkIcon } from "./icons";
 
 const SEVERITY_STYLES: Record<FindingSeverity, string> = {
   critical: "bg-bad/20 text-bad",
@@ -149,6 +150,22 @@ export function FindingsList({ findings, title }: FindingsListProps) {
               )}
             </div>
             <p className="text-muted text-xs">{f.message}</p>
+            {f.evidence.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {f.evidence.map((ref, i) => (
+                  <a
+                    key={`${ref.entity}-${ref.identifier}-${i}`}
+                    href={`https://github.com/${ref.identifier}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 rounded bg-border/30 px-1.5 py-0.5 text-[11px] text-accent hover:underline"
+                  >
+                    <ExternalLinkIcon className="h-3 w-3 shrink-0" />
+                    {ref.identifier}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

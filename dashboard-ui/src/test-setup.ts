@@ -73,3 +73,28 @@ class ResizeObserverStub {
 
 globalThis.ResizeObserver =
   ResizeObserverStub as unknown as typeof ResizeObserver;
+
+// jsdom does not implement matchMedia; the theme hook uses it for
+// system-preference detection.
+declare global {
+  interface Window {
+    matchMediaDarkPrefers?: boolean;
+  }
+}
+
+const matchMediaStub = (query: string): MediaQueryList => ({
+  matches: window.matchMediaDarkPrefers === true,
+  media: query,
+  onchange: null,
+  addListener: () => {},
+  removeListener: () => {},
+  addEventListener: () => {},
+  removeEventListener: () => {},
+  dispatchEvent: () => false,
+});
+
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  configurable: true,
+  value: vi.fn(matchMediaStub),
+});
