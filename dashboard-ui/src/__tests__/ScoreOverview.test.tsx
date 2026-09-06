@@ -15,6 +15,11 @@ describe("ScoreOverview", () => {
     expect(screen.getByText("/100")).toBeInTheDocument();
   });
 
+  it("renders the score as an accessible gauge", () => {
+    render(<ScoreOverview report={MOCK_REPORT} />);
+    expect(screen.getByLabelText("65 out of 100")).toBeInTheDocument();
+  });
+
   it("renders strengths", () => {
     render(<ScoreOverview report={MOCK_REPORT} />);
     expect(screen.getByText("Strong code quality")).toBeInTheDocument();

@@ -1,21 +1,48 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #0d1117;
-  --color-panel: #161b22;
-  --color-border: #30363d;
-  --color-text: #e6edf3;
-  --color-muted: #8b949e;
-  --color-accent: #58a6ff;
-  --color-good: #3fb950;
-  --color-bad: #f85149;
-  --color-warn: #d29922;
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --ghdtk-bg: #ffffff;
+  --ghdtk-panel: #f6f8fa;
+  --ghdtk-border: #d8dee4;
+  --ghdtk-text: #1f2328;
+  --ghdtk-muted: #59636e;
+  --ghdtk-accent: #0969da;
+  --ghdtk-good: #1a7f37;
+  --ghdtk-bad: #cf222e;
+  --ghdtk-warn: #9a6700;
+}
+
+.dark {
+  --ghdtk-bg: #0d1117;
+  --ghdtk-panel: #161b22;
+  --ghdtk-border: #30363d;
+  --ghdtk-text: #e6edf3;
+  --ghdtk-muted: #8b949e;
+  --ghdtk-accent: #58a6ff;
+  --ghdtk-good: #3fb950;
+  --ghdtk-bad: #f85149;
+  --ghdtk-warn: #d29922;
+}
+
+@theme inline {
+  --color-bg: var(--ghdtk-bg);
+  --color-panel: var(--ghdtk-panel);
+  --color-border: var(--ghdtk-border);
+  --color-text: var(--ghdtk-text);
+  --color-muted: var(--ghdtk-muted);
+  --color-accent: var(--ghdtk-accent);
+  --color-good: var(--ghdtk-good);
+  --color-bad: var(--ghdtk-bad);
+  --color-warn: var(--ghdtk-warn);
 }
 
 body {
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--ghdtk-bg);
+  color: var(--ghdtk-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

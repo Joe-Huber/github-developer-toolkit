@@ -33,7 +33,7 @@ describe("Dashboard", () => {
 
   it("renders the overall score", () => {
     render(<Dashboard {...defaultProps} />);
-    expect(screen.getByText("65")).toBeInTheDocument();
+    expect(screen.getAllByText("65").length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders findings on overview", () => {

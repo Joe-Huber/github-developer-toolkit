@@ -9,6 +9,9 @@ import { ScoreOverview } from "./ScoreOverview";
 import { DimensionDetail } from "./DimensionDetail";
 import { FindingsList } from "./FindingsList";
 import { RecommendationsList } from "./RecommendationsList";
+import { ThemeToggle } from "./ThemeToggle";
+import { BackIcon, CloseIcon, MenuIcon } from "./icons";
+import { scoreTone } from "../lib/colors";
 
 const DIMENSIONS: { id: DimensionId | "overview"; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -21,6 +24,12 @@ const DIMENSIONS: { id: DimensionId | "overview"; label: string }[] = [
   { id: "contribution", label: "Contribution" },
   { id: "visibility", label: "Visibility" },
 ];
+
+const SCORE_PILL_CLASSES: Record<ReturnType<typeof scoreTone>, string> = {
+  good: "bg-good/15 text-good",
+  warn: "bg-warn/15 text-warn",
+  bad: "bg-bad/15 text-bad",
+};
 
 interface DashboardProps {
   report: ReportResponse;
@@ -57,6 +66,11 @@ export function Dashboard({
     return profile.recommendations.filter((r) => ids.has(r.id));
   };
 
+  const dimensionScore = (dim: DimensionId | "overview"): number | undefined =>
+    dim === "overview"
+      ? profile.overall?.overall
+      : profile.scores.find((s) => s.dimension === dim)?.score;
+
   return (
     <div className="min-h-screen md:flex">
       {/* Mobile top bar */}
@@ -67,9 +81,16 @@ export function Dashboard({
           aria-expanded={sidebarOpen}
           className="text-lg text-text hover:text-accent transition-colors"
         >
-          {sidebarOpen ? "\u2715" : "\u2630"}
+          {sidebarOpen ? (
+            <CloseIcon className="h-5 w-5" />
+          ) : (
+            <MenuIcon className="h-5 w-5" />
+          )}
         </button>
         <h1 className="text-lg font-semibold text-accent">ghdtk</h1>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Sidebar */}
@@ -83,10 +104,11 @@ export function Dashboard({
           {onBack && (
             <button
               onClick={onBack}
-              className="text-xs text-muted hover:text-text transition-colors"
+              className="inline-flex items-center gap-1 text-xs text-muted hover:text-text transition-colors"
               title="Back to search"
             >
-              &larr; new
+              <BackIcon className="h-3 w-3" />
+              new
             </button>
           )}
         </div>
@@ -94,22 +116,36 @@ export function Dashboard({
           @{profile.username}
         </h2>
         <nav className="space-y-1">
-          {DIMENSIONS.map((dim) => (
-            <button
-              key={dim.id}
-              onClick={() => switchTab(dim.id)}
-              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeTab === dim.id
-                  ? "bg-accent/15 text-accent"
-                  : "text-muted hover:text-text hover:bg-border/30"
-              }`}
-            >
-              {dim.label}
-            </button>
-          ))}
+          {DIMENSIONS.map((dim) => {
+            const score = dimensionScore(dim.id);
+            return (
+              <button
+                key={dim.id}
+                onClick={() => switchTab(dim.id)}
+                aria-label={dim.label}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded text-sm transition-colors ${
+                  activeTab === dim.id
+                    ? "bg-accent/15 text-accent"
+                    : "text-muted hover:text-text hover:bg-border/30"
+                }`}
+              >
+                <span>{dim.label}</span>
+                {score !== undefined && (
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-xs font-semibold ${SCORE_PILL_CLASSES[scoreTone(score)]}`}
+                  >
+                    {Math.round(score)}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </nav>
-        <div className="mt-6 pt-4 border-t border-border text-xs text-muted">
-          Generated: {new Date(report.generated_at).toLocaleDateString()}
+        <div className="mt-6 pt-4 border-t border-border space-y-3">
+          <div className="text-xs text-muted">
+            Generated: {new Date(report.generated_at).toLocaleDateString()}
+          </div>
+          <ThemeToggle />
         </div>
       </aside>
 

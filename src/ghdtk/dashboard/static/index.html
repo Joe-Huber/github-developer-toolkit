@@ -4,8 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ghdtk dashboard</title>
-    <script type="module" crossorigin src="/assets/index-CROFf1Qa.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-ChUTuSKn.css">
+    <script>
+      (() => {
+        const setTheme = (dark) => {
+          document.documentElement.classList.toggle("dark", dark);
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        };
+        try {
+          const stored = localStorage.getItem("ghdtk-theme");
+          if (stored === "light") setTheme(false);
+          else if (stored === "dark") setTheme(true);
+          else
+            setTheme(window.matchMedia("(prefers-color-scheme: dark)")?.matches ?? false);
+        } catch {
+          setTheme(false);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-FMAETtL5.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CzeB-x9C.css">
   </head>
   <body>
     <div id="root"></div>

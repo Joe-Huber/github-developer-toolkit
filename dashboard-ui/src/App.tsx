@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useReport } from "./hooks/useReport";
 import { Dashboard } from "./components/Dashboard";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 function getQueryParam(name: string): string | null {
   return new URLSearchParams(window.location.search).get(name);
@@ -55,7 +56,10 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center relative">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="bg-panel border border-border rounded-lg p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-text mb-2">ghdtk dashboard</h1>
         <p className="text-muted text-sm mb-6">

@@ -11,6 +11,8 @@ import {
 import type { TooltipItem } from "chart.js";
 import { Radar, Doughnut } from "react-chartjs-2";
 import type { ReportResponse, DimensionId } from "../types/report";
+import { ScoreGauge } from "./ScoreGauge";
+import { cssVar, withAlpha } from "../lib/colors";
 
 ChartJS.register(
   RadialLinearScale,
@@ -48,6 +50,11 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
   const { profile } = report;
   const overall = profile.overall?.overall ?? 0;
 
+  const accent = cssVar("--ghdtk-accent", "#58a6ff");
+  const border = cssVar("--ghdtk-border", "#30363d");
+  const panel = cssVar("--ghdtk-panel", "#161b22");
+  const text = cssVar("--ghdtk-text", "#e6edf3");
+
   const labels = profile.scores.map((s) => DIMENSION_LABELS[s.dimension] ?? s.dimension);
   const values = profile.scores.map((s) => s.score);
 
@@ -57,10 +64,10 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
       {
         label: "Score",
         data: values,
-        backgroundColor: "rgba(88, 166, 255, 0.2)",
-        borderColor: "rgba(88, 166, 255, 0.8)",
+        backgroundColor: withAlpha(accent, 0.2),
+        borderColor: withAlpha(accent, 0.8),
         borderWidth: 2,
-        pointBackgroundColor: "rgba(88, 166, 255, 1)",
+        pointBackgroundColor: withAlpha(accent, 1),
         pointRadius: 4,
       },
     ],
@@ -74,9 +81,9 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
         beginAtZero: true,
         max: 100,
         ticks: { display: false },
-        grid: { color: "rgba(48, 54, 61, 0.6)" },
-        angleLines: { color: "rgba(48, 54, 61, 0.6)" },
-        pointLabels: { color: "#e6edf3", font: { size: 12 } },
+        grid: { color: withAlpha(border, 0.6) },
+        angleLines: { color: withAlpha(border, 0.6) },
+        pointLabels: { color: text, font: { size: 12 } },
       },
     },
     plugins: {
@@ -101,7 +108,7 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
             backgroundColor: langDistribution.map(
               (_, i) => LANGUAGE_COLORS[i % LANGUAGE_COLORS.length],
             ),
-            borderColor: "#161b22",
+            borderColor: panel,
             borderWidth: 2,
           },
         ],
@@ -134,19 +141,8 @@ export function ScoreOverview({ report }: ScoreOverviewProps) {
             Analyzed {new Date(profile.analyzed_at).toLocaleDateString()}
           </p>
         </div>
-        <div className="ml-auto text-center">
-          <div
-            className={`text-5xl font-bold ${
-              overall >= 70
-                ? "text-good"
-                : overall >= 40
-                  ? "text-warn"
-                  : "text-bad"
-            }`}
-          >
-            {Math.round(overall)}
-          </div>
-          <div className="text-muted text-sm">/100</div>
+        <div className="ml-auto">
+          <ScoreGauge value={overall} size={96} />
         </div>
       </div>
 
