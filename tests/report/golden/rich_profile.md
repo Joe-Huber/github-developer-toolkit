@@ -4,7 +4,7 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 
 ## Overall score
 
-**47.3 / 100**
+**49.2 / 100**
 
 | Dimension    | Score | Weight | Contribution |
 | ------------ | ----- | ------ | ------------ |
@@ -13,9 +13,13 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 | Consistency  | 54.0  | 1.0    | 5.7          |
 | Activity     | 18.9  | 1.5    | 3.0          |
 | Contribution | 54.9  | 1.5    | 8.7          |
-| Engagement   | 67.0  | 1.0    | 7.0          |
+| Engagement   | 85.3  | 1.0    | 9.0          |
 | Open Source  | 43.6  | 1.0    | 4.6          |
 | Visibility   | 55.8  | 1.0    | 5.9          |
+
+**Strengths**
+
+- Community (85/100)
 
 **Weaknesses**
 
@@ -72,14 +76,14 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 | Contribution density | 0.3    | 35.0         | user:octocat#contribution_calendar |
 | Streaks and gaps     | 0.2    | 11.5         | user:octocat#contribution_calendar |
 
-### Engagement — 67.0 / 100
+### Engagement — 85.3 / 100
 
 1200 followers / 80 following (ratio 15.00), reach 1200
 
 | Component         | Weight | Contribution | Source                 |
 | ----------------- | ------ | ------------ | ---------------------- |
 | Follower audience | 0.4    | 40.0         | user:octocat#followers |
-| Follower balance  | 0.3    | 2.0          | user:octocat#followers |
+| Follower balance  | 0.3    | 20.3         | user:octocat#followers |
 | Network reach     | 0.3    | 25.0         | user:octocat#followers |
 
 ### Open Source — 43.6 / 100
@@ -106,6 +110,7 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 
 **Strengths**
 
+- Community (85/100)
 - Audience-driven profile
 - Issues attract community participation
 - Profile is specialized in data
