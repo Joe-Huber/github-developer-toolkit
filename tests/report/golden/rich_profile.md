@@ -4,11 +4,11 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 
 ## Overall score
 
-**49.2 / 100**
+**50.5 / 100**
 
 | Dimension    | Score | Weight | Contribution |
 | ------------ | ----- | ------ | ------------ |
-| Presence     | 62.0  | 1.0    | 6.5          |
+| Presence     | 74.5  | 1.0    | 7.8          |
 | Code Quality | 37.2  | 1.5    | 5.9          |
 | Consistency  | 54.0  | 1.0    | 5.7          |
 | Activity     | 18.9  | 1.5    | 3.0          |
@@ -20,6 +20,7 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 **Strengths**
 
 - Community (85/100)
+- Profile presence (74/100)
 
 **Weaknesses**
 
@@ -28,14 +29,14 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 
 ## Dimension scores
 
-### Presence — 62.0 / 100
+### Presence — 74.5 / 100
 
 Profile field completeness 8/9 present; README status 'present'
 
 | Component                  | Weight | Contribution | Source                         |
 | -------------------------- | ------ | ------------ | ------------------------------ |
 | Profile field completeness | 0.5    | 44.4         | user:octocat#name              |
-| Profile README quality     | 0.5    | 17.5         | readme:octocat/octocat#content |
+| Profile README quality     | 0.5    | 30.0         | readme:octocat/octocat#content |
 
 ### Code Quality — 37.2 / 100
 
@@ -111,6 +112,7 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 **Strengths**
 
 - Community (85/100)
+- Profile presence (74/100)
 - Audience-driven profile
 - Issues attract community participation
 - Profile is specialized in data

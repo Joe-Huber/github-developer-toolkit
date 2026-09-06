@@ -11,9 +11,11 @@ Documented formula (blended, 0-100):
 - **Profile README quality** (weight 1.0, only when a README was assessed):
   40% word-count component (linear up to 100 words), 35% structure component
   (mean of headings/code blocks/links/badges-or-images presence) and 25%
-  personalization component (username mentions, capped at 50 when generic
-  boilerplate wording is detected). A README that is missing, empty or failed
-  to fetch scores zero.
+  personalization component. Personalization gives full credit when the README
+  self-mentions the account or contains structured custom sections (about,
+  skills, contact); a substantive README with neither still earns partial
+  credit. Generic boilerplate wording caps personalization at 50. A README
+  that is missing, empty or failed to fetch scores zero.
 
 Empty-data handling: with no presence analysis the dimension cannot be scored
 and ``None`` is returned; a missing README assessment simply drops the README
@@ -90,11 +92,20 @@ class ProfileScorer(BaseScorer):
         badges = int(metric_value(readme, "readme.badges") or 0)
         mentions = int(metric_value(readme, "readme.username_mentions") or 0)
         boilerplate = bool(metric_value(readme, "readme.boilerplate") or False)
+        sections = sum(
+            int(metric_value(readme, f"readme.section.{name}") or 0)
+            for name in ("about", "skills", "contact")
+        )
 
         word_component = normalize_ratio(min(words / _README_MIN_WORDS, 1.0))
         structure = (headings > 0, code_blocks > 0, links > 0, (images + badges) > 0)
         structure_component = normalize_ratio(sum(structure) / len(structure))
-        personalization = 100.0 if mentions > 0 else 0.0
+        if mentions > 0 or sections > 0:
+            personalization = 100.0
+        elif words >= _README_MIN_WORDS:
+            personalization = 70.0
+        else:
+            personalization = 0.0
         if boilerplate:
             personalization = min(personalization, 50.0)
 
@@ -109,6 +120,9 @@ class ProfileScorer(BaseScorer):
             "readme.badges",
             "readme.username_mentions",
             "readme.boilerplate",
+            "readme.section.about",
+            "readme.section.skills",
+            "readme.section.contact",
         )
         return ScoredComponent(
             component_id="profile_readme",
