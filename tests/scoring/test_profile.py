@@ -132,6 +132,36 @@ def test_boilerplate_readme_caps_personalization() -> None:
     assert _score([FieldStatus.PRESENT] * 4, _readme(metrics=boilerplate)) == pytest.approx(93.75)
 
 
+def _section_metrics() -> list[MetricRecord]:
+    return [
+        _metric("readme.section.about", 1),
+        _metric("readme.section.skills", 1),
+        _metric("readme.section.contact", 1),
+    ]
+
+
+def test_customized_readme_without_self_mention_gets_full_personalization() -> None:
+    metrics = [
+        metric if metric.id != "readme.username_mentions" else _metric(metric.id, 0)
+        for metric in _rich_readme_metrics()
+    ] + _section_metrics()
+    assert _score([FieldStatus.PRESENT] * 4, _readme(metrics=metrics)) == 100.0
+
+
+def test_long_boilerplate_free_readme_without_sections_gets_partial_credit() -> None:
+    metrics = [
+        _metric("readme.word_count", 250),
+        _metric("readme.headings", 4),
+        _metric("readme.code_blocks", 1),
+        _metric("readme.links", 4),
+        _metric("readme.images", 1),
+        _metric("readme.badges", 0),
+        _metric("readme.username_mentions", 0),
+        _metric("readme.boilerplate", False),
+    ]
+    assert _score([FieldStatus.PRESENT] * 4, _readme(metrics=metrics)) == pytest.approx(96.25)
+
+
 def test_empty_readme_scores_zero_on_readme_component() -> None:
     assert (
         _score(
