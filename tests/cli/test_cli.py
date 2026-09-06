@@ -8,9 +8,10 @@ from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
-import uvicorn
 
 from ghdtk.cli import main
+
+uvicorn = pytest.importorskip("uvicorn")
 
 
 @pytest.fixture(autouse=True)
