@@ -176,23 +176,29 @@ def assess_repository_activity(
     staleness = [signal.staleness_days or 0 for signal in with_push]
     max_staleness = max(staleness, default=None)
 
-    staleness_threshold = thresholds.staleness_days
-    buckets = {
-        "<30": 0,
-        f"30-{staleness_threshold}": 0,
-        f"{staleness_threshold}-365": 0,
-        ">365": 0,
-    }
+    staleness_threshold = int(thresholds.staleness_days)
+    boundaries = sorted({_RECENT_BUCKET_DAYS, staleness_threshold, _LONG_INACTIVE_DAYS})
+
+    def _bucket_key(days: int) -> str:
+        for index, boundary in enumerate(boundaries):
+            if days < boundary:
+                previous = 0 if index == 0 else boundaries[index - 1]
+                return f"<{boundary}" if index == 0 else f"{previous}-{boundary}"
+        return f">{boundaries[-1]}"
+
+    buckets: dict[str, int] = {}
     for signal in with_push:
         days = signal.staleness_days or 0
-        if days < _RECENT_BUCKET_DAYS:
-            buckets["<30"] += 1
-        elif days < staleness_threshold:
-            buckets[f"30-{staleness_threshold}"] += 1
-        elif days < _LONG_INACTIVE_DAYS:
-            buckets[f"{staleness_threshold}-365"] += 1
-        else:
-            buckets[">365"] += 1
+        key = _bucket_key(days)
+        buckets[key] = buckets.get(key, 0) + 1
+
+    def _count_under(boundary: int) -> int:
+        return sum(1 for signal in with_push if (signal.staleness_days or 0) < boundary)
+
+    recent_30d = _count_under(_RECENT_BUCKET_DAYS)
+    within_threshold = _count_under(staleness_threshold)
+    within_365 = _count_under(_LONG_INACTIVE_DAYS)
+    over_365 = len(with_push) - within_365
 
     now_ts = snapshot.collected_at
     metrics = [
@@ -255,32 +261,28 @@ def assess_repository_activity(
         MetricRecord(
             id="portfolio.activity.pushed_recently_30d",
             label="Repositories pushed in the last 30 days",
-            value=buckets["<30"],
+            value=recent_30d,
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),
         MetricRecord(
             id=f"portfolio.activity.pushed_{staleness_threshold}d",
             label="Repositories pushed within the staleness window",
-            value=buckets["<30"] + buckets[f"30-{staleness_threshold}"],
+            value=within_threshold,
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),
         MetricRecord(
             id="portfolio.activity.pushed_365d",
             label="Repositories pushed within a year",
-            value=(
-                buckets["<30"]
-                + buckets[f"30-{staleness_threshold}"]
-                + buckets[f"{staleness_threshold}-365"]
-            ),
+            value=within_365,
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),
         MetricRecord(
             id="portfolio.activity.pushed_over_365d",
             label="Repositories inactive over a year",
-            value=buckets[">365"],
+            value=over_365,
             timestamp=now_ts,
             sources=[_source(s.full_name, "pushed_at") for s in with_push],
         ),

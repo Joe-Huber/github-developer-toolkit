@@ -198,6 +198,43 @@ def test_missing_push_date_marks_signal_unknown() -> None:
     )
 
 
+def test_staleness_bucket_ranges_adapt_to_threshold() -> None:
+    result = assess_repository_activity(
+        _snapshot(
+            [
+                _repo("A", created_days=1000, pushed_days=10),
+                _repo("B", created_days=800, pushed_days=20),
+                _repo("C", created_days=600, pushed_days=50),
+                _repo("D", created_days=400, pushed_days=120),
+                _repo("E", created_days=200, pushed_days=400),
+            ]
+        ),
+        now=NOW,
+        thresholds=AnalysisThresholds(staleness_days=14),
+    )
+
+    assert _metric(result, "portfolio.activity.repos.active") == 1
+    assert _metric(result, "portfolio.activity.repos.dormant") == 4
+    assert _metric(result, "portfolio.activity.pushed_recently_30d") == 2
+    assert _metric(result, "portfolio.activity.pushed_14d") == 1
+    assert _metric(result, "portfolio.activity.pushed_365d") == 4
+    assert _metric(result, "portfolio.activity.pushed_over_365d") == 1
+
+    result_high = assess_repository_activity(
+        _snapshot(
+            [
+                _repo("A", created_days=500, pushed_days=200),
+                _repo("B", created_days=400, pushed_days=400),
+            ]
+        ),
+        now=NOW,
+        thresholds=AnalysisThresholds(staleness_days=500),
+    )
+    assert _metric(result_high, "portfolio.activity.repos.active") == 2
+    assert _metric(result_high, "portfolio.activity.repos.dormant") == 0
+    assert _metric(result_high, "portfolio.activity.pushed_500d") == 2
+
+
 def test_updated_at_is_fallback_for_staleness() -> None:
     result = assess_repository_activity(
         _snapshot([_repo("A", created_days=100, pushed_days=None, updated_days=20)]),
