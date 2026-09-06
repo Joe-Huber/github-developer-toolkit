@@ -145,7 +145,7 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 - Org membership count is unavailable
 - Too few repositories for composition analysis
 - Pull request metrics cover a documented window
-- Stargazer timeline is incomplete
+- Stargazer timeline covers the recent window only
 
 ## Findings
 
@@ -310,9 +310,9 @@ Collected 2 pull requests (1 merged, 1 open, 1 closed) across 2 repositories ove
 - **Dimension:** Engagement
 - **Evidence:** repository:octocat/second#pull_request, repository:octocat/toolkit#pull_request
 
-### [INFO] Stargazer timeline is incomplete
+### [INFO] Stargazer timeline covers the recent window only
 
-Only 3 of 250 reported stars for octocat/toolkit were observed; growth signals are not drawn.
+Only 3 of 250 reported stars for octocat/toolkit were observed; older stars exceed the collection page cap. Recent velocity reflects the observed window 2025-10-01 to 2025-12-01; the overall trend verdict is not drawn.
 
 - **Dimension:** Engagement
 - **Evidence:** repository:octocat/toolkit#stargazers_count
@@ -553,18 +553,20 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 
 ### Star growth
 
-- **Status:** insufficient
+- **Status:** partial
 
-| Property                            | Value           |
-| ----------------------------------- | --------------- |
-| Repository the timeline covers      | octocat/toolkit |
-| Stargazers observed in the timeline | 3               |
-| Stars reported by the repository    | 250             |
-| Timeline coverage of reported stars | 1%              |
-| Star growth trend                   | insufficient    |
-| Stars added in the last 30 days     | 0               |
-| Stars added in the last 90 days     | 2               |
-| Stars added in the last 365 days    | 3               |
+| Property                                       | Value           |
+| ---------------------------------------------- | --------------- |
+| Repository the timeline covers                 | octocat/toolkit |
+| Stargazers observed in the timeline            | 3               |
+| Stars reported by the repository               | 250             |
+| Timeline coverage of reported stars            | 1%              |
+| Stars added in the last 30 days                | 0               |
+| Stars added in the last 90 days                | 2               |
+| Stars added in the last 365 days               | 3               |
+| Star growth velocity, last 30 days (per month) | 0               |
+| Star growth velocity, last 90 days (per month) | 0.7             |
+| Star growth trend                              | insufficient    |
 
 ### Network
 
@@ -797,6 +799,8 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 | star_growth.stars_30d                          | Stars added in the last 30 days                     | 0               | 100%       | repository:octocat/toolkit#pushed_at           |
 | star_growth.stars_90d                          | Stars added in the last 90 days                     | 2               | 100%       | repository:octocat/toolkit#pushed_at           |
 | star_growth.stars_365d                         | Stars added in the last 365 days                    | 3               | 100%       | repository:octocat/toolkit#pushed_at           |
+| star_growth.velocity_30d                       | Star growth velocity, last 30 days (per month)      | 0               | 100%       | repository:octocat/toolkit#pushed_at           |
+| star_growth.velocity_90d                       | Star growth velocity, last 90 days (per month)      | 0.7             | 100%       | repository:octocat/toolkit#pushed_at           |
 | star_growth.trend                              | Star growth trend                                   | insufficient    | 100%       | repository:octocat/toolkit#pushed_at           |
 | network.followers.count                        | Followers                                           | 1200            | 100%       | user:octocat#followers                         |
 | network.following.count                        | Following                                           | 80              | 100%       | user:octocat#following                         |

@@ -11,12 +11,17 @@ issue #62):
 - **What is always reported as an observed fact:** how many stargazers were
   collected, how many the repository reports, and how many starred within the
   last 30/90/365 days. These counts come only from ``starred_at`` values that
-  were actually observed; nothing is extrapolated.
-- **What requires complete coverage:** growth velocity and the trend verdict.
-  They are only computed when the collection record succeeded **and** the
-  collected timeline covers the repository's reported stargazer count **and**
-  the timeline spans at least two distinct star dates over 30 days. Otherwise
-  the status is ``insufficient`` and a finding explains why.
+  were actually observed; nothing is extrapolated. Recent growth velocity
+  (30-day and 90-day per-month rates) is drawn from the observed window in the
+  same way, so even a page-cap-truncated timeline yields recent-velocity
+  numbers.
+- **What requires complete coverage:** the trend verdict. It is only computed
+  when the collection record succeeded **and** the collected timeline covers
+  the repository's reported stargazer count **and** the timeline spans at least
+  two distinct star dates over 30 days. When the timeline is truncated by the
+  page cap, the status is ``partial`` and the observed window boundaries are
+  disclosed; when the data is otherwise unusable, the status is ``insufficient``
+  and a finding explains why.
 - **No history is ever claimed that was not observed.** When the timeline is
   truncated by the page cap, the missing (older) history is reported as
   missing, never guessed.
@@ -53,6 +58,7 @@ class StarGrowthStatus(StrEnum):
     """How much of the star history could be relied on."""
 
     COMPLETE = "complete"
+    PARTIAL = "partial"
     INSUFFICIENT = "insufficient"
     NO_TIMELINE = "no_timeline"
 
@@ -183,16 +189,21 @@ def assess_star_growth(
                 )
             )
         elif observed_stars < reported_stars:
-            status = StarGrowthStatus.INSUFFICIENT
+            status = StarGrowthStatus.PARTIAL
+            trend = "insufficient"
+            earliest = dates[0].date().isoformat() if dates else "unknown"
+            latest = dates[-1].date().isoformat() if dates else "unknown"
             findings.append(
                 Finding(
                     id="star_growth.insufficient_data",
                     type="informational",
                     severity=FindingSeverity.INFO,
-                    title="Stargazer timeline is incomplete",
+                    title="Stargazer timeline covers the recent window only",
                     message=(
                         f"Only {observed_stars} of {reported_stars} reported stars for "
-                        f"{timeline_repo} were observed; growth signals are not drawn."
+                        f"{timeline_repo} were observed; older stars exceed the collection "
+                        f"page cap. Recent velocity reflects the observed window {earliest} "
+                        f"to {latest}; the overall trend verdict is not drawn."
                     ),
                     dimension=DimensionId.ENGAGEMENT,
                     evidence=[_source(timeline_repo, "stargazers_count")],
@@ -313,6 +324,20 @@ def assess_star_growth(
                 id="star_growth.stars_365d",
                 label="Stars added in the last 365 days",
                 value=recent[365],
+                timestamp=now_ts,
+                sources=[_source(timeline_repo, "pushed_at")],
+            ),
+            MetricRecord(
+                id="star_growth.velocity_30d",
+                label="Star growth velocity, last 30 days (per month)",
+                value=float(recent[30]),
+                timestamp=now_ts,
+                sources=[_source(timeline_repo, "pushed_at")],
+            ),
+            MetricRecord(
+                id="star_growth.velocity_90d",
+                label="Star growth velocity, last 90 days (per month)",
+                value=_round(recent[90] / 3, 1),
                 timestamp=now_ts,
                 sources=[_source(timeline_repo, "pushed_at")],
             ),

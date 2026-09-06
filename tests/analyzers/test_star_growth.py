@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
+
 from ghdtk.analyzers.star_growth import StarGrowthAnalysis, StarGrowthStatus, assess_star_growth
 from ghdtk.analyzers.thresholds import AnalysisThresholds
 from ghdtk.models.derived import Finding, FindingSeverity
@@ -117,16 +119,20 @@ def test_stable_growth_has_no_trend_finding() -> None:
     )
 
 
-def test_incomplete_timeline_reports_insufficient_data() -> None:
+def test_page_cap_timeline_reports_partial_and_still_draws_velocity() -> None:
     timeline = _rising_timeline()
     result = assess_star_growth(_snapshot(stars=500, stargazers=timeline), now=NOW)
 
-    assert result.status is StarGrowthStatus.INSUFFICIENT
+    assert result.status is StarGrowthStatus.PARTIAL
     assert result.coverage == 7 / 500
     finding = _finding(result, "star_growth.insufficient_data")
     assert finding.severity is FindingSeverity.INFO
     assert "Only 7 of 500 reported stars" in finding.message
+    assert "2025-03-07 to 2025-12-30" in finding.message
     assert _metric(result, "star_growth.trend") == "insufficient"
+    assert _metric(result, "star_growth.stars_30d") == 4
+    assert _metric(result, "star_growth.velocity_30d") == 4.0
+    assert _metric(result, "star_growth.velocity_90d") == pytest.approx(1.3)
     assert not any(
         finding.id in {"star_growth.rising", "star_growth.slowing"} for finding in result.findings
     )
