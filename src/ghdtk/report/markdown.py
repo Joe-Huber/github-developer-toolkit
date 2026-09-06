@@ -216,6 +216,7 @@ _LANGUAGES_PROPERTIES: tuple[str, ...] = (
     "languages.distinct_languages",
     "languages.dominant_language",
     "languages.dominant_share",
+    "languages.diversity.simpson",
     "languages.repos.with_byte_stats",
     "languages.repos.declared_only",
     "languages.repos.unknown",

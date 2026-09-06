@@ -374,6 +374,20 @@ def assess_language_distribution(
             timestamp=now_ts,
             sources=repo_sources,
         ),
+        MetricRecord(
+            id="languages.diversity.simpson",
+            label="Simpson diversity index",
+            value=(
+                _round(1.0 - sum(entry.share**2 for entry in distribution))
+                if distribution
+                else None
+            ),
+            availability=(
+                MetricAvailability.AVAILABLE if distribution else MetricAvailability.UNAVAILABLE
+            ),
+            timestamp=now_ts,
+            sources=repo_sources,
+        ),
     ]
     for entry in distribution:
         entry_sources = [

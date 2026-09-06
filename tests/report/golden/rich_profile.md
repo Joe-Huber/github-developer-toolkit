@@ -4,7 +4,7 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 
 ## Overall score
 
-**50.5 / 100**
+**50.2 / 100**
 
 | Dimension    | Score | Weight | Contribution |
 | ------------ | ----- | ------ | ------------ |
@@ -15,7 +15,7 @@ _ghdtk 0.1.0 · generated 2026-01-01 12:00:00 UTC · analyzed 2026-01-01 12:00:0
 | Contribution | 54.9  | 1.5    | 8.7          |
 | Engagement   | 85.3  | 1.0    | 9.0          |
 | Open Source  | 43.6  | 1.0    | 4.6          |
-| Visibility   | 55.8  | 1.0    | 5.9          |
+| Visibility   | 52.7  | 1.0    | 5.5          |
 
 **Strengths**
 
@@ -98,14 +98,14 @@ Commit regularity across 2 commits in the coverage window; 2 components blended
 | External engagement     | 0.2    | 0.0          | repository:octocat/second#pull_request |
 | Review collaboration    | 0.2    | 10.0         | repository:octocat/second#pull_request |
 
-### Visibility — 55.8 / 100
+### Visibility — 52.7 / 100
 
 260 total stars; 2 components blended
 
 | Component          | Weight | Contribution | Source                                      |
 | ------------------ | ------ | ------------ | ------------------------------------------- |
 | Portfolio stars    | 0.6    | 39.2         | repository:octocat/toolkit#stargazers_count |
-| Language diversity | 0.4    | 16.7         | repository:octocat/toolkit#language         |
+| Language diversity | 0.4    | 13.5         | repository:octocat/toolkit#language         |
 
 ## Synthesis
 
@@ -693,6 +693,7 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 | Distinct languages                       | 2      |
 | Dominant language                        | Python |
 | Dominant language share                  | 62%    |
+| Simpson diversity index                  | 0.47   |
 | Repositories with byte statistics        | 2      |
 | Repositories with declared language only | 0      |
 | Repositories with no language data       | 0      |
@@ -896,6 +897,7 @@ The data domain holds 62% of the mapped language bytes, at or above the 50% spec
 | languages.distinct_languages                   | Distinct languages                                  | 2               | 100%       | repository:octocat/toolkit#language            |
 | languages.dominant_language                    | Dominant language                                   | Python          | 100%       | repository:octocat/toolkit#language            |
 | languages.dominant_share                       | Dominant language share                             | 0.62            | 100%       | repository:octocat/toolkit#language            |
+| languages.diversity.simpson                    | Simpson diversity index                             | 0.47            | 100%       | repository:octocat/toolkit#language            |
 | languages.share.Python                         | Share of Python                                     | 0.62            | 100%       | repository:octocat/toolkit#language            |
 | languages.bytes.Python                         | Bytes of Python                                     | 5000            | 100%       | repository:octocat/toolkit#language            |
 | languages.share.JavaScript                     | Share of JavaScript                                 | 0.38            | 100%       | repository:octocat/toolkit#language            |
