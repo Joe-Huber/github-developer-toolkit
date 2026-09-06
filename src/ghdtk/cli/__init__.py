@@ -334,7 +334,7 @@ def _cmd_dashboard(args: argparse.Namespace) -> int:
     from ghdtk.dashboard.app import create_app
 
     app = create_app()
-    url = f"http://{args.host}:{args.port}"
+    url = f"http://{args.host}:{args.port}/"
     query = f"?user={args.username}" if args.username else ""
 
     if not args.no_open:
