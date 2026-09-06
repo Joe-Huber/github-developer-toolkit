@@ -106,7 +106,15 @@ def build_parser() -> argparse.ArgumentParser:
         "dashboard",
         help="Launch the interactive web dashboard.",
     )
-    dashboard.add_argument("username", help="GitHub username to analyze and display.")
+    dashboard.add_argument(
+        "username",
+        nargs="?",
+        default=None,
+        help=(
+            "GitHub username to analyze and display (optional; loads a blank "
+            "search screen when omitted)."
+        ),
+    )
     dashboard.add_argument(
         "--port",
         type=int,
@@ -326,13 +334,16 @@ def _cmd_dashboard(args: argparse.Namespace) -> int:
     from ghdtk.dashboard.app import create_app
 
     app = create_app()
+    url = f"http://{args.host}:{args.port}"
+    query = f"?user={args.username}" if args.username else ""
 
     if not args.no_open:
         import webbrowser
 
-        webbrowser.open(f"http://{args.host}:{args.port}")
+        webbrowser.open(url + query)
 
-    _emit(f"Dashboard serving @{args.username} at http://{args.host}:{args.port}", quiet=False)
+    label = f" @{args.username}" if args.username else ""
+    _emit(f"Dashboard serving{label} at {url}", quiet=False)
     _emit("Press Ctrl+C to stop.", quiet=False)
 
     uvicorn.run(app, host=args.host, port=args.port, log_level="info")
