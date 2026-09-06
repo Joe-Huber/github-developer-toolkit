@@ -177,18 +177,24 @@ def assess_issue_participation(
     recent_months = months[split:]
     early_total = sum(monthly_opened[month] for month in early_months)
     recent_total = sum(monthly_opened[month] for month in recent_months)
+    early_rate = early_total / len(early_months) if early_months else 0.0
+    recent_rate = recent_total / len(recent_months) if recent_months else 0.0
 
     trend_direction: str | None = None
     trend_computed = (
         total >= thresholds.issue_trend_min_issues
         and len(months) >= thresholds.issue_trend_min_months
     )
-    if trend_computed and early_total > 0:
-        ratio = recent_total / early_total
-        if ratio >= thresholds.trend_rising_ratio:
-            trend_direction = "rising"
-        elif ratio <= thresholds.trend_slowing_ratio:
-            trend_direction = "slowing"
+    if trend_computed and recent_months:
+        if early_rate == 0:
+            if recent_rate > 0:
+                trend_direction = "rising"
+        else:
+            ratio = recent_rate / early_rate
+            if ratio >= thresholds.trend_rising_ratio:
+                trend_direction = "rising"
+            elif ratio <= thresholds.trend_slowing_ratio:
+                trend_direction = "slowing"
 
     created = sorted(
         _ensure_utc(issue.created_at) for issue in issues if issue.created_at is not None

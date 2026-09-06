@@ -228,6 +228,20 @@ def test_trend_rising_threshold_is_config_driven() -> None:
     assert not any(f.id == "issues.trend_rising" for f in strict.findings)
 
 
+def test_odd_month_order_compares_per_month_rates() -> None:
+    issues = [
+        _issue(n, state="closed", created_at=f"2024-{month}-01T00:00:00+00:00")
+        for n, month in enumerate(["01", "02", "03", "04", "05"], start=1)
+    ]
+    result = assess_issue_participation(
+        _snapshot(issues),
+        thresholds=AnalysisThresholds(trend_slowing_ratio=0.75),
+    )
+    assert result.trend_direction is None
+    assert not any(f.id == "issues.trend_slowing" for f in result.findings)
+    assert not any(f.id == "issues.trend_rising" for f in result.findings)
+
+
 def test_external_share_threshold_is_config_driven() -> None:
     issues = [
         _issue(1, state="open", repository_url="https://api.github.com/repos/torvalds/linux"),
