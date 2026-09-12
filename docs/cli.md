@@ -108,21 +108,37 @@ ghdtk --version
 `ghdtk` is **read-only** — it never modifies any GitHub data. The token only
 needs to read public profile data.
 
-| Use case | Minimum scope | Token type |
+| Use case | Token type | Permissions |
 |---|---|---|
-| Public profiles only | None (any valid token works) | Classic PAT or fine-grained PAT |
-| Profiles with private repos | `repo` | Classic PAT with `repo` scope |
+| Public profiles only | Classic PAT | No scopes needed |
+| Profiles with private repos | Classic PAT | `repo` scope |
+| Public profiles only | Fine-grained PAT | See permissions below |
+| Profiles with private repos | Fine-grained PAT | Same repo permissions, scoped to the repos |
 
-**Classic PAT** (recommended): create at
-<https://github.com/settings/tokens>. No scopes needed for public data;
-add the `repo` scope if you want private repositories included in the
-analysis.
+**Classic PAT**: create at <https://github.com/settings/tokens>. No scopes
+needed for public data; add the `repo` scope if you want private repositories
+included in the analysis. Classic PATs are not subject to fine-grained
+permission checks, but GitHub still restricts stargazer listings (see below).
 
 **Fine-grained PAT**: create at
-<https://github.com/settings/personal-access-tokens/new>. Grant
-"Repository permissions: Metadata (Read-only)" for public data. Add
-"Contents", "Pull requests", and "Issues" read permissions for private
-repos.
+<https://github.com/settings/personal-access-tokens/new>. Grant the following
+permissions:
+
+- Repository access: select the repositories to analyze (or "All repositories")
+- Repository permissions:
+  - `Metadata` (Read-only) — required for all repository endpoints
+  - `Contents` (Read-only) — commits, README, and language stats
+  - `Pull requests` (Read-only)
+  - `Issues` (Read-only)
+- User permissions:
+  - `Starring` (Read) — required for stargazer timelines
+  - `Following` (Read) — followers/following analysis
+
+**Stargazer timelines**: since July 2026, GitHub limits the stargazer listing
+endpoints to the repository's admins and collaborators. Star-growth analysis
+therefore works only for repositories the token owner owns or collaborates on;
+for other users' profiles these requests fail with `404 Not Found` regardless of
+token permissions, and the `star_growth.insufficient_data` finding is drawn.
 
 **Rate limits**: an unauthenticated token gets 60 requests/hour.
 Any valid token raises this to 5,000 requests/hour. The tool defaults to
