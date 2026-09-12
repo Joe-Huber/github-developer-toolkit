@@ -2,6 +2,7 @@
 .idea/
 .vscode/
 .DS_STORE/
+.DS_STORE
 
 # Local secrets / config
 opencode.json
