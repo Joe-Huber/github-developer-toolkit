@@ -105,6 +105,7 @@ def test_extract_full_name_from_prefix() -> None:
         ("portfolio.stars.no_stars", "disclosure"),
         ("star_growth.no_timeline", "disclosure"),
         ("star_growth.insufficient_data", "disclosure"),
+        ("star_growth.timeline_access_restricted", "disclosure"),
         ("network.followers.zero", "disclosure"),
         ("network.followers.partial_sample", "disclosure"),
         ("network.mutual_follows.unavailable", "disclosure"),

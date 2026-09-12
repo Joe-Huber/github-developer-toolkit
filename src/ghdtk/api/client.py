@@ -42,6 +42,7 @@ from ghdtk.api.errors import (
     NetworkError,
     NotFoundError,
     RateLimitError,
+    StargazersUnavailableError,
     UserNotFoundError,
 )
 from ghdtk.api.normalizers import validate_sanity
@@ -277,6 +278,8 @@ class GitHubClient:
         if status == 404:
             if path.startswith("/users/"):
                 raise UserNotFoundError(f"GitHub user not found: {path}")
+            if path.endswith("/stargazers"):
+                raise self._stargazers_unavailable(response)
             raise NotFoundError(f"GitHub resource not found: {path}")
         if status == 429 or self._primary_limit_exhausted(response):
             retry_after = parse_retry_after(response.headers.get("Retry-After"))
@@ -298,12 +301,32 @@ class GitHubClient:
                 retry_after=retry_after,
             )
         if status == 403:
+            if path.endswith("/stargazers"):
+                raise self._stargazers_unavailable(response)
             raise AuthenticationError(
                 f"GitHub request forbidden (403) for {path}; the token may lack scope."
             )
         error = GitHubAPIError(f"GitHub API error {status}: {path}")
         error.status_code = status
         raise error
+
+    @staticmethod
+    def _stargazers_unavailable(response: httpx.Response) -> StargazersUnavailableError:
+        """Build the typed error for a restricted stargazer listing request."""
+        accepted = response.headers.get("X-Accepted-GitHub-Permissions")
+        hint = (
+            f" Missing permissions reported by GitHub: {accepted}."
+            if accepted
+            else (
+                " Grant the token 'Starring' (read) and 'Metadata' (read) permissions "
+                "to analyze star history for repositories you own or collaborate on."
+            )
+        )
+        return StargazersUnavailableError(
+            f"Stargazer listing restricted for {response.request.url.path}; GitHub "
+            f"limits stargazer endpoints to the repository's admins and collaborators "
+            f"(July 2026 onward).{hint}"
+        )
 
     @staticmethod
     def _primary_limit_exhausted(response: httpx.Response) -> bool:
