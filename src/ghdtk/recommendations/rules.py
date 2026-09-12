@@ -407,6 +407,7 @@ DISCLOSURE_PREFIXES: frozenset[str] = frozenset(
         "portfolio.stars.no_stars",
         "star_growth.no_timeline",
         "star_growth.insufficient_data",
+        "star_growth.timeline_access_restricted",
         "network.followers.zero",
         "network.followers.partial_sample",
         "network.mutual_follows.unavailable",

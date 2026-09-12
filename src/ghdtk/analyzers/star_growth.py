@@ -158,20 +158,40 @@ def assess_star_growth(
 
         if record.status != CollectionStatus.SUCCESS:
             status = StarGrowthStatus.INSUFFICIENT
-            findings.append(
-                Finding(
-                    id="star_growth.insufficient_data",
-                    type="informational",
-                    severity=FindingSeverity.INFO,
-                    title="Star growth data is unavailable",
-                    message=(
-                        f"The stargazer timeline for {timeline_repo} was not collected "
-                        f"({record.reason or record.status}); growth signals are not drawn."
-                    ),
-                    dimension=DimensionId.ENGAGEMENT,
-                    evidence=[_source(timeline_repo, "pushed_at")],
+            if record.reason == "StargazersUnavailableError":
+                findings.append(
+                    Finding(
+                        id="star_growth.timeline_access_restricted",
+                        type="informational",
+                        severity=FindingSeverity.INFO,
+                        title="Stargazer timeline is restricted",
+                        message=(
+                            f"GitHub limits stargazer listings to the repository's admins "
+                            f"and collaborators (July 2026 onward), so the timeline for "
+                            f"{timeline_repo} could not be collected. Grant the token "
+                            "'Starring' (read) and 'Metadata' (read) permissions to analyze "
+                            "star history for repositories you own or collaborate on; growth "
+                            "signals are not drawn."
+                        ),
+                        dimension=DimensionId.ENGAGEMENT,
+                        evidence=[_source(timeline_repo, "stargazers_count")],
+                    )
                 )
-            )
+            else:
+                findings.append(
+                    Finding(
+                        id="star_growth.insufficient_data",
+                        type="informational",
+                        severity=FindingSeverity.INFO,
+                        title="Star growth data is unavailable",
+                        message=(
+                            f"The stargazer timeline for {timeline_repo} was not collected "
+                            f"({record.reason or record.status}); growth signals are not drawn."
+                        ),
+                        dimension=DimensionId.ENGAGEMENT,
+                        evidence=[_source(timeline_repo, "pushed_at")],
+                    )
+                )
         elif reported_stars == 0:
             status = StarGrowthStatus.INSUFFICIENT
             findings.append(
