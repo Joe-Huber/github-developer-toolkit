@@ -22,6 +22,7 @@ from ghdtk.api.errors import (
     PartialDataError,
     PartialDataSummary,
     RateLimitError,
+    StargazersUnavailableError,
     UserNotFoundError,
 )
 
@@ -31,6 +32,7 @@ def test_every_error_is_a_github_api_error() -> None:
         AuthenticationError("bad token"),
         UserNotFoundError("no such user"),
         NotFoundError("no such resource"),
+        StargazersUnavailableError("stargazer listing restricted"),
         RateLimitError("quota exhausted"),
         APITimeoutError("timed out"),
         NetworkError("connection refused"),
@@ -52,6 +54,13 @@ def test_user_not_found_is_not_found() -> None:
     error = UserNotFoundError("octocat does not exist")
     assert error.status_code == 404
     assert "octocat" in str(error)
+
+
+def test_stargazers_unavailable_is_not_found() -> None:
+    assert issubclass(StargazersUnavailableError, NotFoundError)
+    error = StargazersUnavailableError("stargazer listing restricted")
+    assert error.status_code == 404
+    assert "restricted" in str(error)
 
 
 def test_rate_limit_carries_retry_advice() -> None:

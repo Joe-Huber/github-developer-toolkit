@@ -163,6 +163,25 @@ def test_failed_collection_reports_unavailable() -> None:
     assert "not collected (GitHubAPIError)" in finding.message
 
 
+def test_restricted_stargazer_timeline_reports_actionable_finding() -> None:
+    result = assess_star_growth(
+        _snapshot(
+            stars=5,
+            stargazers=None,
+            status=CollectionStatus.FAILED,
+            reason="StargazersUnavailableError",
+        ),
+        now=NOW,
+    )
+
+    assert result.status is StarGrowthStatus.INSUFFICIENT
+    finding = _finding(result, "star_growth.timeline_access_restricted")
+    assert finding.severity is FindingSeverity.INFO
+    assert "octocat/A" in finding.message
+    assert "Starring" in finding.message
+    assert not any(finding.id == "star_growth.insufficient_data" for finding in result.findings)
+
+
 def test_no_timeline_record() -> None:
     snapshot = ProfileSnapshot(
         username="octocat",

@@ -28,6 +28,7 @@ from ghdtk.api.errors import (
     NetworkError,
     NotFoundError,
     RateLimitError,
+    StargazersUnavailableError,
     UserNotFoundError,
 )
 from ghdtk.api.rate_limit import BackoffPolicy, RateLimitState
@@ -336,6 +337,32 @@ def test_generic_not_found_is_typed() -> None:
     with _client(handler) as client:
         with pytest.raises(NotFoundError):
             client.get_repository("octocat", "missing-repo")
+
+
+def test_stargazers_404_is_typed_as_restricted() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _json_response(request, {"message": "Not Found"}, status=404)
+
+    with _client(handler) as client:
+        with pytest.raises(StargazersUnavailableError) as excinfo:
+            client.list_stargazers("octocat", "toolkit")
+    assert excinfo.value.status_code == 404
+    assert "admins and collaborators" in str(excinfo.value)
+
+
+def test_stargazers_403_without_rate_limit_is_typed_as_restricted() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            403,
+            json={"message": "Forbidden"},
+            headers={"X-Accepted-GitHub-Permissions": "Starring: read"},
+            request=request,
+        )
+
+    with _client(handler) as client:
+        with pytest.raises(StargazersUnavailableError) as excinfo:
+            client.list_stargazers("octocat", "toolkit")
+    assert "Starring: read" in str(excinfo.value)
 
 
 def test_primary_rate_limit_403_is_typed() -> None:
