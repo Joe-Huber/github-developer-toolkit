@@ -50,6 +50,18 @@ class UserNotFoundError(NotFoundError):
     """A GitHub user does not exist (404 on a user endpoint)."""
 
 
+class StargazersUnavailableError(NotFoundError):
+    """The stargazer listing endpoint returns 404/403 for this token.
+
+    Since July 2026 GitHub restricts the stargazer listing endpoints to the
+    repository's admins and collaborators (``GET /repos/{owner}/{repo}/stargazers``),
+    and fine-grained personal access tokens additionally require the
+    "Starring" (read) and "Metadata" (read) permissions. The repo listing still
+    reports ``stargazers_count``, so star totals and ranking remain analyzable;
+    only the historical timeline is unavailable (issue #221).
+    """
+
+
 class RateLimitError(GitHubAPIError):
     """A primary or secondary rate limit was exhausted.
 
@@ -151,5 +163,6 @@ __all__ = [
     "PartialDataError",
     "PartialDataSummary",
     "RateLimitError",
+    "StargazersUnavailableError",
     "UserNotFoundError",
 ]
