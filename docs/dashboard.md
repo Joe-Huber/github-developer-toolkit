@@ -73,6 +73,32 @@ cd dashboard-ui
 npm test
 ```
 
+## Profile page
+
+Searching a username opens the dashboard on the **Profile** tab, which renders
+the identity header and top-statistics blocks. It is also reachable from the
+sidebar and via deep links such as `?user=octocat&tab=profile`.
+
+- **Identity header** — name, avatar (initials fallback), handle, bio,
+  "Open to opportunities" badge, and location / company / website / email /
+  Twitter detail rows sourced from the GitHub user record (`profile.identity`).
+- **Top statistics** — headline numbers: public repositories, total stars,
+  forks, followers, following, and public gists, plus collected commit /
+  pull-request / issue / contribution counts (`profile.top_stats.metrics`).
+- **Top repositories** — up to five most-starred user repositories (forks
+  excluded), each linking out to GitHub.
+- **Languages** — byte-derived share of the profile's repositories.
+
+**Availability semantics:** every metric carries an
+`available | partial | unavailable` badge. Counts derived from a partial
+snapshot (e.g. commits, PRs, issues, contributions) are marked `partial`, and
+the whole block is `partially available` when the underlying snapshot is
+partial. Blocks degrade gracefully: a missing `identity` or `top_stats` renders
+an "unavailable" state rather than failing.
+
+**Data boundary:** these blocks are derived entirely from the collected
+snapshot — the dashboard makes no additional GitHub API calls.
+
 ## API endpoints
 
 | Method | Path                  | Description                          |

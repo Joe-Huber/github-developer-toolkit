@@ -127,7 +127,9 @@ report/          analysis -> Report DTO -> JSON / Markdown / HTML
 - **Testing strategy**: [docs/testing.md](docs/testing.md) -- fixture corpus,
   deterministic replay, coverage gate.
 - **Dashboard**: [docs/dashboard.md](docs/dashboard.md) -- FastAPI + React
-  web dashboard for interactive profile visualization.
+  web dashboard for interactive profile visualization. Searching a username
+  lands on a profile page with identity and top-statistics blocks backed by
+  the same evidence-driven report model.
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md) -- dev setup, quality
   gates, configuration reference.
 
