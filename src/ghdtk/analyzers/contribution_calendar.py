@@ -54,6 +54,29 @@ def _source(username: str, field: str) -> SourceReference:
     )
 
 
+class ContributionDayPoint(BaseModel):
+    """A single day of the derived contribution series."""
+
+    model_config = ConfigDict(frozen=True)
+
+    date: date
+    count: int
+
+
+class ContributionWeekPoint(BaseModel):
+    """A week column of the derived contribution series.
+
+    Mirrors the raw calendar's ``weeks`` layout (one ``days`` column per week,
+    ordered by ``first_day``) so the heatmap renders year-aligned weeks the way
+    the GitHub contribution graph does.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    first_day: date | None = None
+    days: list[ContributionDayPoint]
+
+
 class ContributionCalendarAnalysis(BaseModel):
     """The contribution calendar consistency & streaks assessment."""
 
@@ -70,6 +93,7 @@ class ContributionCalendarAnalysis(BaseModel):
     restricted_contributions: int | None = None
     monthly_pattern: dict[str, int]
     yearly_pattern: dict[str, int]
+    weeks: list[ContributionWeekPoint]
     metrics: list[MetricRecord]
     findings: list[Finding]
 
@@ -81,6 +105,19 @@ def _flat_days(calendar: ContributionCalendar) -> list[tuple[date, int]]:
             if day.date is not None:
                 days.append((day.date, day.contribution_count or 0))
     return sorted(days, key=lambda item: item[0])
+
+
+def _week_points(calendar: ContributionCalendar) -> list[ContributionWeekPoint]:
+    """Return the faithful week-column series for the contribution heatmap."""
+    points: list[ContributionWeekPoint] = []
+    for week in calendar.weeks or []:
+        days = [
+            ContributionDayPoint(date=d.date, count=d.contribution_count or 0)
+            for d in week.contribution_days or []
+            if d.date is not None
+        ]
+        points.append(ContributionWeekPoint(first_day=week.first_day, days=days))
+    return points
 
 
 def assess_contribution_calendar(
@@ -124,6 +161,7 @@ def assess_contribution_calendar(
             restricted_contributions=None,
             monthly_pattern={},
             yearly_pattern={},
+            weeks=[],
             metrics=[
                 MetricRecord(
                     id="contribution_calendar.total_contributions",
@@ -343,6 +381,7 @@ def assess_contribution_calendar(
         restricted_contributions=restricted,
         monthly_pattern=monthly_totals,
         yearly_pattern=yearly_totals,
+        weeks=_week_points(calendar),
         metrics=metrics,
         findings=findings,
     )

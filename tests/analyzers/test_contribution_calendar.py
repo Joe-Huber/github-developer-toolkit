@@ -56,6 +56,47 @@ def _days(*specs: tuple[str, int]) -> list[tuple[str, int]]:
     return list(specs)
 
 
+def test_weeks_preserve_week_structure_and_day_counts() -> None:
+    days = _days(
+        ("2024-01-01", 0),
+        ("2024-01-02", 3),
+        ("2024-01-03", 4),
+        ("2024-01-04", 0),
+        ("2024-01-05", 7),
+        ("2024-01-06", 9),
+        ("2024-01-07", 0),
+        ("2024-01-08", 0),
+        ("2024-01-09", 2),
+        ("2024-01-10", 1),
+    )
+    result = assess_contribution_calendar(_snapshot(_calendar(days=days, total=26)))
+
+    assert len(result.weeks) == 1
+    week = result.weeks[0]
+    assert week.first_day == date.fromisoformat("2024-01-01")
+    assert [d.date.isoformat() for d in week.days] == [
+        "2024-01-01",
+        "2024-01-02",
+        "2024-01-03",
+        "2024-01-04",
+        "2024-01-05",
+        "2024-01-06",
+        "2024-01-07",
+        "2024-01-08",
+        "2024-01-09",
+        "2024-01-10",
+    ]
+    assert sum(d.count for d in week.days) == 26
+    assert [d.count for d in week.days[:3]] == [0, 3, 4]
+
+
+def test_weeks_are_empty_when_calendar_is_missing() -> None:
+    result = assess_contribution_calendar(_snapshot(None))
+
+    assert result.weeks == []
+    assert result.total_contributions is None
+
+
 def test_totals_active_days_and_density() -> None:
     days = _days(
         ("2024-01-01", 0),

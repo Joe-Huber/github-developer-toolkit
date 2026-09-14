@@ -228,7 +228,29 @@ export interface CommitActivity {
   findings: Finding[];
 }
 
+export interface ContributionDayPoint {
+  date: string;
+  count: number;
+}
+
+export interface ContributionWeekPoint {
+  first_day: string | null;
+  days: ContributionDayPoint[];
+}
+
 export interface ContributionCalendarAnalysis {
+  username: string;
+  total_contributions: number | null;
+  active_days: number;
+  total_days: number;
+  density: number;
+  current_streak: number;
+  longest_streak: number;
+  longest_gap_days: number;
+  restricted_contributions: number | null;
+  monthly_pattern: Record<string, number>;
+  yearly_pattern: Record<string, number>;
+  weeks: ContributionWeekPoint[];
   metrics: MetricRecord[];
   findings: Finding[];
 }

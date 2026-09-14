@@ -51,6 +51,7 @@ def _calendar(
         longest_gap_days=longest_gap,
         monthly_pattern={},
         yearly_pattern={},
+        weeks=[],
         metrics=[],
         findings=[],
     )
