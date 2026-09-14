@@ -20,6 +20,12 @@ from ghdtk.models.derived.metric import (
     MetricRecord,
     MetricValue,
 )
+from ghdtk.models.derived.profile import (
+    ProfileIdentity,
+    ProfileTopStats,
+    TopLanguage,
+    TopRepository,
+)
 from ghdtk.models.derived.provenance import SourceEntityKind, SourceReference
 from ghdtk.models.derived.recommendation import (
     Recommendation,
@@ -47,6 +53,8 @@ __all__ = [
     "OverallScore",
     "ProfileAnalyses",
     "ProfileAnalysis",
+    "ProfileIdentity",
+    "ProfileTopStats",
     "Recommendation",
     "RecommendationEffort",
     "RecommendationPriority",
@@ -55,6 +63,8 @@ __all__ = [
     "SourceEntityKind",
     "SourceReference",
     "Synthesis",
+    "TopLanguage",
+    "TopRepository",
 ]
 
 # Resolve the analyzer output types referenced by ``ProfileAnalyses``. While

@@ -59,6 +59,10 @@ from ghdtk.analyzers.presence import (
     ProfilePresence,
     assess_profile_presence,
 )
+from ghdtk.analyzers.profile_summary import (
+    build_profile_identity,
+    build_profile_top_stats,
+)
 from ghdtk.analyzers.pull_requests import (
     PullRequestAnalysis,
     assess_pull_request_collaboration,
@@ -131,6 +135,8 @@ __all__ = [
     "assess_star_distribution",
     "assess_star_growth",
     "assess_technology_diversity",
+    "build_profile_identity",
+    "build_profile_top_stats",
     "find_boilerplate",
     "find_placeholders",
 ]
