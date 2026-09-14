@@ -88,6 +88,9 @@ sidebar and via deep links such as `?user=octocat&tab=profile`.
 - **Top repositories** — up to five most-starred user repositories (forks
   excluded), each linking out to GitHub.
 - **Languages** — byte-derived share of the profile's repositories.
+- **Profile README** — the rendered `username/username` README (sanitized
+  Markdown) when one exists, with typed placeholders for "no profile
+  repository", "no README", "empty README", and "fetch failed" states.
 
 **Availability semantics:** every metric carries an
 `available | partial | unavailable` badge. Counts derived from a partial
