@@ -235,6 +235,19 @@ def _assert_ts_profile_shape(profile: dict[str, Any]) -> None:
             assert readme["content"] is None or isinstance(readme["content"], str)
             assert readme["repository"] is None or isinstance(readme["repository"], str)
 
+        calendar = analyses["contribution_calendar"]
+        if calendar is not None:
+            assert isinstance(calendar["username"], str)
+            assert calendar["total_contributions"] is None or isinstance(
+                calendar["total_contributions"], int
+            )
+            assert isinstance(calendar["weeks"], list)
+            for week in calendar["weeks"]:
+                assert week["first_day"] is None or isinstance(week["first_day"], str)
+                for day in week["days"]:
+                    assert isinstance(day["date"], str)
+                    assert isinstance(day["count"], int)
+
 
 @pytest.mark.parametrize("profile_id", list_profiles())
 def test_analyze_json_matches_dashboard_response_schema(profile_id: str) -> None:
