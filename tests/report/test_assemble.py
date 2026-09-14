@@ -234,3 +234,5 @@ def test_profile_readme_content_surfaces_in_readme_analysis() -> None:
     assert readme is not None
     assert readme.readme is not None
     assert readme.readme.metrics[0].id == "readme.present"
+    assert readme.readme.content == _profile_readme().content
+    assert readme.readme.repository == _profile_readme().repository

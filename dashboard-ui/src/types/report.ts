@@ -8,6 +8,8 @@ export interface ProfileAnalysis {
   username: string;
   analyzed_at: string;
   schema_version: number;
+  identity: ProfileIdentity | null;
+  top_stats: ProfileTopStats | null;
   analyses: ProfileAnalyses | null;
   metrics: MetricRecord[];
   scores: DimensionScore[];
@@ -15,6 +17,51 @@ export interface ProfileAnalysis {
   findings: Finding[];
   recommendations: Recommendation[];
   synthesis: Synthesis | null;
+}
+
+export interface ProfileIdentity {
+  username: string;
+  name: string | null;
+  avatar_url: string | null;
+  html_url: string | null;
+  bio: string | null;
+  company: string | null;
+  blog: string | null;
+  location: string | null;
+  email: string | null;
+  twitter_username: string | null;
+  hireable: boolean | null;
+  public_repos: number | null;
+  public_gists: number | null;
+  followers: number | null;
+  following: number | null;
+  created_at: string | null;
+  updated_at: string | null;
+  availability: MetricAvailability;
+}
+
+export interface ProfileTopStats {
+  username: string;
+  metrics: MetricRecord[];
+  top_repositories: TopRepository[];
+  top_languages: TopLanguage[];
+  sources: SourceReference[];
+  availability: MetricAvailability;
+}
+
+export interface TopRepository {
+  name: string;
+  full_name: string;
+  stargazers_count: number;
+  description: string | null;
+  html_url: string | null;
+  language: string | null;
+}
+
+export interface TopLanguage {
+  language: string;
+  bytes: number;
+  share: number;
 }
 
 export interface ProfileAnalyses {
@@ -138,8 +185,12 @@ export interface ProfilePresence {
 }
 
 export interface ReadmeAssessment {
+  username: string;
+  status: string;
   metrics: MetricRecord[];
   findings: Finding[];
+  content: string | null;
+  repository: string | null;
 }
 
 export interface RepositoryQuality {

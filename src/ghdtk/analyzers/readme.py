@@ -52,6 +52,8 @@ class ReadmeAssessment(BaseModel):
     status: ProfileReadmeStatus
     metrics: list[MetricRecord]
     findings: list[Finding]
+    content: str | None = None
+    repository: str | None = None
 
 
 def _ensure_utc(value: datetime) -> datetime:
@@ -169,6 +171,8 @@ def assess_readme_quality(
             status=profile_readme.status,
             metrics=metrics,
             findings=findings,
+            content=profile_readme.content,
+            repository=profile_readme.repository,
         )
 
     content = profile_readme.content or ""
@@ -358,6 +362,8 @@ def assess_readme_quality(
         status=profile_readme.status,
         metrics=metrics,
         findings=findings,
+        content=profile_readme.content,
+        repository=profile_readme.repository,
     )
 
 

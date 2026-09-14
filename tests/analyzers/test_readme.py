@@ -99,6 +99,13 @@ def test_rich_readme_signals() -> None:
     assert _metric_value(result, "readme.username_mentions") == 4
 
 
+def test_readme_content_and_repository_surface_on_assessment() -> None:
+    result = assess_readme_quality(_present(RICH_README), now=NOW)
+
+    assert result.content == RICH_README
+    assert result.repository == "octocat/octocat"
+
+
 def test_rich_readme_has_no_negative_findings() -> None:
     result = assess_readme_quality(_present(RICH_README), now=NOW)
 

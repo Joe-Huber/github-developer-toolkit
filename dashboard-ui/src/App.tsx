@@ -42,7 +42,7 @@ function App() {
     const user = getQueryParam("user");
     return user?.trim() || null;
   });
-  const [activeTab, setActiveTab] = useState<string>(() => getQueryParam("tab") ?? "overview");
+  const [activeTab, setActiveTab] = useState<string>(() => getQueryParam("tab") ?? "profile");
   const { data, loading, error } = useReport(activeUser);
 
   useEffect(() => {
@@ -53,9 +53,9 @@ function App() {
     e.preventDefault();
     const trimmed = username.trim();
     if (trimmed) {
-      setActiveTab("overview");
+      setActiveTab("profile");
       setActiveUser(trimmed);
-      setQueryParams({ user: trimmed, tab: "overview" });
+      setQueryParams({ user: trimmed, tab: "profile" });
     }
   };
 
@@ -119,9 +119,9 @@ function App() {
                 type="button"
                 onClick={() => {
                   setUsername(name);
-                  setActiveTab("overview");
+                  setActiveTab("profile");
                   setActiveUser(name);
-                  setQueryParams({ user: name, tab: "overview" });
+                  setQueryParams({ user: name, tab: "profile" });
                 }}
                 className="rounded-full bg-panel border border-border px-3 py-1 text-accent hover:border-accent hover:underline"
               >

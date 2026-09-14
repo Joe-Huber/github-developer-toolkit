@@ -37,13 +37,13 @@ describe("Dashboard", () => {
   });
 
   it("renders findings on overview", () => {
-    render(<Dashboard {...defaultProps} />);
+    render(<Dashboard {...defaultProps} initialTab="overview" />);
     expect(screen.getByText("Missing README in main repo")).toBeInTheDocument();
     expect(screen.getByText("Low commit frequency")).toBeInTheDocument();
   });
 
   it("renders recommendations on overview", () => {
-    render(<Dashboard {...defaultProps} />);
+    render(<Dashboard {...defaultProps} initialTab="overview" />);
     expect(screen.getByText("Add a README to your main repository")).toBeInTheDocument();
   });
 
@@ -79,5 +79,18 @@ describe("Dashboard", () => {
     render(<Dashboard {...defaultProps} />);
     const toggle = screen.getByRole("button", { name: "Toggle navigation" });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("renders the profile page by default", () => {
+    render(<Dashboard {...defaultProps} />);
+    expect(screen.getByRole("heading", { name: "Test User" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Top statistics" })).toBeInTheDocument();
+  });
+
+  it("renders the profile page when Profile tab is selected", async () => {
+    const user = userEvent.setup();
+    render(<Dashboard {...defaultProps} initialTab="overview" />);
+    await user.click(screen.getByRole("button", { name: "Profile" }));
+    expect(screen.getByRole("heading", { name: "Test User" })).toBeInTheDocument();
   });
 });

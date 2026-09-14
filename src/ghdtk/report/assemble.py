@@ -36,6 +36,10 @@ from ghdtk.analyzers import (
     assess_star_growth,
     assess_technology_diversity,
 )
+from ghdtk.analyzers.profile_summary import (
+    build_profile_identity,
+    build_profile_top_stats,
+)
 from ghdtk.models.derived import (
     Finding,
     MetricRecord,
@@ -185,6 +189,8 @@ class ReportAssembler:
             profile=ProfileAnalysis(
                 username=username,
                 analyzed_at=now,
+                identity=build_profile_identity(snapshot.user),
+                top_stats=build_profile_top_stats(username, snapshot, now=now),
                 analyses=analyses,
                 metrics=metrics,
                 scores=scores,
