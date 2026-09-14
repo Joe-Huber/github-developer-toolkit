@@ -228,6 +228,13 @@ def _assert_ts_profile_shape(profile: dict[str, Any]) -> None:
                 assert isinstance(entry["bytes"], (int, float))
                 assert isinstance(entry["share"], (int, float))
 
+        readme = analyses["readme"]
+        if readme is not None:
+            assert isinstance(readme["username"], str)
+            assert isinstance(readme["status"], str)
+            assert readme["content"] is None or isinstance(readme["content"], str)
+            assert readme["repository"] is None or isinstance(readme["repository"], str)
+
 
 @pytest.mark.parametrize("profile_id", list_profiles())
 def test_analyze_json_matches_dashboard_response_schema(profile_id: str) -> None:
