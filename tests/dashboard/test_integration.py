@@ -123,9 +123,51 @@ def _assert_ts_profile_shape(profile: dict[str, Any]) -> None:
     assert isinstance(profile["username"], str)
     assert isinstance(profile["analyzed_at"], str)
     assert isinstance(profile["schema_version"], int)
-    assert isinstance(profile["metrics"], list)
-    for metric in profile["metrics"]:
-        _assert_metric(metric)
+
+    identity = profile.get("identity")
+    if identity is not None:
+        assert isinstance(identity["username"], str)
+        assert identity["availability"] in METRIC_AVAILABILITIES
+        for field in (
+            "name",
+            "avatar_url",
+            "html_url",
+            "bio",
+            "company",
+            "blog",
+            "location",
+            "email",
+            "twitter_username",
+        ):
+            assert identity[field] is None or isinstance(identity[field], str), field
+        for field in ("hireable",):
+            assert identity[field] is None or isinstance(identity[field], bool), field
+        for field in (
+            "public_repos",
+            "public_gists",
+            "followers",
+            "following",
+        ):
+            assert identity[field] is None or isinstance(identity[field], int), field
+        for field in ("created_at", "updated_at"):
+            assert identity[field] is None or isinstance(identity[field], str), field
+
+    top_stats = profile.get("top_stats")
+    if top_stats is not None:
+        assert isinstance(top_stats["username"], str)
+        assert top_stats["availability"] in METRIC_AVAILABILITIES
+        for metric in top_stats["metrics"]:
+            _assert_metric(metric)
+        for repo in top_stats["top_repositories"]:
+            assert isinstance(repo["name"], str)
+            assert isinstance(repo["full_name"], str)
+            assert isinstance(repo["stargazers_count"], int)
+        for entry in top_stats["top_languages"]:
+            assert isinstance(entry["language"], str)
+            assert isinstance(entry["bytes"], int)
+            assert isinstance(entry["share"], (int, float))
+        for source in top_stats["sources"]:
+            _assert_source_reference(source)
 
     assert isinstance(profile["scores"], list)
     for score in profile["scores"]:
