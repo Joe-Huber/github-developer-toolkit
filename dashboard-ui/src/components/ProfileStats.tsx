@@ -18,7 +18,7 @@ function StatTile({ label, value, availability }: {
   availability: string;
 }) {
   return (
-    <div className="bg-bg/50 border border-border rounded-lg p-3">
+    <div role="group" aria-label={label} className="bg-bg/50 border border-border rounded-lg p-3">
       <div className="flex items-center justify-between gap-2 mb-1">
         <span className="text-xs text-muted truncate">{label}</span>
         <span
@@ -49,16 +49,17 @@ export function ProfileStats({ stats }: ProfileStatsProps) {
         {metrics.length === 0 ? (
           <p className="text-sm text-muted">No statistics collected for this profile.</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {metrics.map((metric) => (
-              <StatTile
-                key={metric.id}
-                label={metric.label}
-                value={metric.value}
-                availability={metric.availability}
-              />
+              <li key={metric.id} className="list-none">
+                <StatTile
+                  label={metric.label}
+                  value={metric.value}
+                  availability={metric.availability}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
 
@@ -107,7 +108,14 @@ export function ProfileStats({ stats }: ProfileStatsProps) {
             {topLanguages.map((entry) => (
               <li key={entry.language} className="flex items-center gap-3">
                 <span className="text-sm text-text w-24 shrink-0 truncate">{entry.language}</span>
-                <div className="relative h-2 flex-1 rounded-full bg-border/40" role="presentation">
+                <div
+                  role="progressbar"
+                  aria-label={`${entry.language} usage`}
+                  aria-valuenow={Math.round(entry.share * 100)}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  className="relative h-2 flex-1 rounded-full bg-border/40"
+                >
                   <div
                     className="absolute inset-y-0 left-0 rounded-full bg-accent/70"
                     style={{ width: `${Math.min(100, entry.share * 100)}%` }}
