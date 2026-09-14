@@ -91,6 +91,9 @@ sidebar and via deep links such as `?user=octocat&tab=profile`.
 - **Profile README** — the rendered `username/username` README (sanitized
   Markdown) when one exists, with typed placeholders for "no profile
   repository", "no README", "empty README", and "fetch failed" states.
+- **Contribution graph** — a GitHub-style contribution heatmap for the
+  collected calendar window (per-day counts, month labels, intensity legend),
+  plus the total and any hidden-private-contributions disclosure.
 
 **Availability semantics:** every metric carries an
 `available | partial | unavailable` badge. Counts derived from a partial
