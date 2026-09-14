@@ -9,11 +9,14 @@ import { ScoreOverview } from "./ScoreOverview";
 import { DimensionDetail } from "./DimensionDetail";
 import { FindingsList } from "./FindingsList";
 import { RecommendationsList } from "./RecommendationsList";
+import { ProfileHeader } from "./ProfileHeader";
+import { ProfileStats } from "./ProfileStats";
 import { ThemeToggle } from "./ThemeToggle";
 import { BackIcon, CloseIcon, MenuIcon } from "./icons";
 import { scoreTone } from "../lib/colors";
 
-const DIMENSIONS: { id: DimensionId | "overview"; label: string }[] = [
+const DIMENSIONS: { id: TabId; label: string }[] = [
+  { id: "profile", label: "Profile" },
   { id: "overview", label: "Overview" },
   { id: "presence", label: "Presence" },
   { id: "code_quality", label: "Code Quality" },
@@ -24,6 +27,8 @@ const DIMENSIONS: { id: DimensionId | "overview"; label: string }[] = [
   { id: "contribution", label: "Contribution" },
   { id: "visibility", label: "Visibility" },
 ];
+
+type TabId = DimensionId | "overview" | "profile";
 
 const SCORE_PILL_CLASSES: Record<ReturnType<typeof scoreTone>, string> = {
   good: "bg-good/15 text-good",
@@ -44,12 +49,14 @@ export function Dashboard({
   onTabChange,
   onBack,
 }: DashboardProps) {
-  const validTab = DIMENSIONS.some((d) => d.id === initialTab) ? (initialTab as DimensionId | "overview") : "overview";
-  const [activeTab, setActiveTab] = useState<DimensionId | "overview">(validTab);
+  const validTab = DIMENSIONS.some((d) => d.id === initialTab)
+    ? (initialTab as TabId)
+    : "profile";
+  const [activeTab, setActiveTab] = useState<TabId>(validTab);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const profile = report.profile;
 
-  const switchTab = (tab: DimensionId | "overview") => {
+  const switchTab = (tab: TabId) => {
     setActiveTab(tab);
     onTabChange?.(tab);
     setSidebarOpen(false);
@@ -59,17 +66,21 @@ export function Dashboard({
     profile.findings.filter((f) => f.dimension === dim);
 
   const activeFindings =
-    activeTab === "overview" ? [] : findingsByDimension(activeTab);
+    activeTab === "overview" || activeTab === "profile"
+      ? []
+      : findingsByDimension(activeTab);
 
   const recommendationsForFindings = (findings: Finding[]): Recommendation[] => {
     const ids = new Set(findings.flatMap((f) => f.recommendation_ids));
     return profile.recommendations.filter((r) => ids.has(r.id));
   };
 
-  const dimensionScore = (dim: DimensionId | "overview"): number | undefined =>
+  const dimensionScore = (dim: TabId): number | undefined =>
     dim === "overview"
       ? profile.overall?.overall
-      : profile.scores.find((s) => s.dimension === dim)?.score;
+      : dim === "profile"
+        ? undefined
+        : profile.scores.find((s) => s.dimension === dim)?.score;
 
   return (
     <div className="min-h-screen md:flex">
@@ -151,7 +162,12 @@ export function Dashboard({
 
       {/* Main content */}
       <main className="flex-1 p-4 md:p-6 overflow-auto">
-        {activeTab === "overview" ? (
+        {activeTab === "profile" ? (
+          <div className="space-y-6">
+            <ProfileHeader identity={profile.identity} username={profile.username} />
+            <ProfileStats stats={profile.top_stats} />
+          </div>
+        ) : activeTab === "overview" ? (
           <div className="space-y-6">
             <ScoreOverview report={report} />
             <FindingsList

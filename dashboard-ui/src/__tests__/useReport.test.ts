@@ -18,6 +18,8 @@ const report: ReportResponse = {
     username: "octocat",
     analyzed_at: "2026-01-01T00:00:00Z",
     schema_version: 1,
+    identity: null,
+    top_stats: null,
     analyses: null,
     metrics: [],
     scores: [],
