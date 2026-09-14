@@ -185,8 +185,12 @@ export interface ProfilePresence {
 }
 
 export interface ReadmeAssessment {
+  username: string;
+  status: string;
   metrics: MetricRecord[];
   findings: Finding[];
+  content: string | null;
+  repository: string | null;
 }
 
 export interface RepositoryQuality {

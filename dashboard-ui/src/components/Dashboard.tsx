@@ -11,6 +11,7 @@ import { FindingsList } from "./FindingsList";
 import { RecommendationsList } from "./RecommendationsList";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileStats } from "./ProfileStats";
+import { ProfileReadme } from "./ProfileReadme";
 import { ThemeToggle } from "./ThemeToggle";
 import { BackIcon, CloseIcon, MenuIcon } from "./icons";
 import { scoreTone } from "../lib/colors";
@@ -166,6 +167,7 @@ export function Dashboard({
           <div className="space-y-6">
             <ProfileHeader identity={profile.identity} username={profile.username} />
             <ProfileStats stats={profile.top_stats} />
+            <ProfileReadme readme={profile.analyses?.readme ?? null} />
           </div>
         ) : activeTab === "overview" ? (
           <div className="space-y-6">

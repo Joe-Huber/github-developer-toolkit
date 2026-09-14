@@ -53,7 +53,18 @@ export const MOCK_REPORT: ReportResponse = {
     },
     analyses: {
       presence: null,
-      readme: null,
+      readme: {
+        username: "testuser",
+        status: "present",
+        metrics: [
+          { id: "readme.present", label: "Profile README present", value: true, timestamp: "2025-08-18T12:00:00Z", sources: [], confidence: 1, availability: "available" },
+          { id: "readme.word_count", label: "README word count", value: 42, timestamp: "2025-08-18T12:00:00Z", sources: [], confidence: 1, availability: "available" },
+        ],
+        findings: [],
+        content:
+          "# Hi there\n\nI build **developer tools** in the open.\n\n## Links\n\n- [Website](https://testuser.dev)\n\n```ts\nconst ok = true;\n```",
+        repository: "testuser/testuser",
+      },
       repository_quality: null,
       repository_activity: null,
       portfolio: null,
