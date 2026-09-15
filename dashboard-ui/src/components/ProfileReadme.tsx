@@ -124,6 +124,14 @@ function rewriteSrcset(
   return rewritten.length > 0 ? rewritten.join(", ") : null;
 }
 
+function toCssSize(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (/^\d+$/.test(trimmed)) return `${trimmed}px`;
+  if (/^\d+%$/.test(trimmed)) return trimmed;
+  return null;
+}
+
 function rewriteMediaElement(
   element: HTMLImageElement | HTMLSourceElement,
   repository: string | null | undefined,
@@ -146,6 +154,16 @@ function rewriteMediaElement(
     } else {
       element.removeAttribute("srcset");
     }
+  }
+
+  // Tailwind's preflight (`img { height: auto }`) overrides presentational
+  // width/height attributes, which blows viewBox-only SVGs up to full width.
+  // Mirror GitHub by promoting valid dimensions to inline styles.
+  if (element instanceof HTMLImageElement) {
+    const width = toCssSize(element.getAttribute("width"));
+    if (width) element.style.width = width;
+    const height = toCssSize(element.getAttribute("height"));
+    if (height) element.style.height = height;
   }
 }
 

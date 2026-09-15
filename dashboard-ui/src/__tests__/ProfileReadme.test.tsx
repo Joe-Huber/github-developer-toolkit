@@ -53,7 +53,7 @@ describe("ProfileReadme", () => {
       <ProfileReadme
         readme={{
           ...readme,
-          content: `<div align="center">\n<img src="docs/divider.gif" alt="divider" width="100%" height="16" style="height:16px;" />\n<table align="center"><tr><td align="center" width="140">x</td></tr></table>\n<hr style="border:none;" />\n<script>window.pwned = true</script>\n</div>`,
+          content: `<div align="center">\n<img src="docs/divider.gif" alt="divider" width="100%" height="16" style="border:5px solid red;" />\n<table align="center"><tr><td align="center" width="140">x</td></tr></table>\n<hr style="border:none;" />\n<script>window.pwned = true</script>\n</div>`,
         }}
       />,
     );
@@ -64,7 +64,10 @@ describe("ProfileReadme", () => {
     );
     expect(image).toHaveAttribute("width", "100%");
     expect(image).toHaveAttribute("height", "16");
-    expect(image).not.toHaveAttribute("style");
+    // Valid dimensions are promoted to inline styles (to beat the Tailwind
+    // preflight reset), but the author's own inline style must be gone.
+    expect(image).toHaveStyle({ width: "100%", height: "16px" });
+    expect(image.getAttribute("style")).not.toContain("border");
     expect(container.querySelector("div[align='center']")).toBeInTheDocument();
     expect(container.querySelector("table")?.getAttribute("align")).toBe("center");
     expect(container.querySelector("td")?.getAttribute("align")).toBe("center");
@@ -107,6 +110,22 @@ describe("ProfileReadme", () => {
       "src",
       "https://raw.githubusercontent.com/testuser/testuser/HEAD/docs/light.svg",
     );
+  });
+
+  it("promotes valid image dimensions to inline styles over the CSS reset", () => {
+    render(
+      <ProfileReadme
+        readme={{
+          ...readme,
+          content: `<img src="https://example.com/icon.svg" alt="icon" height="36" />\n\n<img src="https://example.com/banner.png" alt="banner" width="100%" />\n\n<img src="https://example.com/wat.png" alt="wat" width="junk" />`,
+        }}
+      />,
+    );
+    // Tailwind preflight sets `img { height: auto }`, which would otherwise
+    // override the presentational attributes and blow up viewBox-only SVGs.
+    expect(screen.getByAltText("icon")).toHaveStyle({ height: "36px" });
+    expect(screen.getByAltText("banner")).toHaveStyle({ width: "100%" });
+    expect(screen.getByAltText("wat")).not.toHaveAttribute("style");
   });
 
   it("does not render dangerous HTML from markdown", () => {
