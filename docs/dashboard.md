@@ -89,8 +89,10 @@ sidebar and via deep links such as `?user=octocat&tab=profile`.
   excluded), each linking out to GitHub.
 - **Languages** — byte-derived share of the profile's repositories.
 - **Profile README** — the rendered `username/username` README (sanitized
-  Markdown) when one exists, with typed placeholders for "no profile
+  GitHub-flavored Markdown) when one exists, with typed placeholders for "no profile
   repository", "no README", "empty README", and "fetch failed" states.
+  Presentation attributes (`align`, `width`, `height`) are preserved, repository-relative
+  images/links resolve against the profile repository, and external links open in a new tab.
 - **Contribution graph** — a GitHub-style contribution heatmap for the
   collected calendar window (per-day counts, month labels, intensity legend),
   plus the total and any hidden-private-contributions disclosure.
