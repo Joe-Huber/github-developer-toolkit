@@ -48,6 +48,67 @@ describe("ProfileReadme", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it("keeps GitHub presentation attributes while stripping inline styles and scripts", () => {
+    const { container } = render(
+      <ProfileReadme
+        readme={{
+          ...readme,
+          content: `<div align="center">\n<img src="docs/divider.gif" alt="divider" width="100%" height="16" style="height:16px;" />\n<table align="center"><tr><td align="center" width="140">x</td></tr></table>\n<hr style="border:none;" />\n<script>window.pwned = true</script>\n</div>`,
+        }}
+      />,
+    );
+    const image = screen.getByAltText("divider");
+    expect(image).toHaveAttribute(
+      "src",
+      "https://raw.githubusercontent.com/testuser/testuser/HEAD/docs/divider.gif",
+    );
+    expect(image).toHaveAttribute("width", "100%");
+    expect(image).toHaveAttribute("height", "16");
+    expect(image).not.toHaveAttribute("style");
+    expect(container.querySelector("div[align='center']")).toBeInTheDocument();
+    expect(container.querySelector("table")?.getAttribute("align")).toBe("center");
+    expect(container.querySelector("td")?.getAttribute("align")).toBe("center");
+    expect(container.querySelector("hr")).toBeInTheDocument();
+    expect(container.querySelector("hr")).not.toHaveAttribute("style");
+    expect(container.querySelector("script")).not.toBeInTheDocument();
+    expect(window).not.toHaveProperty("pwned");
+  });
+
+  it("resolves repo-relative assets and links like GitHub", () => {
+    render(
+      <ProfileReadme
+        readme={{
+          ...readme,
+          content: `![local](docs/a.png)\n\n[docs](docs/b.md)\n\n[frag](#about)\n\n[abs](https://example.com/x)\n\n<picture><source media="(prefers-color-scheme: dark)" srcset="docs/dark.svg" /><img src="docs/light.svg" alt="theme" /></picture>`,
+        }}
+      />,
+    );
+    expect(screen.getByAltText("local")).toHaveAttribute(
+      "src",
+      "https://raw.githubusercontent.com/testuser/testuser/HEAD/docs/a.png",
+    );
+    const docs = screen.getByRole("link", { name: "docs" });
+    expect(docs).toHaveAttribute(
+      "href",
+      "https://github.com/testuser/testuser/blob/HEAD/docs/b.md",
+    );
+    expect(docs).toHaveAttribute("target", "_blank");
+    expect(docs.getAttribute("rel")).toContain("noopener");
+    const fragment = screen.getByRole("link", { name: "frag" });
+    expect(fragment).toHaveAttribute("href", "#about");
+    expect(fragment).not.toHaveAttribute("target");
+    const absolute = screen.getByRole("link", { name: "abs" });
+    expect(absolute).toHaveAttribute("target", "_blank");
+    expect(absolute.getAttribute("rel")).toContain("noreferrer");
+    expect(document.querySelector("picture source")?.getAttribute("srcset")).toBe(
+      "https://raw.githubusercontent.com/testuser/testuser/HEAD/docs/dark.svg",
+    );
+    expect(screen.getByAltText("theme")).toHaveAttribute(
+      "src",
+      "https://raw.githubusercontent.com/testuser/testuser/HEAD/docs/light.svg",
+    );
+  });
+
   it("does not render dangerous HTML from markdown", () => {
     render(
       <ProfileReadme
