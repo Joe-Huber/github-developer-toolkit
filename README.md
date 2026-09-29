@@ -4,9 +4,20 @@
 
 **Turn your GitHub profile into an explainable, evidence-backed score — and a web dashboard you can actually act on.**
 
-[![License](https://img.shields.io/github/license/Joe-Huber/github-developer-toolkit?style=flat-square)](LICENSE)
-[![Last commit](https://img.shields.io/github/last-commit/Joe-Huber/github-developer-toolkit?style=flat-square)](https://github.com/Joe-Huber/github-developer-toolkit/commits/main)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+[![Stars](https://img.shields.io/github/stars/Joe-Huber/github-developer-toolkit?style=flat-square&label=stars&color=8A2BE2)](https://github.com/Joe-Huber/github-developer-toolkit/stargazers)
+[![Forks](https://img.shields.io/github/forks/Joe-Huber/github-developer-toolkit?style=flat-square&label=forks&color=8A2BE2)](https://github.com/Joe-Huber/github-developer-toolkit/network/members)
+[![Open issues](https://img.shields.io/github/issues/Joe-Huber/github-developer-toolkit?style=flat-square&label=issues&color=8A2BE2)](https://github.com/Joe-Huber/github-developer-toolkit/issues)
+[![Contributors](https://img.shields.io/github/contributors/Joe-Huber/github-developer-toolkit?style=flat-square&label=contributors&color=8A2BE2)](https://github.com/Joe-Huber/github-developer-toolkit/graphs/contributors)
+
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![uv](https://img.shields.io/badge/uv-managed-3776AB?style=flat-square&logo=uv&logoColor=white)](https://docs.astral.sh/uv/)
+[![Typed](https://img.shields.io/badge/typing-strict%20mypy-2A6DB2?style=flat-square&logo=mypy&logoColor=white)](pyproject.toml)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](dashboard-ui/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](src/ghdtk/dashboard/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](dashboard-ui/)
+[![CI](https://github.com/Joe-Huber/github-developer-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/Joe-Huber/github-developer-toolkit/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/tests-95%25%20gate-8A2BE2?style=flat-square)](docs/testing.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-8A2BE2?style=flat-square)](LICENSE)
 
 ![Dashboard overview: overall score gauge, dimension radar chart, and language breakdown](docs/images/dashboard-overview.png)
 
