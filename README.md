@@ -1,187 +1,113 @@
 <div align="center">
-  <h1 align="center">GitHub Developer Toolkit :octocat: </h1>
-  <p align="center">
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/stargazers"><img src="https://img.shields.io/github/stars/Joe-Huber/github-developer-toolkit?style=for-the-badge" alt="GitHub stars"></a>
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/network/members"><img src="https://img.shields.io/github/forks/Joe-Huber/github-developer-toolkit?style=for-the-badge" alt="GitHub forks"></a>
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/issues"><img src="https://img.shields.io/github/issues/Joe-Huber/github-developer-toolkit?style=for-the-badge" alt="GitHub issues"></a>
-  </p>
-  <p align="center">
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Joe-Huber/github-developer-toolkit?style=for-the-badge" alt="License"></a>
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge" alt="PRs Welcome"></a>
-    <a href="https://github.com/Joe-Huber/github-developer-toolkit/commits/main"><img src="https://img.shields.io/github/last-commit/Joe-Huber/github-developer-toolkit?style=for-the-badge" alt="Last commit"></a>
-  </p>
-  <p align="center">
-    An open-source system that helps developers improve, analyze, and showcase their GitHub presence.
-  </p>
+
+# GitHub Developer Toolkit
+
+**Turn your GitHub profile into an explainable, evidence-backed score — and a web dashboard you can actually act on.**
+
+[![License](https://img.shields.io/github/license/Joe-Huber/github-developer-toolkit?style=flat-square)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/Joe-Huber/github-developer-toolkit?style=flat-square)](https://github.com/Joe-Huber/github-developer-toolkit/commits/main)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+
+![Dashboard overview: overall score gauge, dimension radar chart, and language breakdown](docs/images/dashboard-overview.png)
+
 </div>
 
-## Overview
+---
 
-The GitHub Developer Toolkit analyzes a developer's GitHub profile and turns
-it into explainable metrics, dimension scores, findings, and actionable
-recommendations. A core design principle is the strict separation between
-**raw GitHub data** (the immutable source of truth) and **derived analysis**
-(everything computed from it). See [docs/architecture.md](docs/architecture.md).
+## What it does
 
-## Requirements
+`ghdtk` collects a public GitHub profile and turns it into **explainable metrics, 8 dimension scores, findings, and prioritized recommendations** — never a black-box number.
 
-- [Python](https://www.python.org/) 3.11+
-- [uv](https://docs.astral.sh/uv/) (Python package manager)
-- [Make](https://www.gnu.org/software/make/) (optional, for the quality gates)
-- A GitHub [Personal Access Token](https://github.com/settings/tokens).
-  `ghdtk` is **read-only** and never modifies any data. Any valid token
-  works for public profiles; add the `repo` scope to include private
-  repositories (see [docs/cli.md](docs/cli.md#token--permissions)).
+- **Evidence-backed.** Every metric carries provenance back to the exact API field that produced it. Every score breaks down into weighted components that sum to the score.
+- **Read-only.** No writes, ever. Any valid token works; add the `repo` scope to include private repositories.
+- **Three output formats.** Markdown, JSON, and a self-contained HTML report.
+- **Interactive dashboard.** FastAPI + React, served by the same CLI.
 
-## Setup
+## Quick start
+
+Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```sh
 git clone https://github.com/Joe-Huber/github-developer-toolkit.git
 cd github-developer-toolkit
 
-# install the package and dev dependencies
-uv sync
+uv sync --extra dashboard
 
-# configure the GitHub token
-cp .env.example .env
-# then edit .env and set GHDTK_GITHUB_TOKEN
+# a read-only token: https://github.com/settings/tokens
+export GHDTK_GITHUB_TOKEN=ghp_your_token_here
 
-# install the pre-commit hooks
-uv run pre-commit install
+uv run ghdtk dashboard octocat    # -> http://127.0.0.1:8000
 ```
 
-Configuration loads from environment variables (`GHDTK_*`), a `.env` file, or
-a `ghdtk.toml` config file, with documented precedence:
-**env vars > `.env` > `ghdtk.toml` > defaults**.
-See [.env.example](.env.example) for every available variable.
-
-## Usage
+Prefer a file report?
 
 ```sh
-# CLI entry point
-uv run ghdtk --version
-uv run ghdtk config          # inspect the resolved configuration
-
-# Analyze a GitHub profile
-uv run ghdtk analyze octocat
-
-# Launch the interactive dashboard
-uv run ghdtk dashboard octocat   # opens browser at http://localhost:8000
+uv run ghdtk analyze octocat                     # writes octocat.md
+uv run ghdtk analyze octocat -f html -o out.html # self-contained HTML
 ```
 
-## Architecture
+`uv run ghdtk --help` lists every flag; [docs/cli.md](docs/cli.md) documents them all.
 
-The pipeline follows a strict **raw -> derived** flow. Raw GitHub data is
-fetched, deserialized into immutable typed models, then analyzed into
-explainable metrics, dimension scores, findings and recommendations. Every
-score carries provenance pointing at the exact raw data that produced it.
+<p align="center">
+  <img src="docs/images/cli-analyze.png" alt="Terminal showing ghdtk analyze printing the five pipeline stages and the overall score" width="72%">
+</p>
 
-```
-GitHub API
-   |
-   v
-api/             requests with auth/retry, returns payloads
-   |
-   v
-collectors/      fetch API data -> immutable raw snapshots
-   |
-   v
-models/raw       source of truth -- frozen, faithful, never modified
-   |
-   v
-analyzers/       raw snapshots -> metrics + findings (each carries provenance)
-   |
-   v
-scoring/         metrics -> dimension scores with weighted breakdown
-   |
-   v
-recommendations/ findings -> actionable, prioritized recommendations
-   |
-   v
-report/          analysis -> Report DTO -> JSON / Markdown / HTML
-```
+<p align="center"><sub>Progress goes to stderr, the score to stdout. <code>-f json</code> and <code>-f html</code> switch the output format; <code>-o</code> sets the filename.</sub></p>
 
-### Module-to-epic mapping
+## Screenshots
 
-| Module | Epic / Issue | Description |
-|---|---|---|
-| `api/` | #18 — API client | Auth, retries, rate limiting, response caching |
-| `models/raw/` | #14 — Raw data models | Frozen Pydantic models mirroring GitHub payloads |
-| `models/derived/` | #15 — Derived data models | MetricRecord, Finding, DimensionScore, Recommendation |
-| `collectors/` | #22 — Collection pipeline | Orchestrates data fetching with budget and parallelism (#63) |
-| `analyzers/` | #23 — Analyzers | 16 analyzers producing metrics and findings |
-| `scoring/` | #46 — Scoring framework | 8 dimension scorers with weighted aggregation |
-| `recommendations/` | #51 — Recommendations | Rule-based engine producing actionable items |
-| `report/` | #54 — Report layer | Markdown, JSON and HTML renderers |
-| `config/` | #13 — Configuration | Settings from env vars, `.env` and `ghdtk.toml` |
-| `observability/` | #65 — Observability | Structured logging, correlation ids, run metrics |
-| `dashboard/` | #76 — Dashboard | FastAPI REST API + React frontend ([docs/dashboard.md](docs/dashboard.md)) |
+<p align="center">
+  <img src="docs/images/dashboard-profile.png" alt="Profile page: identity header, top-stat tiles, top repositories, languages, and a GitHub-style contribution heatmap" width="49%">
+  <img src="docs/images/dashboard-dimension.png" alt="Code Quality tab: score gauge, weighted component breakdown, and per-metric tiles with availability badges" width="49%">
+</p>
 
-### Key resources
+<p align="center"><sub>Profile page and Code Quality dimension tab. Every metric is labelled <code>available</code>, <code>partial</code>, or <code>unavailable</code> so you always know what the score is really based on.</sub></p>
 
-- **Methodology & scoring**: [docs/methodology.md](docs/methodology.md) --
-  how every metric is computed, how scores are weighted, what the thresholds
-  mean, and what data limitations exist.
-- **Architecture deep-dive**: [docs/architecture.md](docs/architecture.md) --
-  module boundaries, data flow, design principles, all analyzer descriptions.
-- **Testing strategy**: [docs/testing.md](docs/testing.md) -- fixture corpus,
-  deterministic replay, coverage gate.
-- **Dashboard**: [docs/dashboard.md](docs/dashboard.md) -- FastAPI + React
-  web dashboard for interactive profile visualization. Searching a username
-  lands on a profile page with identity and top-statistics blocks backed by
-  the same evidence-driven report model.
-- **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md) -- dev setup, quality
-  gates, configuration reference.
+`ghdtk analyze -f html` renders the same report as a single self-contained file — no network, no assets, byte-identical for identical input. Handy for archiving or attaching to a PR.
 
-## Quality gates
+<p align="center">
+  <img src="docs/images/report-html.png" alt="The self-contained HTML report showing the overall score, the per-dimension breakdown table, and the source field behind every component" width="62%">
+</p>
 
-Every change must pass all gates:
+## How it scores
+
+Eight dimensions, each scored 0–100, aggregated into one weighted overall score.
+
+| Dimension | Weight | Measures |
+| --- | --- | --- |
+| Profile presence | 1.0 | Field completeness, profile README quality |
+| Code quality | 1.5 | Repo quality, activity, portfolio composition |
+| Activity | 1.5 | Commit volume, cadence, active-day breadth |
+| Contribution | 1.5 | Contribution volume, density, streaks and gaps |
+| Consistency | 1.0 | Commit and calendar regularity |
+| Engagement | 1.0 | Follower audience, balance, network reach |
+| Open source | 1.0 | PR volume, merge rate, external and review collaboration |
+| Visibility | 1.0 | Portfolio stars, language diversity |
+
+Thresholds, normalization, and known data limitations are documented in [docs/methodology.md](docs/methodology.md).
+
+## Design principle
+
+Raw GitHub data and derived analysis are strictly separated. API payloads become **frozen** typed snapshots and are never mutated; everything else is computed from them. That is what makes provenance, reproducibility, and the offline test corpus possible. See [docs/architecture.md](docs/architecture.md).
+
+## Documentation
+
+| | |
+| --- | --- |
+| [CLI guide](docs/cli.md) | Every command, flag, and exit code |
+| [Methodology](docs/methodology.md) | How every metric is computed and weighted |
+| [Architecture](docs/architecture.md) | Module boundaries, data flow, design principles |
+| [Dashboard](docs/dashboard.md) | REST API reference and frontend guide |
+| [Testing](docs/testing.md) | Recorded-response corpus and coverage gate |
+| [Contributing](CONTRIBUTING.md) | Dev setup and quality gates |
+
+## Status
+
+`0.1.0` — alpha, not yet published to PyPI. Install from source with `uv sync`.
 
 ```sh
-make check       # lint + format-check + typecheck + test
+make check   # lint + format-check + typecheck + tests
 ```
-
-Individual gates:
-
-```sh
-make lint        # ruff check
-make format      # ruff format (auto-fix)
-make format-check
-make typecheck   # mypy (strict)
-make test        # pytest
-make coverage    # pytest with coverage report
-```
-
-The pre-commit hooks run the same checks automatically on every commit.
-
-## Project structure
-
-```
-src/ghdtk/
-├── api/              # GitHub API client
-├── models/
-│   ├── raw/          # immutable snapshots of GitHub payloads
-│   └── derived/      # metrics, scores, findings, recommendations, report
-├── collectors/       # fetch API data → raw snapshots
-├── analyzers/        # raw snapshots → metrics & findings
-├── scoring/          # metrics → dimension scores
-├── recommendations/  # findings → recommendations
-├── report/           # analysis → report DTO
-├── config/           # configuration (file + env + defaults)
-├── observability/    # structured logging, correlation ids, run metrics
-├── cli/              # command-line interface
-└── dashboard/        # FastAPI backend (REST API + static file serving)
-
-dashboard-ui/         # React frontend (Vite + TypeScript + Tailwind + Chart.js)
-```
-
-## Contributing
-
-PRs are welcome. Before opening one, make sure `make check` passes and the
-pre-commit hooks are green. See [CONTRIBUTING.md](CONTRIBUTING.md) for dev
-setup, quality gates, configuration reference, and issue/PR conventions.
-See [docs/architecture.md](docs/architecture.md) for the design principles
-every contribution should follow.
 
 ## License
 
