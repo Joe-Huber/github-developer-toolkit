@@ -1,6 +1,6 @@
 <div align="center">
 
-# GitHub Developer Toolkit
+# GitHub Developer Toolkit :octocat:
 
 **Turn your GitHub profile into an explainable, evidence-backed score — and a web dashboard you can actually act on.**
 
