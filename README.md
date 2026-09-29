@@ -16,7 +16,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](src/ghdtk/dashboard/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](dashboard-ui/)
 [![CI](https://github.com/Joe-Huber/github-developer-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/Joe-Huber/github-developer-toolkit/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/tests-95%25%20gate-8A2BE2?style=flat-square)](docs/testing.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-8A2BE2?style=flat-square)](LICENSE)
 
 ![Dashboard overview: overall score gauge, dimension radar chart, and language breakdown](docs/images/dashboard-overview.png)
